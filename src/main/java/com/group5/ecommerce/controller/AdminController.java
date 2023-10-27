@@ -2,8 +2,10 @@ package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.dto.ProductDTO;
 import com.group5.ecommerce.model.Category;
+import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ProductService;
+import com.group5.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -22,38 +25,41 @@ public class AdminController {
     @Autowired
     private ProductService  productService;
 
-    @GetMapping("/admin")
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
     public String adminHome(){
     return "adminHome";}
 
 
     //CATEGORY SESSIONS
-    @GetMapping("/admin/categories")
+    @GetMapping("/categories")
     public String getCat(Model model){
         model.addAttribute("categories", categoryService.getAllCategory());
         return "categories";
     }
 
-    @GetMapping("/admin/categories/add")
+    @GetMapping("/categories/add")
     public String getAddCat(Model model){
         model.addAttribute("category", new Category());
         return "categoriesAdd";
     }
 
     //post method for category
-    @PostMapping("/admin/categories/add")
+    @PostMapping("/categories/add")
     public String postAddCat(@ModelAttribute("category") Category category) {
         categoryService.addCategory(category);
-        return "redirect:/admin/categories";
+        return "redirect:/categories";
     }
 
-    @GetMapping("/admin/categories/delete/{id}")
+    @GetMapping("/categories/delete/{id}")
     public String deleteCat(@PathVariable("id") Long id, Model model){
         categoryService.removeCategoryById(id);
-        return "redirect:/admin/categories";  //redirect to categories page
+        return "redirect:/categories";  //redirect to categories page
     }
 
-    @GetMapping("/admin/categories/update/{id}")
+    @GetMapping("/categories/update/{id}")
     public String updateCat(@PathVariable("id") Long id, Model model){
         Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
@@ -64,15 +70,17 @@ public class AdminController {
     }
 
 
+
+
     //PRODUCT SESSIONS
 
-    @GetMapping("/admin/products")
+    @GetMapping("/products")
     public String getProducts(Model model){
         model.addAttribute("products", productService.getAllProduct());
         return "products";  //redirect to categories page
     }
 
-    @GetMapping("/admin/products/add")
+    @GetMapping("/products/add")
     public String getAddProduct(Model model){
         model.addAttribute("productDTO", new ProductDTO());
         model.addAttribute("categories", categoryService.getAllCategory());
@@ -80,21 +88,21 @@ public class AdminController {
     }
 
     //post method for category
-    @PostMapping("/admin/products/add")
+    @PostMapping("/products/add")
     public String postAddProduct(@ModelAttribute("ProductDTO") ProductDTO productDTO,
                                  @RequestParam("productImage")MultipartFile file,
                                  @RequestParam("imgName") String imgName) throws IOException {
         productService.addProduct(productDTO, file, imgName);
-        return "redirect:/admin/products";
+        return "redirect:/products";
     }
 
-    @GetMapping("/admin/products/delete/{id}")
+    @GetMapping("/products/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id){
         productService.removeProductById(id);
-        return "redirect:/admin/products";  //redirect to categories page
+        return "redirect:/products";  //redirect to categories page
     }
 
-    @GetMapping("/admin/products/update/{id}")
+    @GetMapping("/products/update/{id}")
     public String updateProduct(@PathVariable("id") Long id, Model model){
         ProductDTO productDTO = productService.getProductById(id);
 
@@ -103,4 +111,43 @@ public class AdminController {
         return "productsAdd";
 
     }
+
+
+
+    // USER SESSIONS
+    @GetMapping("/users")
+    public String getUsers(Model model){
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";  //redirect to users page
+    }
+
+    @GetMapping("/users/add")
+    public String getAddUser(Model model){
+        model.addAttribute("user", new User());
+        return "usersAdd"; //redirect to add user page
+    }
+
+    //post method for category
+    @PostMapping("/users/add")
+    public String postAddUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id){
+        userService.removeUserById(id);
+
+        return "redirect:/users";  //redirect to categories page
+    }
+
+    @GetMapping("/users/update/{id}")
+    public String updateUser(@PathVariable("id") Long id, Model model){
+        User user = userService.getUserById(id);
+
+        model.addAttribute("user", user);
+        return "usersAdd";
+
+    }
+
 }

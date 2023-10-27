@@ -7,7 +7,9 @@ import java.util.List;
 
 public class CartUtil {
     public static List<ProductDTO> cart;
+    public static Integer COUNT = 0;
     static {
         cart = new ArrayList<ProductDTO>();
+        ++COUNT;
     }
 }

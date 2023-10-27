@@ -4,14 +4,18 @@ import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
 @Getter
 @Setter
+@Data
 public class User {
 
     @Id
@@ -22,8 +26,14 @@ public class User {
     @Column(nullable = false)
     private String firstName;
 
-    @Nullable
     private String lastName;
+
+    private String address;
+
+    @Pattern(regexp = "^(Male|Femaile|Other)$", message = "Invalid gender value")
+    private String gender;
+
+    private String phone;
 
     @NotEmpty(message = "Email is required")
     @Column(nullable = false, unique = true)
@@ -31,6 +41,10 @@ public class User {
     private String email;
 
     private String password;
+
+    private Integer accumulatePoints;
+
+    private String cardId;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -50,5 +64,18 @@ public class User {
 
     public User() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email);
     }
 }
