@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,8 +49,7 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         } else {
             User user = new User();
             user.setFirstName(token.getPrincipal().getAttributes().get("given_name").toString());
-
-            user.setLastName(Objects.requireNonNullElse(token.getPrincipal().getAttributes().get("family_name").toString(), ""));
+            user.setLastName(token.getPrincipal().getAttributes().get("family_name").toString());
             user.setEmail(email);
             List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findById(2L).get());
@@ -57,5 +57,20 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             userRepository.save(user);
         }
         redirectStrategy.sendRedirect(httpServletRequest,httpServletResponse,"/");
+    }
+
+    private User createUserFromToken(OAuth2AuthenticationToken token, String email) {
+        User user = new User();
+        user.setFirstName(token.getPrincipal().getAttribute("given_name"));
+        user.setLastName(token.getPrincipal().getAttribute("family_name"));
+        user.setEmail(email);
+
+        // Assuming you have a default role with ID 2L
+        Role defaultRole = roleRepository.findById(2L).orElse(null);
+        if (defaultRole != null) {
+            user.setRoles(Collections.singletonList(defaultRole));
+        }
+
+        return userRepository.save(user);
     }
 }
