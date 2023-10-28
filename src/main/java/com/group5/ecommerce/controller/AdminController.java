@@ -25,12 +25,10 @@ public class AdminController {
     @Autowired
     private ProductService  productService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping
     public String adminHome(){
     return "adminHome";}
+
 
 
     //CATEGORY SESSIONS
@@ -111,43 +109,4 @@ public class AdminController {
         return "productsAdd";
 
     }
-
-
-
-    // USER SESSIONS
-    @GetMapping("/users")
-    public String getUsers(Model model){
-        model.addAttribute("users", userService.getAllUsers());
-        return "users";  //redirect to users page
-    }
-
-    @GetMapping("/users/add")
-    public String getAddUser(Model model){
-        model.addAttribute("user", new User());
-        return "usersAdd"; //redirect to add user page
-    }
-
-    //post method for category
-    @PostMapping("/users/add")
-    public String postAddUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id){
-        userService.removeUserById(id);
-
-        return "redirect:/users";  //redirect to categories page
-    }
-
-    @GetMapping("/users/update/{id}")
-    public String updateUser(@PathVariable("id") Long id, Model model){
-        User user = userService.getUserById(id);
-
-        model.addAttribute("user", user);
-        return "usersAdd";
-
-    }
-
 }

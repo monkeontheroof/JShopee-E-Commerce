@@ -44,13 +44,6 @@ public class Employee {
     @NotNull(message = "Password must not be null")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @OrderBy(value = "id ASC")
-    private List<Role> roles;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
