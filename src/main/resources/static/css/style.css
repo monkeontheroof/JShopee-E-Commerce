@@ -9,7 +9,7 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 .sidebar {
-    position: fixed;
+    position:fixed;
     left: -250px;
     width: 250px;
     height: 100%;
