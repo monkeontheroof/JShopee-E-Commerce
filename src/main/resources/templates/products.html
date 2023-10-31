@@ -12,39 +12,34 @@
     <title>Product</title>
 </head>
 <body>
-
+<div class="sidebar">
+    <ul>
+        <center> <img th:src="@{/images/logo.png}" width="70px" height="70px" alt=""></center>
+        <li><a th:href="@{/admin/categories}"><i class="fas fa-layer-group"></i>Danh Mục</a></li>
+        <li><a th:href="@{/admin/products}"><i class="fab fa-product-hunt"></i>Sản phẩm</a></li>
+        <li><a href="#"><i class="fas fa-shopping-bag"></i>Đơn hàng</a></li>
+        <li><a href="#"><i class="fas fa-user"></i>Khách hàng</a></li>
+        <li><a href="#"><i class="fas fa-ad"></i>Tin Tức</a></li>
+        <li><a href="#"><i class="fas fa-tags"></i>Voucher</a></li>
+        <li><a href="#"><i class="fas fa-money-check-alt"></i>Doanh Thu</a></li>
+        <li class="nav-item active">
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>Sign out</a>
+        </li>
+    </ul>
+</div>
 <div class="container-fluid">
-    <input type="checkbox" id="check">
-    <label for="check">
-        <i class="fas fa-bars" id="btn"></i>
-        <i class="fas fa-times" id="cancel"></i>
-    </label>
-    <div class="sidebar">
-        <ul>
-            <center> <img th:src="@{/images/logo.png}" width="70px" height="70px" alt=""></center>
-            <li><a th:href="@{/admin/categories}"><i class="fas fa-layer-group"></i>Danh Mục</a></li>
-            <li><a th:href="@{/admin/products}"><i class="fab fa-product-hunt"></i>Sản phẩm</a></li>
-            <li><a href="#"><i class="fas fa-shopping-bag"></i>Đơn hàng</a></li>
-            <li><a href="#"><i class="fas fa-user"></i>Khách hàng</a></li>
-            <li><a href="#"><i class="fas fa-ad"></i>Tin Tức</a></li>
-            <li><a href="#"><i class="fas fa-tags"></i>Voucher</a></li>
-            <li><a href="#"><i class="fas fa-money-check-alt"></i>Doanh Thu</a></li>
-            <li class="nav-item active">
-                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>Sign out</a>
-            </li>
-        </ul>
-    </div>
-    <a th:href="@{/admin/products/add}" style="margin: 20px 0" class="btn btn-primary">Add Product</a>
+    <a th:href="@{/admin/products/add}">
+        <img th:src="@{/images/icon_add.png}" alt="" width="70px" height="40px" style="margin-bottom: 30px">
+    </a>
     <table class="table">
         <thead class="thead-light">
         <tr>
-            <th scope="col">SN</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Category</th>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category Name</th>
             <th scope="col">Quantity</th>
-            <th scope="col">Preview</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Update</th>
+            <th scope="col">Image</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -53,11 +48,23 @@
             <th scope="row" th:text="${iStat.index + 1}">1</th>
             <td th:text="${product.name}">Larry</td>
             <td th:text="${product.category.name}">Larry</td>
+            <td><img src="" height="50px" width="50px"  th:src="@{${'/productImages/' + product.imageName}}"></td>
             <td th:text="${product.quantity}">Larry</td>
-            <td><img src="" height="100px" width="100px"  th:src="@{${'/productImages/' + product.imageName}}"></td>
+            <td>
+                <a href="" th:href="@{/admin/products/delete/{id}(id=${product.id})}">
+                    <img th:src="@{/images/icon_delete.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="" th:href="@{/admin/products/update/{id}(id=${product.id})}">
+                    <img th:src="@{/images/icon_edit.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="">
+                    <img th:src="@{/images/icon_detail.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="">
+                    <img th:src="@{/images/icon_comment.png}" alt="" width="30px" height="30px">
+                </a>
+            </td>
 
-            <td><a href="" th:href="@{/admin/products/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete</a></td>
-            <td><a href="" th:href="@{/admin/products/update/{id}(id=${product.id})}" class="btn btn-warning">Update</a></td>
 
         </tr>
         </tbody>
