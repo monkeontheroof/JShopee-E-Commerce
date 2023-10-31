@@ -23,6 +23,16 @@ public class CustomUserDetail extends User implements UserDetails {
     }
 
     @Override
+    public Long getId() {
+        return super.getId();
+    }
+
+    @Override
+    public UserStore getStore() {
+        return super.getStore();
+    }
+
+    @Override
     public String getUsername() {
         return super.getEmail();
     }

@@ -54,6 +54,7 @@ public class User {
     private List<Role> roles;
 
     @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
 
     public User(User user) {

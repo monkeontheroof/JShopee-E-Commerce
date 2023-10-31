@@ -39,7 +39,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
-            <form th:action="@{/admin/categories/add}" method="post" th:object="${category}">
+            <form th:action="@{/store/{storeId}/categories/add(storeId=${storeId})}" method="post" th:object="${category}">
                 <input type="hidden" name="id"  th:field="*{id}">
                 <div class="form-group">
                     <label for="name">Name</label>

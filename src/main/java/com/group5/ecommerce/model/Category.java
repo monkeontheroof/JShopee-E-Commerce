@@ -17,5 +17,5 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
-    private UserStore userStore;
+    private UserStore store;
 }

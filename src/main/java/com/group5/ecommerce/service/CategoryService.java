@@ -23,7 +23,7 @@ public class CategoryService {
     }
 
     public List<Category> getAllCategoryByStoreId(Long id) {
-        return categoryRepository.findAllByUserStoreId(id);
+        return categoryRepository.findAllByStoreId(id);
     }
 
     public Optional<Category> getCategoryById(Long id) {
@@ -35,7 +35,7 @@ public class CategoryService {
         if(userStore == null) {
             return;
         }
-        category.setUserStore(userStore);
+        category.setStore(userStore);
         categoryRepository.save(category);
     }
 
