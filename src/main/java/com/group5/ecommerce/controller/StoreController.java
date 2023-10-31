@@ -23,6 +23,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/store")
 public class StoreController {
 
     @Autowired
@@ -34,19 +35,24 @@ public class StoreController {
     @Autowired
     private ProductService productService;
 
-
-
-    @GetMapping("/store/{storeId}/categories")
+    @GetMapping("/home")
     public String storeHome(Model model) {
         Long userId = SecurityUtil.getPrincipal().getId();
         UserStore userStore = storeService.getStoreByUserId(userId);
+        model.addAttribute("store", userStore);
+        return "adminHome";
+    }
+
+    @GetMapping("/{storeId}/categories")
+    public String getCat(Model model, @PathVariable("storeId") Long storeId) {
+        UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(userStore.getId()));
         return "categories";
     }
 
-    @GetMapping("/store/{storeId}/categories/add")
-    public String getCat(@PathVariable("storeId") Long storeId , Model model){
+    @GetMapping("/{storeId}/categories/add")
+    public String getCatAdd(@PathVariable("storeId") Long storeId , Model model){
         model.addAttribute("category", new Category());
         model.addAttribute("storeId", storeId);
         return "categoriesAdd";
