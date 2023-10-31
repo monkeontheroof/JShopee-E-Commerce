@@ -59,26 +59,26 @@ public class StoreController {
     }
 
     //post method for category
-    @PostMapping("/store/{storeId}/categories/add")
+    @PostMapping("/{storeId}/categories/add")
     public String postAddCat(@ModelAttribute("category") Category category, @PathVariable Long storeId) {
         categoryService.addCategory(category, storeId);
-        return "redirect:/store/home";
+        return "redirect:/store/" + storeId + "/categories";
     }
 
-    @GetMapping("/categories/delete/{id}")
+    @GetMapping("/{storeId}/categories/delete/{id}")
     public String deleteCat(@PathVariable("id") Long id, Model model, @PathVariable String storeId){
         categoryService.removeCategoryById(id);
-        return "redirect:/categories";  //redirect to categories page
+        return "redirect:/categories";
     }
 
-    @GetMapping("/categories/update/{id}")
+    @GetMapping("/{storeId}/categories/update/{id}")
     public String updateCat(@PathVariable("id") Long id, Model model, @PathVariable String storeId){
         Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
             model.addAttribute("category", category.get());
             return "categoriesAdd";
         }
-        return "404";  //redirect to categories page
+        return "404";
     }
 
 
