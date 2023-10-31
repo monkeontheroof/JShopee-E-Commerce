@@ -53,6 +53,9 @@ public class User {
     @OrderBy(value = "id ASC")
     private List<Role> roles;
 
+    @OneToOne(mappedBy = "user")
+    private UserStore store;
+
     public User(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
