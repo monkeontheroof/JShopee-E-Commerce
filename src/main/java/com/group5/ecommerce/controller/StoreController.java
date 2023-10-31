@@ -34,7 +34,9 @@ public class StoreController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/store/home")
+
+
+    @GetMapping("/store/{storeId}/categories")
     public String storeHome(Model model) {
         Long userId = SecurityUtil.getPrincipal().getId();
         UserStore userStore = storeService.getStoreByUserId(userId);
