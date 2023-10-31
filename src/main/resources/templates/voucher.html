@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QLVoucher</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/voucher.css}">
+</head>
+<body>
+<header>
+    <h1>Voucher</h1>
+</header>
+
+<div class="container">
+    <div class="voucher-list">
+        <h2>Danh sách Voucher</h2>
+        <ul>
+            <li>
+                <span>Mã Voucher: ABC123</span>
+                <span>Giảm giá: 10%</span>
+                <p class="voucher-description">Mô tả: Đây là một voucher giảm giá 10% cho mặt hàng A.</p>
+                <button>Xóa</button>
+            </li>
+            <!-- Thêm các mục voucher khác ở đây -->
+        </ul>
+    </div>
+
+    <div class="add-voucher-form">
+        <h2>Thêm Voucher</h2>
+        <form onsubmit="themVoucher(event)">
+            <label for="ma-voucher">Mã Voucher:</label>
+            <input type="text" id="ma-voucher" required>
+            <label for="giam-gia">Giảm giá:</label>
+            <input type="text" id="giam-gia" required>
+            <label for="mota">Mô tả:</label>
+            <textarea id="mota" rows="4" required></textarea>
+            <button type="submit">Thêm</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Dữ liệu voucher mẫu
+    let vouchers = [
+        { ma: "ABC123", giamGia: "10%", moTa: "Đây là một voucher giảm giá 10% cho mặt hàng A." },
+        { ma: "XYZ789", giamGia: "20%", moTa: "Giảm giá 20% cho mặt hàng B." },
+    ];
+
+    // Hiển thị danh sách voucher ban đầu
+    function hienThiDanhSachVoucher() {
+        const voucherList = document.querySelector(".voucher-list ul");
+        voucherList.innerHTML = "";
+        vouchers.forEach(voucher => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span>Mã Voucher: ${voucher.ma}</span>
+                                <span>Giảm giá: ${voucher.giamGia}</span>
+                                <p class="voucher-description">${voucher.moTa}</p>
+                                <button onclick="xoaVoucher(this)">Xóa</button>`;
+            voucherList.appendChild(li);
+        });
+    }
+
+    // Xử lý sự kiện thêm voucher
+    function themVoucher(event) {
+        event.preventDefault();
+        const maVoucher = document.querySelector("#ma-voucher").value;
+        const giamGia = document.querySelector("#giam-gia").value;
+        const moTa = document.querySelector("#mota").value;
+        if (maVoucher && giamGia && moTa) {
+            vouchers.push({ ma: maVoucher, giamGia: giamGia, moTa: moTa });
+            hienThiDanhSachVoucher();
+            document.querySelector("#ma-voucher").value = "";
+            document.querySelector("#giam-gia").value = "";
+            document.querySelector("#mota").value = "";
+        }
+    }
+
+    // Xử lý sự kiện xóa voucher
+    function xoaVoucher(button) {
+        const li = button.parentElement;
+        const maVoucher = li.querySelector("span").textContent.split(": ")[1];
+        vouchers = vouchers.filter(voucher => voucher.ma !== maVoucher);
+        li.remove();
+    }
+
+    hienThiDanhSachVoucher();
+</script>
+</body>
+</html>
