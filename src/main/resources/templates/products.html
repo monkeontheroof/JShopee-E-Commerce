@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,63 +8,50 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    
-    <title>Document</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}">
+    <title>Products</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<div th:replace="fragments/sideMenu :: sideMenu">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto"></ul>
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
-                </li>
-
-            </ul>
-
-        </div>
-    </div>
-</nav>
+</div>
 <div class="container-fluid">
-
-    <a th:href="@{/admin/products/add}" style="margin: 20px 0" class="btn btn-primary">Add Product</a>
+    <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}">
+        <img th:src="@{/images/icon_add.png}" alt="" width="70px" height="40px" style="margin-bottom: 30px">
+    </a>
     <table class="table">
-        <thead class="thead-light">
         <tr>
-            <th scope="col">SN</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Preview</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Update</th>
+            <th scope="col"><h1>ID</h1></th>
+            <th scope="col"><h1>Name</h1></th>
+            <th scope="col"><h1>Category Name</h1></th>
+            <th scope="col"><h1>Image</h1></th>
+            <th scope="col"><h1>Quantity</h1></th>
+            <th scope="col"><h1>Action</h1></th>
         </tr>
-        </thead>
-        <tbody>
-
         <tr th:each="product, iStat : ${products}">
-            <th scope="row" th:text="${iStat.index + 1}">1</th>
+            <td scope="row" th:text="${iStat.index + 1}">1</td>
             <td th:text="${product.name}">Larry</td>
             <td th:text="${product.category.name}">Larry</td>
+            <td><img src="" height="50px" width="50px"  th:src="@{${'/productImages/' + product.imageName}}"></td>
             <td th:text="${product.quantity}">Larry</td>
-            <td><img src="" height="100px" width="100px"  th:src="@{${'/productImages/' + product.imageName}}"></td>
-
-            <td><a href="" th:href="@{/admin/products/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete</a></td>
-            <td><a href="" th:href="@{/admin/products/update/{id}(id=${product.id})}" class="btn btn-warning">Update</a></td>
-
+            <td>
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}">
+                    <img th:src="@{/images/icon_delete.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}">
+                    <img th:src="@{/images/icon_edit.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="">
+                    <img th:src="@{/images/icon_detail.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="">
+                    <img th:src="@{/images/icon_comment.png}" alt="" width="30px" height="30px">
+                </a>
+            </td>
         </tr>
-        </tbody>
     </table>
 </div>
 

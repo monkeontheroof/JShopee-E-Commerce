@@ -4,14 +4,18 @@ import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
 @Getter
 @Setter
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -22,8 +26,14 @@ public class User {
     @Column(nullable = false)
     private String firstName;
 
-    @Nullable
     private String lastName;
+
+    private String address;
+
+    @Pattern(regexp = "^(Male|Femaile|Other)$", message = "Invalid gender value")
+    private String gender;
+
+    private String phone;
 
     @NotEmpty(message = "Email is required")
     @Column(nullable = false, unique = true)
@@ -32,12 +42,20 @@ public class User {
 
     private String password;
 
+    private Integer accumulatePoints;
+
+    private String cardId;
+
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     @OrderBy(value = "id ASC")
     private List<Role> roles;
+
+    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
+    private UserStore store;
 
     public User(User user) {
         this.id = user.getId();

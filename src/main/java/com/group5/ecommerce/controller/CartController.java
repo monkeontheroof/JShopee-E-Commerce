@@ -1,6 +1,6 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.dto.ProductDTO;
+import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.service.ProductService;
 import com.group5.ecommerce.utils.CartUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,14 @@ public class CartController {
 
     @GetMapping("/addToCart/{id}")
     public String addToCart(@PathVariable("id") Long id){
-        CartUtil.cart.add(productService.getProductById(id));
+        CartUtil.cart.add(productService.getProductById(id).get());
         return "redirect:/shop";
     }
 
     @GetMapping("/cart")
     public String getCart(Model model){
         model.addAttribute("cartCount", CartUtil.cart.size());
-        model.addAttribute("total", CartUtil.cart.stream().mapToDouble(ProductDTO::getPrice).sum());
+        model.addAttribute("total", CartUtil.cart.stream().mapToDouble(Product::getPrice).sum());
         model.addAttribute("cart", CartUtil.cart);
         return "cart";
     }
@@ -36,7 +36,7 @@ public class CartController {
 
     @GetMapping("/checkout")
     public String checkout(Model model) {
-        model.addAttribute("total", CartUtil.cart.stream().mapToDouble(ProductDTO::getPrice).sum());
+        model.addAttribute("total", CartUtil.cart.stream().mapToDouble(Product::getPrice).sum());
         model.addAttribute("cartCount", CartUtil.cart.size());
         return "checkout";
     }

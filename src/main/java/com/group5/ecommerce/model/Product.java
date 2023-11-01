@@ -1,11 +1,14 @@
 package com.group5.ecommerce.model;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="product")
 public class Product {
@@ -28,4 +31,8 @@ public class Product {
     private String imageName;
 
     private Long quantity;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
+    private UserStore store;
 }
