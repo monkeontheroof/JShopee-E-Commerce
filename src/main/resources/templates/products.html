@@ -19,8 +19,7 @@
 
 </div>
 <div class="container-fluid">
-    <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}">
-        <img th:src="@{/images/icon_add.png}" alt="" width="70px" height="40px" style="margin-bottom: 30px">
+    <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}" class="btn btn-success"> Add Product
     </a>
     <table class="table">
         <tr>
@@ -38,17 +37,17 @@
             <td><img src="" height="50px" width="50px"  th:src="@{${'/productImages/' + product.imageName}}"></td>
             <td th:text="${product.quantity}">Larry</td>
             <td>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}">
-                    <img th:src="@{/images/icon_delete.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}" class="btn btn-success">
+                    Update
                 </a>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}">
-                    <img th:src="@{/images/icon_edit.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}" class="btn btn-success">
+                   Delete
                 </a>
-                <a href="">
-                    <img th:src="@{/images/icon_detail.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                <a href="" class="btn btn-success">
+                    Details
                 </a>
-                <a href="">
-                    <img th:src="@{/images/icon_comment.png}" alt="" width="30px" height="30px">
+                <a href="" class="btn btn-success">
+                    Comment
                 </a>
             </td>
         </tr>

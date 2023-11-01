@@ -9,18 +9,14 @@
 <div th:replace="fragments/sideMenu :: sideMenu">
 </div>
 <div class="container-fluid">
-    <a th:href="@{/admin/products/add}">
-        <img th:src="@{/images/icon_add.png}" alt="" width="70px" height="40px" style="margin-bottom: 30px">
-    </a>
     <table class="table">
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">FIRST_NAME</th>
-            <th scope="col">LAST_NAME</th>
-            <th scope="col">EMAIL</th>
-            <th scope="col">GENDER</th>
-            <th scope="col">PHONE</th>
-            <th scope="col">ACTION</th>
+            <th scope="col"><h1>ID</h1></th>
+            <th scope="col"><h1>FIRST_NAME</h1></th>
+            <th scope="col"><h1>LAST_NAME</h1></th>
+            <th scope="col"><h1>EMAIL</h1></th>
+            <th scope="col"><h1>GENDER</h1></th>
+            <th scope="col"><h1>PHONE</h1></th>
         </tr>
         <tr th:each="user, iStat : ${user}">
             <th scope="row" th:text="${iStat.index + 1}">1</th>
@@ -29,20 +25,6 @@
             <td th:text="${user.email}">Larry</td>
             <td th:text="${user.gender}">Larry</td>
             <td th:text="${user.phone}">Larry</td>
-            <td>
-                <a href="" th:href="@{/admin/products/delete/{id}(id=${user.id})}">
-                    <img th:src="@{/images/icon_delete.png}" alt="" width="30px" height="30px" style="margin-right:50px">
-                </a>
-                <a href="" th:href="@{/admin/products/update/{id}(id=${user.id})}">
-                    <img th:src="@{/images/icon_edit.png}" alt="" width="30px" height="30px" style="margin-right:50px">
-                </a>
-                <a href="">
-                    <img th:src="@{/images/icon_detail.png}" alt="" width="30px" height="30px" style="margin-right:50px">
-                </a>
-                <a href="">
-                    <img th:src="@{/images/icon_comment.png}" alt="" width="30px" height="30px">
-                </a>
-            </td>
         </tr>
     </table>
 </div>
