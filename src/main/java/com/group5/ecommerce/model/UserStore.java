@@ -1,8 +1,10 @@
 package com.group5.ecommerce.model;
 
 import lombok.Data;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,4 +19,7 @@ public class UserStore {
 
     @OneToOne(mappedBy = "store")
     private User user;
+
+    @OneToMany(mappedBy = "store")
+    private List<Order> orders;
 }

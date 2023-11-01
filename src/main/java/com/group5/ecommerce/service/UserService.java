@@ -18,10 +18,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getAllByStore(UserStore store){
-        return userRepository.findAllByStore(store);
-    }
-
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }

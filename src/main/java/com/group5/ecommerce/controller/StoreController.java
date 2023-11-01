@@ -1,9 +1,6 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.model.Category;
-import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.User;
-import com.group5.ecommerce.model.UserStore;
+import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,7 @@ public class StoreController {
     private ProductService productService;
 
     @Autowired
-    private UserService userService;
+    private OrderService orderService;
 
 //    @GetMapping("/sideMenu")
 //    public String getSideMenu(Model model) {
@@ -90,6 +87,7 @@ public class StoreController {
     }
 
 
+
     //PRODUCT SESSIONS
 
     @GetMapping("/store/{storeId}/products")
@@ -138,12 +136,45 @@ public class StoreController {
         return "productsAdd";
     }
 
+
+
+    // CUSTOMER SESSIONS //
     @GetMapping("/store/{storeId}/customers")
     public String getCustomers(Model model, @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
-        List<User> customers = userService.getAllByStore(userStore);
+        List<User> customers = orderService.getCustomersPurchasedFromStore(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("customers", customers);
-        return "khachhang";
+        return "customer";
+    }
+
+    // ORDER SESSIONS //
+    @GetMapping("/store/{storeId}/orders")
+    public String getOrders(Model model, @PathVariable("storeId") Long storeId){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("orders", orderService.getAllOrdersByStoreId(storeId));
+        return "orders";
+    }
+
+    @GetMapping("/store/{storeId}/orders/update/{id}")
+    public String updateOrder(Model model, @PathVariable("storeId") Long storeId, @PathVariable("id") Long id){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("order", orderService.getOrderById(id));
+        model.addAttribute("isUpdate", true);
+        return "ordersAdd";
+    }
+
+    @PostMapping("/store/{storeId}/orders/add")
+    public String postAddOrder(@ModelAttribute("order") Order order, @PathVariable("storeId") Long storeId){
+        orderService.saveOrder(order, storeId);
+        return "redirect:/store/" + storeId + "/orders";
+    }
+
+    @GetMapping("/store/{storeId}/orders/delete/{id}")
+    public String deleteOrder(@PathVariable("id") Long id, @PathVariable("storeId") Long storeId){
+        orderService.deleteOrder(id);
+        return "redirect:/store/" + storeId + "/orders";
     }
 }

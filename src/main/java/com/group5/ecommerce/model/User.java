@@ -53,6 +53,9 @@ public class User {
     @OrderBy(value = "id ASC")
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
     @OneToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
