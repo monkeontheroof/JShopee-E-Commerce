@@ -1,7 +1,7 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.dto.ProductDTO;
 import com.group5.ecommerce.model.Category;
+import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ProductService;
@@ -28,6 +28,15 @@ public class StoreController {
     @Autowired
     private ProductService productService;
 
+//    @GetMapping("/sideMenu")
+//    public String getSideMenu(Model model) {
+//        Long userId = SecurityUtil.getPrincipal().getId();
+//        UserStore userStore = storeService.getStoreByUserId(userId);
+//        model.addAttribute("store", userStore);
+//        return "fragments/sideMenu";
+//    }
+
+
     @GetMapping("/store/home")
     public String getHome(Model model) {
         Long userId = SecurityUtil.getPrincipal().getId();
@@ -37,35 +46,40 @@ public class StoreController {
     }
 
     @GetMapping("/store/{storeId}/categories")
-    public String getCat(Model model, @PathVariable Long storeId) {
-        model.addAttribute("storeId", storeId);
+    public String getCat(Model model, @PathVariable("storeId") Long storeId) {
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
         return "categories";
     }
 
     @GetMapping("/store/{storeId}/categories/add")
     public String getAddCat(@PathVariable("storeId") Long storeId , Model model){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
         model.addAttribute("category", new Category());
         model.addAttribute("storeId", storeId);
         return "categoriesAdd";
     }
 
     @PostMapping("/store/{storeId}/categories/add")
-    public String postAddCat(@ModelAttribute("category") Category category, @PathVariable Long storeId) {
+    public String postAddCat(@ModelAttribute("category") Category category, @PathVariable("storeId") Long storeId) {
         categoryService.addCategory(category, storeId);
-        return "redirect:/store/home";
+        return "redirect:/store/" + storeId + "/categories";
     }
 
     @GetMapping("/store/{storeId}/categories/delete/{id}")
-    public String deleteCat(@PathVariable("id") Long id, Model model, @PathVariable Long storeId){
-        categoryService.removeCategoryById(id);
-        return "redirect:/categories";
+    public String deleteCat(@PathVariable("id") Long categoryId, @PathVariable("storeId") Long storeId){
+        categoryService.removeCategoryById(categoryId);
+        return "redirect:/store/" + storeId + "/categories";
     }
 
-    @GetMapping("/categories/update/{id}")
-    public String updateCat(@PathVariable("id") Long id, Model model, @PathVariable String storeId){
+    @GetMapping("/store/{storeId}/categories/update/{id}")
+    public String updateCat(@PathVariable("id") Long id, Model model, @PathVariable("storeId") Long storeId){
         Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
+            UserStore userStore = storeService.getStoreById(storeId);
+            model.addAttribute("store", userStore);
             model.addAttribute("category", category.get());
             return "categoriesAdd";
         }
@@ -75,41 +89,49 @@ public class StoreController {
 
     //PRODUCT SESSIONS
 
-    @GetMapping("/products")
-    public String getProducts(Model model, @PathVariable String storeId){
-        model.addAttribute("products", productService.getAllProduct());
-        return "products";  //redirect to categories page
+    @GetMapping("/store/{storeId}/products")
+    public String getProducts(Model model, @PathVariable("storeId") Long storeId){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("products", productService.getAllProductByStoreId(storeId));
+        return "products";
     }
 
-    @GetMapping("/products/add")
-    public String getAddProduct(Model model, @PathVariable String storeId){
-        model.addAttribute("productDTO", new ProductDTO());
-        model.addAttribute("categories", categoryService.getAllCategory());
+    @GetMapping("/store/{storeId}/products/add")
+    public String getAddProduct(Model model, @PathVariable("storeId") Long storeId){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("product", new Product());
+        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
+        model.addAttribute("isUpdate", false);
         return "productsAdd";
     }
 
     //post method for category
-    @PostMapping("/products/add")
-    public String postAddProduct(@ModelAttribute("ProductDTO") ProductDTO productDTO,
+    @PostMapping("/store/{storeId}/products/add")
+    public String postAddProduct(@ModelAttribute("product") Product product,
                                  @RequestParam("productImage") MultipartFile file,
-                                 @RequestParam("imgName") String imgName, @PathVariable String storeId) throws IOException {
-        productService.addProduct(productDTO, file, imgName);
-        return "redirect:/products";
+                                 @RequestParam("imgName") String imgName, @PathVariable("storeId") Long storeId) throws IOException {
+        productService.addProduct(product, file, imgName, storeId);
+        return "redirect:/store/" + storeId + "/products";
     }
 
-    @GetMapping("/products/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long id, @PathVariable String storeId){
+    @GetMapping("/store/{storeId}/products/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id, @PathVariable("storeId") Long storeId){
         productService.removeProductById(id);
-        return "redirect:/products";  //redirect to categories page
+        return "redirect:/store/" + storeId + "/products";  //redirect to categories page
     }
 
-    @GetMapping("/products/update/{id}")
-    public String updateProduct(@PathVariable("id") Long id, Model model, @PathVariable String storeId){
-        ProductDTO productDTO = productService.getProductById(id);
+    @GetMapping("/store/{storeId}/products/update/{id}")
+    public String updateProduct(@PathVariable("id") Long id,
+                                Model model,
+                                @PathVariable("storeId") Long storeId){
 
-        model.addAttribute("productDTO", productDTO);
-        model.addAttribute("categories", categoryService.getAllCategory());
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("product", productService.getProductById(id).get());
+        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
+        model.addAttribute("isUpdate", true);
         return "productsAdd";
-
     }
 }

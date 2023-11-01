@@ -1,15 +1,15 @@
 package com.group5.ecommerce.utils;
 
-import com.group5.ecommerce.dto.ProductDTO;
+import com.group5.ecommerce.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartUtil {
-    public static List<ProductDTO> cart;
+    public static List<Product> cart;
     public static Integer COUNT = 0;
     static {
-        cart = new ArrayList<ProductDTO>();
+        cart = new ArrayList<Product>();
         ++COUNT;
     }
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(name = "user")
 @Getter
 @Setter
-@Data
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -68,18 +68,5 @@ public class User {
 
     public User() {
 
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, email);
     }
 }

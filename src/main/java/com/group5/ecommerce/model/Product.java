@@ -1,11 +1,14 @@
 package com.group5.ecommerce.model;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="product")
 public class Product {

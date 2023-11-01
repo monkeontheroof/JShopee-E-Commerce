@@ -16,8 +16,8 @@
 <div th:replace="fragments/sideMenu :: sideMenu">
 </div>
 <div class="container">
-    <h3>Add a new Product</h3>
-    <form th:action="@{/admin/products/add}" method="post" th:object="${productDTO}" enctype="multipart/form-data">
+    <h3 th:if="${isUpdate} ? 'Update a product' : 'Add a new Product'">Add a new Product</h3>
+    <form th:action="@{/store/{storeId}/products/add(storeId=${store.getId()})}" method="post" th:object="${product}" enctype="multipart/form-data">
         <div class="row">
             <div class="col-sm-5">
 
@@ -39,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price</label>
-                    <input type="number" class="form-control" required th:field="*{price}" name="price" id="price"
+                    <input type="number" class="form-control" required th:field="*{price}" th:value="${#numbers.formatCurrency(product.price)}" name="price" id="price"
                            placeholder="Price">
                 </div>
 <!--                <div class="form-group">-->
@@ -57,9 +57,9 @@
                     <label class="custom-file-label" for="productImage">Choose file</label>
                 </div>
                 <div class="form-group">
-                    <img src="#" id="imgPreview" height="100px" width="100px" th:src="@{${'/productImages/' + productDTO.imageName}}" style="margin-top: 20px" alt=" ">
+                    <img src="#" id="imgPreview" height="100px" width="100px" th:src="@{${'/productImages/' + product.imageName}}" style="margin-top: 20px" alt=" ">
                 </div>
-                <input type="hidden" name="imgName" th:value="${productDTO.imageName}">
+                <input type="hidden" name="imgName" th:value="${product.imageName}">
                 <div class="form-group">
                     <label for="quantity">Quantity</label>
                     <input type="number" class="form-control" th:field="*{quantity}" name="quantity" id="quantity" placeholder="Quantity">

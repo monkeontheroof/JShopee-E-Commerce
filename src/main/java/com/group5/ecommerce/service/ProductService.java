@@ -1,8 +1,8 @@
 package com.group5.ecommerce.service;
 
 import com.group5.ecommerce.model.Product;
+import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.repository.ProductRepository;
-import com.group5.ecommerce.dto.ProductDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,33 +25,37 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Autowired
+    private StoreService storeService;
+
+    @Autowired
     private ModelMapper mapper;
 
-    public List<ProductDTO> getAllProduct(){
+    public List<Product> getAllProduct(){
 
         return productRepository.findAll().stream()
-                .map(p -> mapper.map(p, ProductDTO.class))
+                .map(p -> mapper.map(p, Product.class))
                 .collect(Collectors.toList());
     }
 
-    public List<ProductDTO> getProductsByCategoryId(Long categoryId){
-        return productRepository.findAllByCategory_Id(categoryId).stream()
-                .map(p -> mapper.map(p, ProductDTO.class))
+    public List<Product> getAllProductByStoreId(Long storeId){
+        return productRepository.findAllByStoreId(storeId);
+    }
+
+    public List<Product> getProductsByCategoryId(Long categoryId){
+        return productRepository.findAllByCategoryId(categoryId).stream()
+                .map(p -> mapper.map(p, Product.class))
                 .collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById(Long id){
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if(!optionalProduct.isPresent()) {
-            throw new EntityNotFoundException("Product Not Found");
-        }
-        return mapper.map(optionalProduct.get(), ProductDTO.class);
+    public Optional<Product> getProductById(Long id){
+        return productRepository.findById(id).map(p -> mapper.map(p, Product.class));
     }
 
-    public void addProduct(ProductDTO productDTO, MultipartFile file, String imgName) throws IOException {
+    public void addProduct(Product product, MultipartFile file, String imgName, Long storeId) throws IOException {
         String imageUUID = (file != null && !file.isEmpty()) ? saveImage(file) : imgName;
-        productDTO.setImageName(imageUUID);
-        Product product = mapper.map(productDTO, Product.class);
+        UserStore store = storeService.getStoreById(storeId);
+        product.setImageName(imageUUID);
+        product.setStore(store);
         productRepository.save(product);
     }
 
