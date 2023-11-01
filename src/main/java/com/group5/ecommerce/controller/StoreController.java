@@ -2,24 +2,18 @@ package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.dto.ProductDTO;
 import com.group5.ecommerce.model.Category;
-import com.group5.ecommerce.model.CustomUserDetail;
-import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ProductService;
 import com.group5.ecommerce.service.StoreService;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -34,35 +28,38 @@ public class StoreController {
     @Autowired
     private ProductService productService;
 
-
-
-    @GetMapping("/store/{storeId}/categories")
-    public String storeHome(Model model) {
+    @GetMapping("/store/home")
+    public String getHome(Model model) {
         Long userId = SecurityUtil.getPrincipal().getId();
         UserStore userStore = storeService.getStoreByUserId(userId);
         model.addAttribute("store", userStore);
-        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(userStore.getId()));
+        return "adminHome";
+    }
+
+    @GetMapping("/store/{storeId}/categories")
+    public String getCat(Model model, @PathVariable Long storeId) {
+        model.addAttribute("storeId", storeId);
+        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
         return "categories";
     }
 
     @GetMapping("/store/{storeId}/categories/add")
-    public String getCat(@PathVariable("storeId") Long storeId , Model model){
+    public String getAddCat(@PathVariable("storeId") Long storeId , Model model){
         model.addAttribute("category", new Category());
         model.addAttribute("storeId", storeId);
         return "categoriesAdd";
     }
 
-    //post method for category
     @PostMapping("/store/{storeId}/categories/add")
     public String postAddCat(@ModelAttribute("category") Category category, @PathVariable Long storeId) {
         categoryService.addCategory(category, storeId);
         return "redirect:/store/home";
     }
 
-    @GetMapping("/categories/delete/{id}")
-    public String deleteCat(@PathVariable("id") Long id, Model model, @PathVariable String storeId){
+    @GetMapping("/store/{storeId}/categories/delete/{id}")
+    public String deleteCat(@PathVariable("id") Long id, Model model, @PathVariable Long storeId){
         categoryService.removeCategoryById(id);
-        return "redirect:/categories";  //redirect to categories page
+        return "redirect:/categories";
     }
 
     @GetMapping("/categories/update/{id}")
