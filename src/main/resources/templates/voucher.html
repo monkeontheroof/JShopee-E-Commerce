@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +8,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/voucher.css}">
 </head>
 <body>
-<header>
-    <h1>Voucher</h1>
-</header>
-
+<div th:replace="fragments/sideMenu :: sideMenu">
+</div>
 <div class="container">
     <div class="voucher-list">
         <h2>Danh sách Voucher</h2>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="sidebar" th:fragment="sideMenu">
+    <ul>
+        <center> <img th:src="@{/images/logo.png}" width="70px" height="70px" alt=""></center>
+        <li><a th:href="@{/store/{storeId}/categories(storeId=${store.getId()})}"><i class="fas fa-layer-group"></i>Danh Mục</a></li>
+        <li><a th:href="@{/store/{storeId}/products}"><i class="fab fa-product-hunt"></i>Sản phẩm</a></li>
+        <li><a href="#"><i class="fas fa-shopping-bag"></i>Đơn hàng</a></li>
+        <li><a href="#"><i class="fas fa-user"></i>Khách hàng</a></li>
+        <li><a href="#"><i class="fas fa-ad"></i>Tin Tức</a></li>
+        <li><a href="#"><i class="fas fa-tags"></i>Voucher</a></li>
+        <li><a href="#"><i class="fas fa-money-check-alt"></i>Doanh Thu</a></li>
+        <li class="nav-item active">
+            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>Sign out</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
