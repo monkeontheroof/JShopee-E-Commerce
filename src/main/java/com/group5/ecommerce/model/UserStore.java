@@ -15,7 +15,6 @@ public class UserStore {
 
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "store")
     private User user;
 }

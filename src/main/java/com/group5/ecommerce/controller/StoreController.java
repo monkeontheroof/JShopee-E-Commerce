@@ -2,10 +2,9 @@ package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.model.Category;
 import com.group5.ecommerce.model.Product;
+import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
-import com.group5.ecommerce.service.CategoryService;
-import com.group5.ecommerce.service.ProductService;
-import com.group5.ecommerce.service.StoreService;
+import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +27,9 @@ public class StoreController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserService userService;
 
 //    @GetMapping("/sideMenu")
 //    public String getSideMenu(Model model) {
@@ -133,5 +136,14 @@ public class StoreController {
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
         model.addAttribute("isUpdate", true);
         return "productsAdd";
+    }
+
+    @GetMapping("/store/{storeId}/customers")
+    public String getCustomers(Model model, @PathVariable("storeId") Long storeId){
+        UserStore userStore = storeService.getStoreById(storeId);
+        List<User> customers = userService.getAllByStore(userStore);
+        model.addAttribute("store", userStore);
+        model.addAttribute("customers", customers);
+        return "khachhang";
     }
 }

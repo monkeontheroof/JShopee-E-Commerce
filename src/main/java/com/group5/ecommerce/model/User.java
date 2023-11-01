@@ -53,7 +53,7 @@ public class User {
     @OrderBy(value = "id ASC")
     private List<Role> roles;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
 
