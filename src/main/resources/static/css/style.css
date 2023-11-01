@@ -95,4 +95,6 @@ label #cancel{
     width:70%;
     margin-right: 100px;
 }
-
+.btn-danger{
+    margin-right: 10px;
+}

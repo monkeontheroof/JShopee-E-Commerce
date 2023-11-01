@@ -17,21 +17,22 @@
 <div th:replace="fragments/sideMenu :: sideMenu">
 </div>
 <div class="container">
-    <a th:href="@{/store/{storeId}/categories/add(storeId=${store.getId()})}" style="margin: 20px 0" class="btn btn-primary">Add Category</a>
+    <a th:href="@{/store/{storeId}/categories/add(storeId=${store.getId()})}" style="margin: 20px 0" class="btn btn-success">Add Category</a>
     <table class="table">
         <tr>
             <th scope="col"><h1>SN</h1></th>
             <th scope="col"><h1>Category Name</h1></th>
-            <th scope="col"><h1>Delete</h1></th>
-            <th scope="col"><h1>Update</h1></th>
+            <th scope="col"><h1>Action</h1></th>
         </tr>
 
         <tr th:each="category, iStat : ${categories}">
             <td scope="row" th:text="${iStat.index + 1}">1</td>
             <td th:text="${category.name}">Larry</td>
 
-            <td><a href="" th:href="@{'/store/' + ${store.getId()} + '/categories/delete/' + ${category.id}}" class="btn btn-danger">Delete</a></td>
-            <td><a href="" th:href="@{'/store/' + ${store.getId()} + '/categories/update/' + ${category.id}}" class="btn btn-warning">Update</a></td>
+            <td>
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/categories/update/' + ${category.id}}" class="btn btn-success">Update</a>
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/categories/delete/' + ${category.id}}" class="btn btn-success">Delete</a></td>
+
 
         </tr>
     </table>
