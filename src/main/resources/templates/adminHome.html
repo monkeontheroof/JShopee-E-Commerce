@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- Created By CodingNepal -->
-<html lang="en"  xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html th:lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>adminHome</title>
@@ -9,26 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body>
-<input type="checkbox" id="check">
-<label for="check">
-    <i class="fas fa-bars" id="btn"></i>
-    <i class="fas fa-times" id="cancel"></i>
-</label>
-<div class="sidebar">
-    <ul>
-        <center> <img th:src="@{/images/logo.png}" width="70px" height="70px" alt=""></center>
-        <li><a th:href="@{/store/{storeId}/categories(storeId=${store.getId()})}"><i class="fas fa-layer-group"></i>Danh Mục</a></li>
-        <li><a th:href="@{/store/{storeId}/products}"><i class="fab fa-product-hunt"></i>Sản phẩm</a></li>
-        <li><a href="#"><i class="fas fa-shopping-bag"></i>Đơn hàng</a></li>
-        <li><a href="#"><i class="fas fa-user"></i>Khách hàng</a></li>
-        <li><a href="#"><i class="fas fa-ad"></i>Tin Tức</a></li>
-        <li><a href="#"><i class="fas fa-tags"></i>Voucher</a></li>
-        <li><a href="#"><i class="fas fa-money-check-alt"></i>Doanh Thu</a></li>
-        <li class="nav-item active">
-            <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>Sign out</a>
-        </li>
-    </ul>
+<div th:replace="fragments/sideMenu :: sideMenu">
 </div>
-//TODO: add body
+<div>
+</div>
 </body>
 </html>

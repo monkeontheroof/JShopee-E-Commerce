@@ -12,14 +12,14 @@ body {
     position:fixed;
     width: 250px;
     height: 100%;
-    background: linear-gradient(90deg, #5D54A4, #7C78B8);
+    background: #64CCC5;
 }
 .sidebar header {
     font-size: 22px;
     color: white;
     line-height: 70px;
     text-align: center;
-    background: #5D54A4;
+    background: #64CCC5;
     user-select: none;
 }
 .sidebar ul a{
@@ -44,7 +44,7 @@ ul li:hover a{
 }
 label #btn,label #cancel{
     position: absolute;
-    background: #7C78B8;
+    background: #64CCC5;
     border-radius: 3px;
     cursor: pointer;
 }

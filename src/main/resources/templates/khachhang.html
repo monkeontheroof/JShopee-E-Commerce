@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"  xmlns:th="http://www.thymeleaf.org"
+          xmlns:layout="http://www.w3.org/1999/xhtml">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="fragments/sideMenu :: sideMenu">
+</div>
+<div class="container-fluid">
+    <a th:href="@{/admin/products/add}">
+        <img th:src="@{/images/icon_add.png}" alt="" width="70px" height="40px" style="margin-bottom: 30px">
+    </a>
+    <table class="table">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">FIRST_NAME</th>
+            <th scope="col">LAST_NAME</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">GENDER</th>
+            <th scope="col">PHONE</th>
+            <th scope="col">ACTION</th>
+        </tr>
+        <tr th:each="user, iStat : ${user}">
+            <th scope="row" th:text="${iStat.index + 1}">1</th>
+            <td th:text="${user.firstName}">Larry</td>
+            <td th:text="${user.lastname}">Larry</td>
+            <td th:text="${user.email}">Larry</td>
+            <td th:text="${user.gender}">Larry</td>
+            <td th:text="${user.phone}">Larry</td>
+            <td>
+                <a href="" th:href="@{/admin/products/delete/{id}(id=${user.id})}">
+                    <img th:src="@{/images/icon_delete.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="" th:href="@{/admin/products/update/{id}(id=${user.id})}">
+                    <img th:src="@{/images/icon_edit.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="">
+                    <img th:src="@{/images/icon_detail.png}" alt="" width="30px" height="30px" style="margin-right:50px">
+                </a>
+                <a href="">
+                    <img th:src="@{/images/icon_comment.png}" alt="" width="30px" height="30px">
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
