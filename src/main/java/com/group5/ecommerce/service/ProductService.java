@@ -51,6 +51,10 @@ public class ProductService {
         return productRepository.findById(id).map(p -> mapper.map(p, Product.class));
     }
 
+    public List<Product> getProductsByQuantityLessThan(Long quantity){
+        return productRepository.findByQuantityLessThan(quantity);
+    }
+
     public void addProduct(Product product, MultipartFile file, String imgName, Long storeId) throws IOException {
         String imageUUID = (file != null && !file.isEmpty()) ? saveImage(file) : imgName;
         UserStore store = storeService.getStoreById(storeId);

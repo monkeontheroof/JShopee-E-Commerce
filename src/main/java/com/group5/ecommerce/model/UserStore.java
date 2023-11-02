@@ -22,4 +22,7 @@ public class UserStore {
 
     @OneToMany(mappedBy = "store")
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "store")
+    private List<Product> products;
 }

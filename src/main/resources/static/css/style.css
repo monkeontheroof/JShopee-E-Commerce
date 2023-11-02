@@ -23,7 +23,7 @@ body {
     background: #64CCC5;
     user-select: none;
 }
-.sidebar ul a{
+.sidebar ul .menuLink{
     display: block;
     height: 100%;
     width: 100%;
@@ -33,11 +33,12 @@ body {
     padding-left: 40px;
     box-sizing: border-box;
     transition: .4s;
+    text-decoration: none;
 }
-ul li:hover a{
+ul li:hover .menuLink{
     padding-left: 50px;
 }
-.sidebar ul a i{
+.sidebar ul .menuLink i{
     margin-right: 16px;
 }
 #check{
@@ -98,4 +99,3 @@ label #cancel{
 .btn-danger, .btn-success, .btn-info, .btn-warning{
     margin-right: 10px;
 }
-

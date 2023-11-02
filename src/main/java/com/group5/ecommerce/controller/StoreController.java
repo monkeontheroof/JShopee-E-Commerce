@@ -3,6 +3,7 @@ package com.group5.ecommerce.controller;
 import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.SecurityUtil;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,14 @@ public class StoreController {
     public String getHome(Model model) {
         Long userId = SecurityUtil.getPrincipal().getId();
         UserStore userStore = storeService.getStoreByUserId(userId);
+        List<User> customers = orderService.getCustomersPurchasedFromStore(userStore.getId());
+        List<Order> orders = orderService.getAllOrdersByStoreId(userStore.getId());
+        List<Product> productsAlmostOut = productService.getProductsByQuantityLessThan(10L);
         model.addAttribute("store", userStore);
+        model.addAttribute("customerCount", customers.size());
+        model.addAttribute("orderCount", orders.size());
+        model.addAttribute("productCount", userStore.getProducts().size());
+        model.addAttribute("productAlmostOutCount", productsAlmostOut.size());
         return "adminHome";
     }
 
@@ -147,6 +155,8 @@ public class StoreController {
         model.addAttribute("customers", customers);
         return "customer";
     }
+
+
 
     // ORDER SESSIONS //
     @GetMapping("/store/{storeId}/orders")
