@@ -29,7 +29,7 @@ body {
     width: 100%;
     line-height: 58px;
     font-size: 20px;
-    color: white;
+    color: #04364A;
     padding-left: 40px;
     box-sizing: border-box;
     transition: .4s;
@@ -95,6 +95,7 @@ label #cancel{
     width:70%;
     margin-right: 100px;
 }
-.btn-danger{
+.btn-danger, .btn-success, .btn-info, .btn-warning{
     margin-right: 10px;
 }
+

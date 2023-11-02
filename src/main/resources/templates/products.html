@@ -19,7 +19,7 @@
 
 </div>
 <div class="container-fluid">
-    <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}" style="margin: 20px 0" class="btn btn-success"> Add Product
+    <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}" style="margin: 20px 0" class="btn btn-primary"> Add Product
     </a>
     <table class="table">
         <tr>
@@ -40,13 +40,13 @@
                 <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}" class="btn btn-success">
                     Update
                 </a>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}" class="btn btn-success">
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}" class="btn btn-danger">
                    Delete
                 </a>
-                <a href="" class="btn btn-success">
+                <a href="" class="btn btn-info">
                     Details
                 </a>
-                <a href="" class="btn btn-success">
+                <a href="" class="btn btn-warning">
                     Comment
                 </a>
             </td>
