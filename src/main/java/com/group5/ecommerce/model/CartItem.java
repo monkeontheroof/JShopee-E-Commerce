@@ -6,22 +6,19 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "order_detail")
-public class OrderDetail {
-
+@Table(name = "cart_items")
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int quantity;
-
-    private Double price;
+    @ManyToOne
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private Order order;
+    private int quantity;
 }

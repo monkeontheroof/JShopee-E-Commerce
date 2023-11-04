@@ -9,7 +9,7 @@ public class CartUtil {
     public static List<Product> cart;
     public static Integer COUNT = 0;
     static {
-        cart = new ArrayList<Product>();
+        cart = new ArrayList<>();
         ++COUNT;
     }
 }

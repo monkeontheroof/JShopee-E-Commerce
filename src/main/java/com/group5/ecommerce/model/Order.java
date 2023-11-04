@@ -26,7 +26,7 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderDetail> orderDetails;
+    private List<OrderItem> orderItems;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")

@@ -74,7 +74,7 @@
                             <h4>$ <span th:text="${#numbers.formatDecimal(product.price, 0, 2, 'COMMA')}"></span></h4>
                             <p th:text="${product.description}" >Suresh Dasari is a founder and technical lead developer in tutlane.</p>
                             <p>Quantity: <span th:text="${product.quantity}"></span></p>
-                            <a href="#" th:href="@{/shop/viewproduct/{id}(id=${product.id})}" class="btn btn-primary">View Product</a>
+                            <a href="#" th:href="@{/shop/viewProduct/{id}(id=${product.id})}" class="btn btn-primary">View Product</a>
                         </div>
                     </div>
                 </div>

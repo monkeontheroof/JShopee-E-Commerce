@@ -65,6 +65,8 @@
 <!--            <h5>Weight:-->
 <!--                <spna th:text="${product.weight}"></spna> grams.-->
 <!--            </h5>-->
+            <p th:text="'Quantity: ' + ${product.quantity}"></p>
+            <p th:text="'Category: ' + ${product.category.name}"></p>
             <p th:text="${product.description}"></p>
             <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="btn btn-primary">Add to cart</a>
         </div>

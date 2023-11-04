@@ -170,8 +170,10 @@ public class StoreController {
     @GetMapping("/store/{storeId}/orders/update/{id}")
     public String updateOrder(Model model, @PathVariable("storeId") Long storeId, @PathVariable("id") Long id){
         UserStore userStore = storeService.getStoreById(storeId);
+        List<String> statuses = List.of("Pending", "Shipped", "Delivered", "Canceled");
         model.addAttribute("store", userStore);
         model.addAttribute("order", orderService.getOrderById(id));
+        model.addAttribute("statuses", statuses);
         model.addAttribute("isUpdate", true);
         return "ordersAdd";
     }

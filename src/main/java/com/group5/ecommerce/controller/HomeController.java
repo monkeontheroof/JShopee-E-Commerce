@@ -1,5 +1,6 @@
 package com.group5.ecommerce.controller;
 
+import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.service.ProductService;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -40,10 +43,13 @@ public class HomeController {
         return "shop"; //shop.html will be rendered here.
     }
 
-    @GetMapping("/shop/viewproduct/{id}")
+    @GetMapping("/shop/viewProduct/{id}")
     public String viewProduct(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("product", productService.getProductById(id));
-        model.addAttribute("cartCount", CartUtil.cart.size());
+        Optional<Product> product = productService.getProductById(id);
+        if(product.isPresent()){
+            model.addAttribute("product", product.get());
+            model.addAttribute("cartCount", CartUtil.cart.size());
+        }
         return "viewProduct";
     }
 }
