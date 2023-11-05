@@ -43,10 +43,12 @@ public class CartService {
 
     public Cart addItemToCart(Product product, int quantity, Long userId){
         User user = userService.getUserById(userId);
-        Cart cart = user.getCart();
+        Cart cart = cartRepository.getCartByUserId(userId);
 
         if (cart == null) {
             cart = new Cart();
+            cart.setUser(user);
+            cartRepository.save(cart);
         }
         List<CartItem> cartItemList = cart.getCartItems();
         CartItem cartItem = find(cartItemList, product.getId());
@@ -56,36 +58,28 @@ public class CartService {
         int itemQuantity = 0;
         if (cartItemList == null) {
             cartItemList = new ArrayList<>();
-            if (cartItem == null) {
-                cartItem = new CartItem();
-                cartItem.setProduct(product);
-                cartItem.setCart(cart);
-                cartItem.setQuantity(quantity);
-                cartItem.setTotalPrice(unitPrice);
-                cartItem.setCart(cart);
-                cartItemList.add(cartItem);
-                cart.setCartItems(cartItemList);
-                cartItemRepository.save(cartItem);
-            } else {
-                itemQuantity = cartItem.getQuantity() + quantity;
-                cartItem.setQuantity(itemQuantity);
-                cartItemRepository.save(cartItem);
-            }
+            cartItem = new CartItem();
+            cartItem.setProduct(product);
+
+            cartItem.setQuantity(quantity);
+            cartItem.setTotalPrice(unitPrice);
+            cartItem.setCart(cart);
+            cartItemList.add(cartItem);
+            cartItem.setCart(cart);
+            cartItemRepository.save(cartItem);
         } else {
             if (cartItem == null) {
                 cartItem = new CartItem();
                 cartItem.setProduct(product);
-                cartItem.setCart(cart);
+
                 cartItem.setQuantity(quantity);
                 cartItem.setTotalPrice(unitPrice);
                 cartItem.setCart(cart);
                 cartItemList.add(cartItem);
-
                 cartItemRepository.save(cartItem);
             } else {
                 itemQuantity = cartItem.getQuantity() + quantity;
                 cartItem.setQuantity(itemQuantity);
-                cartRepository.save(cart);
                 cartItemRepository.save(cartItem);
             }
         }
@@ -101,7 +95,8 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public Cart deleteItemFromCart(Product product, Cart cart){
+    public Cart deleteItemFromCart(Product product, Long userId){
+        Cart cart = userService.getUserById(userId).getCart();
         List<CartItem> cartItems = cart.getCartItems();
         CartItem item = findCartItem(cartItems, product.getId());
         cartItems.remove(item);

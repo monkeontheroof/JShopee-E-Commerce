@@ -46,7 +46,11 @@ public class CartController {
     public String getCart(Model model){
         User user = userService.getUserById(SecurityUtil.getPrincipal().getId());
         Cart cart = user.getCart();
+        int cartCount = cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
+        DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("cart", cart);
+        model.addAttribute("formatter", formatter);
+        model.addAttribute("cartCount", cartCount);
         return "cart";
     }
 
@@ -68,11 +72,9 @@ public class CartController {
 
 
     @GetMapping("/cart/removeItem/{id}")
-    public String cartItemRemove(@PathVariable("id") Long id, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart != null) {
-            cart.getCartItems().removeIf(item -> item.getProduct().getId().equals(id));
-        }
+    public String cartItemRemove(@PathVariable("id") Long id) {
+        Product product = productService.getProductById(id).get();
+        cartService.deleteItemFromCart(product, SecurityUtil.getPrincipal().getId());
         return "redirect:/cart";
     }
 

@@ -53,7 +53,7 @@ public class User {
     @OrderBy(value = "id ASC")
     private List<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private Cart cart;
 
     @OneToMany(mappedBy = "user")
