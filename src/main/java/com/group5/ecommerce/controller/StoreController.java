@@ -40,7 +40,7 @@ public class StoreController {
 
     @GetMapping("/store/home")
     public String getHome(Model model) {
-        Long userId = SecurityUtil.getPrincipal().getId();
+        Long userId = SecurityUtil.getPrincipal().get().getId();
         UserStore userStore = storeService.getStoreByUserId(userId);
         List<User> customers = orderService.getCustomersPurchasedFromStore(userStore.getId());
         List<Order> orders = orderService.getAllOrdersByStoreId(userStore.getId());

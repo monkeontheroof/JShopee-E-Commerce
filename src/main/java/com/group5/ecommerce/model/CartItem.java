@@ -3,6 +3,7 @@ package com.group5.ecommerce.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 
 @Data
 @Entity
@@ -12,7 +13,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
 

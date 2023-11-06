@@ -1,9 +1,6 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.model.Cart;
-import com.group5.ecommerce.model.CartItem;
-import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.User;
+import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.CartService;
 import com.group5.ecommerce.service.ProductService;
 import com.group5.ecommerce.service.UserService;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.text.DecimalFormat;
 
 @Controller
@@ -30,22 +28,9 @@ public class CartController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/addItemToCart")
-    public String addItemToCart(@RequestParam("id") Long productId,
-                                @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity,
-                                Model model,
-                                HttpServletRequest request) {
-
-        Product product = productService.getProductById(productId).orElse(null);
-        Long userId = SecurityUtil.getPrincipal().getId();
-        Cart cart = cartService.addItemToCart(product, quantity, userId);
-        return "redirect:/cart";
-    }
-
     @GetMapping("/cart")
     public String getCart(Model model){
-        User user = userService.getUserById(SecurityUtil.getPrincipal().getId());
-        Cart cart = user.getCart();
+        Cart cart = cartService.getCartByUserId(SecurityUtil.getPrincipal().get().getId());
         int cartCount = cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
         DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("cart", cart);
@@ -54,32 +39,36 @@ public class CartController {
         return "cart";
     }
 
-    @PutMapping("/updateQuantity/{cartItemId}")
-    @ResponseBody
-    public ResponseEntity<String> updateCartItemQuantity(@PathVariable Long cartItemId, @RequestParam int newQuantity, HttpSession session) {
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart != null) {
-            CartItem cartItem = cart.getCartItems().get(cartItemId.intValue());
+    @PostMapping("/addItemToCart")
+    public String addItemToCart(@RequestParam("id") Long productId,
+                                @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity) {
 
-            if (cartItem != null) {
-                cartItem.setQuantity(newQuantity);
-
-                return ResponseEntity.ok("Quantity updated successfully");
-            }
-        }
-        return ResponseEntity.badRequest().body("Failed to update quantity");
+        Product product = productService.getProductById(productId).get();
+        Long userId = SecurityUtil.getPrincipal().get().getId();
+        cartService.addItemToCart(product, quantity, userId);
+        return "redirect:/cart";
     }
 
+    @PostMapping(value = "/update-cart", params = "action=update")
+    public String updateCart(@RequestParam("quantity") int quantity,
+                             @RequestParam("productId") Long productId,
+                             Model model){
 
-    @GetMapping("/cart/removeItem/{id}")
-    public String cartItemRemove(@PathVariable("id") Long id) {
-        Product product = productService.getProductById(id).get();
-        cartService.deleteItemFromCart(product, SecurityUtil.getPrincipal().getId());
+        Cart cart = cartService.updateItemInCart(productId, quantity, SecurityUtil.getPrincipal().get().getId());
+
+        model.addAttribute("cart", cart);
+        return "redirect:/cart";
+    }
+
+    @PostMapping(value = "/update-cart", params = "action=delete")
+    public String cartItemRemove(@RequestParam("productId") long productId, Model model) {
+        Product product = productService.getProductById(productId).get();
+        cartService.deleteItemFromCart(product, SecurityUtil.getPrincipal().get().getId());
         return "redirect:/cart";
     }
 
 
-    @GetMapping("/checkout")
+    @GetMapping("/check-out")
     public String checkout(Model model) {
         model.addAttribute("total", CartUtil.cart.stream().mapToDouble(Product::getPrice).sum());
         model.addAttribute("cartCount", CartUtil.cart.size());

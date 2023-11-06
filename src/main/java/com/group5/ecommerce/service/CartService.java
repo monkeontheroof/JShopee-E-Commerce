@@ -6,10 +6,10 @@ import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.repository.CartItemRepository;
 import com.group5.ecommerce.repository.CartRepository;
+import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service
@@ -24,10 +24,29 @@ public class CartService {
     @Autowired
     private UserService userService;
 
-    public Cart updateItemInCart(Product product, int quantity, Cart cart){
+    @Autowired
+    private ProductService productService;
+
+    public Cart getCartByUserId(long userId){
+        User user = userService.getUserById(userId);
+        if(user.getCart() == null){
+            Cart cart = new Cart();
+            List<CartItem> cartItems = new ArrayList<>();
+            cart.setUser(user);
+            cart.setCartItems(cartItems);
+            cartRepository.save(cart);
+            return cart;
+        }
+        return cartRepository.getCartByUserId(userId);
+    }
+
+    public Cart updateItemInCart(long productId, int quantity, long userId){
+        Product product = productService.getProductById(productId).get();
+
+        Cart cart = userService.getUserById(userId).getCart();
         List<CartItem> cartItems = cart.getCartItems();
 
-        CartItem item = findCartItem(cartItems, product.getId());
+        CartItem item = findCartItemByProductId(cartItems, product.getId());
         item.setQuantity(quantity);
         item.setTotalPrice(quantity * product.getPrice());
         cartItemRepository.save(item);
@@ -41,17 +60,12 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public Cart addItemToCart(Product product, int quantity, Long userId){
+    public Cart addItemToCart(Product product, int quantity, long userId){
         User user = userService.getUserById(userId);
-        Cart cart = cartRepository.getCartByUserId(userId);
+        Cart cart = getCartByUserId(userId);
 
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUser(user);
-            cartRepository.save(cart);
-        }
         List<CartItem> cartItemList = cart.getCartItems();
-        CartItem cartItem = find(cartItemList, product.getId());
+        CartItem cartItem = findCartItemByProductId(cartItemList, product.getId());
 
         double unitPrice = product.getPrice();
 
@@ -95,10 +109,10 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public Cart deleteItemFromCart(Product product, Long userId){
+    public void deleteItemFromCart(Product product, Long userId){
         Cart cart = userService.getUserById(userId).getCart();
         List<CartItem> cartItems = cart.getCartItems();
-        CartItem item = findCartItem(cartItems, product.getId());
+        CartItem item = findCartItemByProductId(cartItems, product.getId());
         cartItems.remove(item);
 
         cartItemRepository.delete(item);
@@ -108,10 +122,10 @@ public class CartService {
         cart.setTotalPrice(totalPrice);
         cart.setTotalItem(totalItem);
 
-        return cartRepository.save(cart);
+        cartRepository.save(cart);
     }
 
-    public CartItem findCartItem(List<CartItem> cartItems, Long productId){
+    public CartItem findCartItemByProductId(List<CartItem> cartItems, Long productId){
 
         if(cartItems== null){
             return null;
@@ -129,19 +143,6 @@ public class CartService {
 
     public void save(Cart cart){
         cartRepository.save(cart);
-    }
-
-    private CartItem find(List<CartItem> cartItems, long productId) {
-        if (cartItems == null) {
-            return null;
-        }
-        CartItem cartItem = null;
-        for (CartItem item : cartItems) {
-            if (item.getProduct().getId() == productId) {
-                cartItem = item;
-            }
-        }
-        return cartItem;
     }
 
     private double totalPrice(List<CartItem> cartItemList) {

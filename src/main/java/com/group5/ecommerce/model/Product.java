@@ -42,6 +42,9 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems;
 
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
+
     @Override
     public int hashCode() {
         return super.hashCode();

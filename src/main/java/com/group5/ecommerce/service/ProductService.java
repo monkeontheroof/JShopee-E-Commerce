@@ -1,8 +1,10 @@
 package com.group5.ecommerce.service;
 
 import com.group5.ecommerce.model.Product;
+import com.group5.ecommerce.model.Review;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.repository.ProductRepository;
+import com.group5.ecommerce.repository.ReviewRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +26,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private StoreService storeService;
@@ -72,5 +78,16 @@ public class ProductService {
         Path fileNameAndPath = Paths.get(uploadDir, imageUUID);
         Files.write(fileNameAndPath, file.getBytes());
         return imageUUID;
+    }
+
+    public List<Review> getReviewsByProductId(long productId){
+        Product product = getProductById(productId).get();
+        List<Review> productReviews = product.getReviews();
+        if(productReviews == null) {
+            productReviews = new ArrayList<>();
+            product.setReviews(productReviews);
+            productRepository.save(product);
+        }
+        return productReviews;
     }
 }
