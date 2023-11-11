@@ -33,11 +33,12 @@ public class CartService {
             Cart cart = new Cart();
             List<CartItem> cartItems = new ArrayList<>();
             cart.setUser(user);
+            cartItemRepository.saveAll(cartItems);
             cart.setCartItems(cartItems);
             cartRepository.save(cart);
             return cart;
         }
-        return cartRepository.getCartByUserId(userId);
+        return user.getCart();
     }
 
     public Cart updateItemInCart(long productId, int quantity, long userId){
@@ -109,6 +110,10 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    public Cart findById(long id) {
+        return cartRepository.findById(id).get();
+    }
+
     public void deleteItemFromCart(Product product, Long userId){
         Cart cart = userService.getUserById(userId).getCart();
         List<CartItem> cartItems = cart.getCartItems();
@@ -159,5 +164,9 @@ public class CartService {
             totalItem += item.getQuantity();
         }
         return totalItem;
+    }
+
+    public void clear(Cart cart) {
+        cart.getCartItems().clear();
     }
 }

@@ -17,7 +17,7 @@
 <body>
 <div th:replace="fragments/sideMenu :: sideMenu">
 </div>
-<div id="chartdiv"></div>
+<div id="chartDiv"></div>
     <script>
         var chartData = [
             {
@@ -153,7 +153,7 @@
                 "date": "2012-01-19"
             }
         ];
-        var chart = AmCharts.makeChart("chartdiv", {
+        var chart = AmCharts.makeChart("chartDiv", {
             type: "serial",
             theme: "dark",
             dataDateFormat: "YYYY-MM-DD",
@@ -281,5 +281,6 @@
             }
         });
     </script>
+<script th:src="@{/js/chart.js}"></script>
 </body>
 </html>

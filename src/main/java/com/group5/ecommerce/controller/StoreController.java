@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -162,7 +163,9 @@ public class StoreController {
     @GetMapping("/store/{storeId}/orders")
     public String getOrders(Model model, @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
+        DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("store", userStore);
+        model.addAttribute("formatter", formatter);
         model.addAttribute("orders", orderService.getAllOrdersByStoreId(storeId));
         return "orders";
     }
@@ -170,7 +173,7 @@ public class StoreController {
     @GetMapping("/store/{storeId}/orders/update/{id}")
     public String updateOrder(Model model, @PathVariable("storeId") Long storeId, @PathVariable("id") Long id){
         UserStore userStore = storeService.getStoreById(storeId);
-        List<String> statuses = List.of("Pending", "Shipped", "Delivered", "Canceled");
+        List<String> statuses = List.of("Pending", "Processing", "Delivering", "Delivered", "Canceled");
         model.addAttribute("store", userStore);
         model.addAttribute("order", orderService.getOrderById(id));
         model.addAttribute("statuses", statuses);
@@ -189,4 +192,16 @@ public class StoreController {
         orderService.deleteOrder(id);
         return "redirect:/store/" + storeId + "/orders";
     }
+
+
+
+    // SALES SESSIONS //
+    @GetMapping("/store/{storeId}/sales")
+    public String getSales(Model model, @PathVariable("storeId") Long storeId){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        return "sales";
+    }
+
+
 }

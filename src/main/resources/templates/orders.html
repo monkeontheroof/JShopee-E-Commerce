@@ -33,7 +33,7 @@
             <td th:text="${order.user.getFirstName()}">Larry</td>
             <td th:text="${order.user.getLastName()}">Larry</td>
             <td th:text="${order.status}">Larry</td>
-            <td th:text="${order.totalPrice}">Larry</td>
+            <td th:text="${formatter.format(order.totalPrice)} + ' đ'">Larry</td>
 
             <td>
                 <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/update/' + ${order.id}}" class="btn btn-success">Update</a>

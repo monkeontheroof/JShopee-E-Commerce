@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label for="status">Status</label>
 <!--                    <input type="text" class="form-control" required th:field="*{status}" name="status" id="status"  placeholder="Enter status">-->
-                    <select id="status" name="status" class="form-control" th:field="${statuses}">
+                    <select id="status" name="status" class="form-control" th:field="${order.status}">
                         <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
                     </select>
                 </div>

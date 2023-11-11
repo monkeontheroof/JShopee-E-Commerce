@@ -2,6 +2,7 @@ package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.CartService;
+import com.group5.ecommerce.service.OrderService;
 import com.group5.ecommerce.service.ProductService;
 import com.group5.ecommerce.service.UserService;
 import com.group5.ecommerce.utils.CartUtil;
@@ -26,7 +27,7 @@ public class CartController {
     private CartService cartService;
 
     @Autowired
-    private UserService userService;
+    private OrderService orderService;
 
     @GetMapping("/cart")
     public String getCart(Model model){
@@ -70,8 +71,24 @@ public class CartController {
 
     @GetMapping("/check-out")
     public String checkout(Model model) {
-        model.addAttribute("total", CartUtil.cart.stream().mapToDouble(Product::getPrice).sum());
-        model.addAttribute("cartCount", CartUtil.cart.size());
+        Cart cart = cartService.getCartByUserId(SecurityUtil.getPrincipal().get().getId());
+        int cartCount = cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        model.addAttribute("cartCount", cartCount);
+        model.addAttribute("cart", cart);
+        model.addAttribute("formatter", formatter);
         return "checkout";
+    }
+
+    @PostMapping(value = "/place-order", params = "action=place-order")
+    public String placeOrder(@RequestParam("cart") Long cartId){
+        try {
+            Cart cart = cartService.findById(cartId);
+            User user = SecurityUtil.getPrincipal().get();
+            orderService.createOrderFromCart(cart, user);
+            return "orderPlaced";
+        }catch (Exception e){
+            return "redirect:/";
+        }
     }
 }
