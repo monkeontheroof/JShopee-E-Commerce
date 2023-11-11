@@ -4,12 +4,14 @@ import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.CartRepository;
 import com.group5.ecommerce.repository.OrderItemRepository;
 import com.group5.ecommerce.repository.OrderRepository;
+import com.group5.ecommerce.repository.ProductRepository;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,7 +29,10 @@ public class OrderService {
     private OrderItemRepository orderItemRepository;
 
     @Autowired
-    private CartService cartService;
+    private ProductRepository productRepository;
+
+    @Autowired
+    private VoucherService voucherService;
 
     public List<Order> getAllOrdersByStoreId(Long storeId){
         return orderRepository.findAllByStoreId(storeId);
@@ -42,7 +47,7 @@ public class OrderService {
     }
 
     public Order getOrderById(Long orderId){
-        return orderRepository.findById(orderId).get();
+        return orderRepository.findById(orderId).orElse(null);
     }
 
     public void createOrderFromCart(Cart cart, User user) {
@@ -71,12 +76,12 @@ public class OrderService {
         order.setOrderItems(orderItems);
 
         // Tính toán và cập nhật totalPrice cho Order
-        double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
+        double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum() * 0.02;
         order.setTotalPrice(totalPrice);
 
-        orderRepository.save(order);
+        updateProductQuantities(cartItems);
 
-        return order;
+        return orderRepository.save(order);
     }
 
     private List<OrderItem> createOrderItems(Order order, List<CartItem> cartItems) {
@@ -95,6 +100,15 @@ public class OrderService {
     private Map<UserStore, List<CartItem>> groupCartItemsByStore(Cart cart) {
         return cart.getCartItems().stream()
                 .collect(Collectors.groupingBy(cartItem -> cartItem.getProduct().getStore()));
+    }
+
+    private void updateProductQuantities(List<CartItem> cartItems) {
+        for (CartItem cartItem : cartItems) {
+            Product product = cartItem.getProduct();
+            int newQuantity = product.getQuantity() - cartItem.getQuantity();
+            product.setQuantity(newQuantity);
+            productRepository.save(product);
+        }
     }
 
     public void saveOrder(Order order, Long storeId){

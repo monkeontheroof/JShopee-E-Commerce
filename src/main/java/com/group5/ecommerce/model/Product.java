@@ -33,7 +33,7 @@ public class Product {
 
     private String imageName;
 
-    private Long quantity;
+    private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")

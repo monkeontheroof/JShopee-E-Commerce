@@ -34,6 +34,9 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
+    @OneToMany(mappedBy = "orders")
+    private List<Voucher> vouchers;
+
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;

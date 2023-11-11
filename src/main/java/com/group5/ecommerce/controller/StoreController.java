@@ -30,6 +30,9 @@ public class StoreController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private VoucherService voucherService;
+
 //    @GetMapping("/sideMenu")
 //    public String getSideMenu(Model model) {
 //        Long userId = SecurityUtil.getPrincipal().getId();
@@ -204,4 +207,11 @@ public class StoreController {
     }
 
 
+
+    // VOUCHER SESSIONS //
+    @GetMapping("/store/{storeId}/vouchers")
+    public String getVouchers(Model model, @PathVariable("storeId") Long storeId){
+        model.addAttribute("vouchers", voucherService.getVouchers());
+        return "voucher";
+    }
 }

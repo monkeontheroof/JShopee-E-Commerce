@@ -25,4 +25,7 @@ public class UserStore {
 
     @OneToMany(mappedBy = "store")
     private List<Product> products;
+
+    @OneToMany(mappedBy = "store")
+    private List<Voucher> vouchers;
 }
