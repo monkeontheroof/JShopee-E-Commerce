@@ -1,5 +1,6 @@
 package com.group5.ecommerce.service;
 
+import com.group5.ecommerce.model.OrderItem;
 import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.model.Review;
 import com.group5.ecommerce.model.UserStore;
@@ -7,6 +8,10 @@ import com.group5.ecommerce.repository.ProductRepository;
 import com.group5.ecommerce.repository.ReviewRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,8 +48,8 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public List<Product> getAllProductByStoreId(Long storeId){
-        return productRepository.findAllByStoreId(storeId);
+    public Page<Product> getAllProductByStoreId(Long storeId, Pageable pageRequest){
+        return productRepository.findAllByStoreId(storeId, pageRequest);
     }
 
     public List<Product> getProductsByCategoryId(Long categoryId){
@@ -57,7 +62,7 @@ public class ProductService {
         return productRepository.findById(id).map(p -> mapper.map(p, Product.class));
     }
 
-    public List<Product> getProductsByQuantityLessThan(Long quantity){
+    public List<Product> getProductsByQuantityLessThan(int quantity){
         return productRepository.findByQuantityLessThan(quantity);
     }
 

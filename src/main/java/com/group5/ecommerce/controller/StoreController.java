@@ -5,11 +5,15 @@ import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -48,7 +52,7 @@ public class StoreController {
         UserStore userStore = storeService.getStoreByUserId(userId);
         List<User> customers = orderService.getCustomersPurchasedFromStore(userStore.getId());
         List<Order> orders = orderService.getAllOrdersByStoreId(userStore.getId());
-        List<Product> productsAlmostOut = productService.getProductsByQuantityLessThan(10L);
+        List<Product> productsAlmostOut = productService.getProductsByQuantityLessThan(10);
         model.addAttribute("store", userStore);
         model.addAttribute("customerCount", customers.size());
         model.addAttribute("orderCount", orders.size());
@@ -103,10 +107,15 @@ public class StoreController {
     //PRODUCT SESSIONS
 
     @GetMapping("/store/{storeId}/products")
-    public String getProducts(Model model, @PathVariable("storeId") Long storeId){
+    public String getProducts(Model model,
+                              @PathVariable("storeId") Long storeId,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size){
         UserStore userStore = storeService.getStoreById(storeId);
+        Page<Product> productsPage = productService.getAllProductByStoreId(storeId, PageRequest.of(page, size));
         model.addAttribute("store", userStore);
-        model.addAttribute("products", productService.getAllProductByStoreId(storeId));
+        model.addAttribute("products", productsPage.getContent());
+        model.addAttribute("page", productsPage);
         return "products";
     }
 
@@ -142,7 +151,7 @@ public class StoreController {
 
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
-        model.addAttribute("product", productService.getProductById(id).get());
+        model.addAttribute("product", productService.getProductById(id).orElse(null));
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
         model.addAttribute("isUpdate", true);
         return "productsAdd";
@@ -211,7 +220,8 @@ public class StoreController {
     // VOUCHER SESSIONS //
     @GetMapping("/store/{storeId}/vouchers")
     public String getVouchers(Model model, @PathVariable("storeId") Long storeId){
-        model.addAttribute("vouchers", voucherService.getVouchers());
+        model.addAttribute("store", storeService.getStoreById(storeId));
+        model.addAttribute("vouchers", voucherService.findAllVouchersByStore(storeId));
         return "voucher";
     }
 }

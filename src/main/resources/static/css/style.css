@@ -1,56 +1,78 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
-*{
+
+/* Variables */
+:root {
+    --main-bg-color: #DAFFFB;
+    --sidebar-bg-color: #64CCC5;
+    --text-color: #04364A;
+}
+
+/* Reset styles */
+* {
     padding: 0;
     margin: 0;
     list-style: none;
     text-decoration: none;
 }
+
+/* Body styles */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #DAFFFB;
+    background-color: var(--main-bg-color);
 }
+
+/* Sidebar styles */
 .sidebar {
-    position:fixed;
+    position: fixed;
     width: 250px;
     height: 100%;
-    background: #64CCC5;
+    background: var(--sidebar-bg-color);
 }
+
 .sidebar header {
-    font-size: 22px;
+    font-size: 1.375rem;
     color: white;
     line-height: 70px;
     text-align: center;
-    background: #64CCC5;
+    background: var(--sidebar-bg-color);
     user-select: none;
 }
-.sidebar ul .menuLink{
-    display: block;
+
+.sidebar ul .menuLink {
+    display: flex;
+    align-items: center;
     height: 100%;
     width: 100%;
     line-height: 58px;
-    font-size: 20px;
-    color: #04364A;
+    font-size: 1.25rem;
+    color: var(--text-color);
     padding-left: 40px;
     box-sizing: border-box;
     transition: .4s;
     text-decoration: none;
 }
-ul li:hover .menuLink{
+
+.sidebar ul li:hover .menuLink {
     padding-left: 50px;
 }
-.sidebar ul .menuLink i{
-    margin-right: 16px;
+
+.sidebar ul .menuLink i {
+    margin-right: 1em;
 }
-#check{
+
+/* Hamburger menu styles */
+#check {
     display: none;
 }
-label #btn,label #cancel{
+
+label #btn, label #cancel {
     position: absolute;
-    background: #64CCC5;
+    background: var(--sidebar-bg-color);
     border-radius: 3px;
     cursor: pointer;
 }
-label #btn{
+
+label #btn {
     left: 40px;
     top: 25px;
     font-size: 35px;
@@ -58,7 +80,8 @@ label #btn{
     padding: 6px 12px;
     transition: all .5s;
 }
-label #cancel{
+
+label #cancel {
     z-index: 1111;
     left: -195px;
     top: 17px;
@@ -67,35 +90,42 @@ label #cancel{
     padding: 4px 9px;
     transition: all .5s ease;
 }
-#check:checked ~ .sidebar{
+
+#check:checked ~ .sidebar {
     left: 0;
 }
-#check:checked ~ label #btn{
+
+#check:checked ~ label #btn {
     left: 250px;
     opacity: 0;
     pointer-events: none;
 }
-#check:checked ~ label #cancel{
+
+#check:checked ~ label #cancel {
     left: 195px;
 }
-#check:checked ~ section{
+
+#check:checked ~ section {
     margin-left: 250px;
 }
 
-.container-fluid{
-    position:fixed;
-    left:300px;
-    top:30px;
-    width:70%;
+/* Container styles */
+.container-fluid {
+    position: fixed;
+    left: 300px;
+    top: 30px;
+    width: 70%;
     margin-right: 100px;
 }
 
-.container{
-    position:relative;
-    top:30px;
-    width:70%;
+.container {
+    position: relative;
+    top: 30px;
+    width: 70%;
     margin-right: 100px;
 }
-.btn-danger, .btn-success, .btn-info, .btn-warning{
+
+/* Button styles */
+.btn-danger, .btn-success, .btn-info, .btn-warning {
     margin-right: 10px;
 }

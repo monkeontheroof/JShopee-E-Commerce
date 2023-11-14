@@ -1,26 +1,37 @@
 /*
-	Table Responsive
-	===================
-	Author: https://github.com/pablorgarcia
- */
+    Table Responsive
+    ===================
+    Author: https://github.com/pablorgarcia
+*/
 
 @charset "UTF-8";
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+.table-custom {
+    text-align: left;
+    overflow: hidden;
+    width: 60%;
+    margin: 0 auto;
+    display: table;
+    padding: 0 0 8em 0;
+    position: fixed;
+    left: 300px;
+    top: 150px; /* Adjusted top value */
+}
 
 h1 {
-    font-size:3em;
+    font-size: 3em;
     font-weight: 300;
-    line-height:1em;
+    line-height: 1em;
     text-align: center;
     color: #fff;
 }
 
 h2 {
-    font-size:1em;
+    font-size: 1em;
     font-weight: 300;
     text-align: center;
     display: block;
-    line-height:1em;
+    line-height: 1em;
     padding-bottom: 2em;
     color: #FB667A;
 }
@@ -32,8 +43,13 @@ h2 a {
     text-decoration: none;
 }
 
-.blue { color: #185875; }
-.yellow { color: #FFF842; }
+.blue {
+    color: #185875;
+}
+
+.yellow {
+    color: #FFF842;
+}
 
 .table th h1 {
     font-weight: bold;
@@ -57,16 +73,17 @@ h2 a {
     margin: 0 auto;
     display: table;
     padding: 0 0 8em 0;
-    position:fixed;
-    left:300px;
-    top:100px;
+    position: fixed;
+    left: 300px;
+    top: 100px;
 }
 
-.table td, .table th {
+.table td,
+.table th {
     padding-bottom: 2%;
     padding-top: 2%;
-    padding-left:2%;
-    color:#04364A;
+    padding-left: 2%;
+    color: #04364A;
 }
 
 /* Background-color of the odd rows */
@@ -83,11 +100,13 @@ h2 a {
     background-color: #DAFFFB;
 }
 
-.table td:first-child {  color:#04364A; }
-
-
+.table td:first-child {
+    color: #04364A;
+}
 
 @media (max-width: 800px) {
     .table td:nth-child(4),
-    .table th:nth-child(4) { display: none; }
+    .table th:nth-child(4) {
+        display: none;
+    }
 }

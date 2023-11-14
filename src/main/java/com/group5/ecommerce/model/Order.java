@@ -1,15 +1,13 @@
 package com.group5.ecommerce.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "orders")
 @Builder
@@ -31,10 +29,10 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(mappedBy = "order")
     private List<Voucher> vouchers;
 
     @ManyToOne

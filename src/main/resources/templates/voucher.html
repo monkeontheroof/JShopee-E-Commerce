@@ -16,10 +16,11 @@
 <body>
 <div th:replace="fragments/sideMenu :: sideMenu">
 </div>
-<div class="container">
-    <div class="add-voucher-form">
+
+<div class="container-fluid">
+    <div class="add-voucher-form mt-4">
         <h2>Thêm Voucher</h2>
-        <form onsubmit="themVoucher(event)">
+        <form >
             <label for="ma-voucher">Mã Voucher:</label>
             <input type="text" id="ma-voucher" required>
             <label for="giam-gia">Giảm giá:</label>
@@ -29,39 +30,37 @@
             <button type="submit">Thêm</button>
         </form>
     </div>
-
-    <table class="table">
+    <table class="table table-custom">
         <tr>
-            <th scope="col"><h1>ID</h1></th>
+            <th scope="col"></th>
             <th scope="col"><h1>Name</h1></th>
-            <th scope="col"><h1>Category Name</h1></th>
-            <th scope="col"><h1>Image</h1></th>
+            <th scope="col"><h1>Code</h1></th>
+            <th scope="col"><h1>Discount</h1></th>
             <th scope="col"><h1>Quantity</h1></th>
             <th scope="col"><h1>Action</h1></th>
         </tr>
-        <tr th:each="product, iStat : ${products}">
+        <tr th:each="voucher, iStat : ${vouchers}">
             <td scope="row" th:text="${iStat.index + 1}">1</td>
-            <td th:text="${product.name}">Larry</td>
-            <td th:text="${product.category.name}">Larry</td>
-            <td><img src="" height="50px" width="50px"  th:src="@{${'/productImages/' + product.imageName}}"></td>
-            <td th:text="${product.quantity}">Larry</td>
+            <td th:text="${voucher.name}">Larry</td>
+            <td th:text="${voucher.code}">Larry</td>
+            <td th:text="${voucher.discountPercent} * 100 + ' %'">Larry</td>
+            <td th:text="${voucher.quantity}">Larry</td>
             <td>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}" class="btn btn-success">
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/update/' + ${voucher.id}}" class="btn btn-success">
                     Update
                 </a>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}" class="btn btn-danger">
+                <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/delete/' + ${voucher.id}}" class="btn btn-danger">
                     Delete
                 </a>
                 <a href="" class="btn btn-info">
                     Details
                 </a>
-                <a href="" class="btn btn-warning">
-                    Comment
-                </a>
             </td>
         </tr>
     </table>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

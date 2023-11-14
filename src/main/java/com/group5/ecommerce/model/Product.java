@@ -1,7 +1,9 @@
 package com.group5.ecommerce.model;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -14,6 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name="product")
+@DynamicUpdate
 public class Product {
 
     @Id
@@ -37,24 +40,12 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
+    @Nullable
     private UserStore store;
 
-    @OneToMany(mappedBy = "product")
-    private List<OrderItem> orderItems;
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//    private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "product")
     private List<Review> reviews;
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(category, product.category) && Objects.equals(price, product.price) && Objects.equals(description, product.description) && Objects.equals(imageName, product.imageName) && Objects.equals(quantity, product.quantity) && Objects.equals(store, product.store) && Objects.equals(orderItems, product.orderItems);
-    }
 }

@@ -58,13 +58,19 @@ public class VoucherService {
         return order;
     }
 
-    public List<Voucher> getVouchers() {
-        return voucherRepository.findAll();
+    public List<Voucher> findAllVouchersByStore(Long storeId) {
+        return voucherRepository.findAllByStoreId(storeId);
     }
 
     public void saveVoucher(Voucher voucher){
         if(voucher != null){
             voucherRepository.save(voucher);
+        }
+    }
+
+    public void deleteVoucher(Voucher voucher){
+        if(voucher != null){
+            voucherRepository.delete(voucher);
         }
     }
 }

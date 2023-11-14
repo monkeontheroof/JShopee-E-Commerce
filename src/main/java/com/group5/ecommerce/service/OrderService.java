@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,7 +25,7 @@ public class OrderService {
     private StoreService storeService;
 
     @Autowired
-    private OrderItemRepository orderItemRepository;
+    private CartRepository cartRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -59,8 +58,8 @@ public class OrderService {
             Order order = createAndSaveOrder(user, entry.getKey(), entry.getValue());
             orders.add(order);
         }
-
         orderRepository.saveAll(orders);
+        cartRepository.delete(cart);
     }
 
     private Order createAndSaveOrder(User user, UserStore store, List<CartItem> cartItems) {
@@ -72,12 +71,10 @@ public class OrderService {
         order.setStatus("Pending");
 
         List<OrderItem> orderItems = createOrderItems(order, cartItems);
-        orderItemRepository.saveAll(orderItems);
         order.setOrderItems(orderItems);
 
-        // Tính toán và cập nhật totalPrice cho Order
-        double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum() * 0.02;
-        order.setTotalPrice(totalPrice);
+        double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
+        order.setTotalPrice(totalPrice + totalPrice * 0.02);
 
         updateProductQuantities(cartItems);
 
@@ -109,6 +106,10 @@ public class OrderService {
             product.setQuantity(newQuantity);
             productRepository.save(product);
         }
+    }
+
+    private void updateProductOrderItems(List<OrderItem> orderItems){
+
     }
 
     public void saveOrder(Order order, Long storeId){

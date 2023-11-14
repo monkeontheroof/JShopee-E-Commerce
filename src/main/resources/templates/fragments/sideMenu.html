@@ -17,7 +17,7 @@
         <li><a th:href="@{/store/{storeId}/orders(storeId=${store.id})}" class="menuLink"><i class="fas fa-shopping-bag"></i>Đơn hàng</a></li>
         <li><a th:href="@{/store/{storeId}/customers(storeId=${store.id})}" class="menuLink"><i class="fas fa-user"></i>Khách hàng</a></li>
         <li><a href="#" class="menuLink"><i class="fas fa-ad"></i>Tin Tức</a></li>
-        <li><a href="#" class="menuLink"><i class="fas fa-tags"></i>Voucher</a></li>
+        <li><a th:href="@{/store/{storeId}/vouchers(storeId=${store.id})}" class="menuLink"><i class="fas fa-tags"></i>Voucher</a></li>
         <li><a th:href="@{/store/{storeId}/sales(storeId=${store.id})}" class="menuLink"><i class="fas fa-money-check-alt"></i>Doanh Thu</a></li>
         <li class="nav-item active">
             <a class="nav-link menuLink" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>Sign out</a>
