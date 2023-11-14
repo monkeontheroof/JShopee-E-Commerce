@@ -31,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler;
 
     @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    @Autowired
     private CustomUserDetailService customUserDetailsService;
 
     @Override
@@ -47,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .failureUrl("/login?error= true")
-                .defaultSuccessUrl("/")
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureUrl("/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
