@@ -1,5 +1,6 @@
 package com.group5.ecommerce.config;
 
+import com.group5.ecommerce.config.JwtUtils;
 import com.group5.ecommerce.model.Role;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.repository.RoleRepository;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler {

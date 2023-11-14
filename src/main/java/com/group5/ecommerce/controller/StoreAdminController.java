@@ -3,24 +3,21 @@ package com.group5.ecommerce.controller;
 import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.SecurityUtil;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class StoreController {
+public class StoreAdminController {
 
     @Autowired
     private StoreService storeService;
