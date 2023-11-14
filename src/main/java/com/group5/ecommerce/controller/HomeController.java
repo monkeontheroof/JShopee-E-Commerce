@@ -31,6 +31,6 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String getHome(Model model) {
         model.addAttribute("cartCount", CartUtil.cart.size());
-        return "index";
+        return "clients/home";
     }
 }
