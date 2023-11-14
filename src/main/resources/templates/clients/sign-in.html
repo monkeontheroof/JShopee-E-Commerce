@@ -218,24 +218,23 @@
 		<a href="#" class="facebook-sign-in"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
 		<a href="#" class="twitter-sign-in"><i class="fa fa-twitter"></i> Sign In with Twitter</a>
 	</div>
-	<form class="register-form outer-top-xs" role="form" th:action="">
+	<form th:action="@{/login}" class="register-form outer-top-xs login" method="post">
 		<div class="form-group">
-		    <label class="info-title" for="exampleInputEmail1">Email Address <span>*</span></label>
-			<label>
-				<input  type="email" name="email" class="login__input" placeholder="Email">
-			</label>
+		    <label class="info-title" for="email">Email Address <span>*</span></label>
+			<input  type="email" class="form-control unicase-form-control text-input login__input" name="email" placeholder="Email" id="email" required>
+
 		</div>
 	  	<div class="form-group">
-		    <label class="info-title" for="exampleInputPassword1">Password <span>*</span></label>
-		    <input type="password" class="form-control unicase-form-control text-input" id="exampleInputPassword1">
+		    <label class="info-title" for="password">Password <span>*</span></label>
+		    <input type="password" class="form-control unicase-form-control text-input login__input" name="password" id="password" required>
 		</div>
-		<div class="radio outer-xs">
-		  	<label>
-		    	<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Remember me!
-		  	</label>
-		  	<a href="#" class="forgot-password pull-right">Forgot your Password?</a>
-		</div>
-	  	<button type="submit" class="btn-upper btn btn-primary checkout-page-button">Login</button>
+<!--		<div class="radio outer-xs">-->
+<!--		  	<label>-->
+<!--		    	<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Remember me!-->
+<!--		  	</label>-->
+<!--		  	<a href="#" class="forgot-password pull-right">Forgot your Password?</a>-->
+<!--		</div>-->
+	  	<button type="submit" value="Login" class="btn-upper btn btn-primary checkout-page-button login__submit">Login</button>
 	</form>					
 </div>
 <!-- Sign-in -->
@@ -244,26 +243,30 @@
 <div class="col-md-6 col-sm-6 create-new-account">
 	<h4 class="checkout-subtitle">Create a new account</h4>
 	<p class="text title-tag-line">Create your new account.</p>
-	<form class="register-form outer-top-xs" role="form">
+	<form th:action="@{/register}" th:object="*{user}" method="post" class="register-form outer-top-xs" role="form">
 		<div class="form-group">
-	    	<label class="info-title" for="exampleInputEmail2">Email Address <span>*</span></label>
-	    	<input type="email" class="form-control unicase-form-control text-input" id="exampleInputEmail2">
+	    	<label class="info-title" for="registerEmail">Email Address <span>*</span></label>
+	    	<input type="email" class="form-control unicase-form-control text-input" id="registerEmail" th:field="*{email}" name="email">
 	  	</div>
         <div class="form-group">
-		    <label class="info-title" for="exampleInputEmail1">Name <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="exampleInputEmail1">
+		    <label class="info-title" for="registerFirstName">First Name <span>*</span></label>
+		    <input type="email" class="form-control unicase-form-control text-input" id="registerFirstName" th:field="*{firstName}" name="email">
+		</div>
+		<div class="form-group">
+			<label class="info-title" for="registerLastName">Last Name <span>*</span></label>
+			<input type="email" class="form-control unicase-form-control text-input" id="registerLastName" th:field="*{lastName}">
 		</div>
         <div class="form-group">
-		    <label class="info-title" for="exampleInputEmail1">Phone Number <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="exampleInputEmail1">
+		    <label class="info-title" for="registerPhone">Phone Number <span>*</span></label>
+		    <input type="email" class="form-control unicase-form-control text-input" id="registerPhone" th:field="*{phone}">
 		</div>
         <div class="form-group">
-		    <label class="info-title" for="exampleInputEmail1">Password <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="exampleInputEmail1">
+		    <label class="info-title" for="registerPassword">Password <span>*</span></label>
+		    <input type="email" class="form-control unicase-form-control text-input" id="registerPassword" th:field="*{password}">
 		</div>
          <div class="form-group">
-		    <label class="info-title" for="exampleInputEmail1">Confirm Password <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="exampleInputEmail1">
+		    <label class="info-title" for="registerConfirmPassword">Confirm Password <span>*</span></label>
+		    <input type="email" class="form-control unicase-form-control text-input" id="registerConfirmPassword" >
 		</div>
 	  	<button type="submit" class="btn-upper btn btn-primary checkout-page-button">Sign Up</button>
 	</form>
