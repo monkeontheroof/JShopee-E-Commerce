@@ -55,7 +55,7 @@ public class StoreAdminController {
         model.addAttribute("orderCount", orders.size());
         model.addAttribute("productCount", userStore.getProducts().size());
         model.addAttribute("productAlmostOutCount", productsAlmostOut.size());
-        return "adminHome";
+        return "storeAdmin/adminHome";
     }
 
     @GetMapping("/store/{storeId}/categories")
@@ -63,7 +63,7 @@ public class StoreAdminController {
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
-        return "categories";
+        return "storeAdmin/categories";
     }
 
     @GetMapping("/store/{storeId}/categories/add")
@@ -72,7 +72,7 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("category", new Category());
         model.addAttribute("storeId", storeId);
-        return "categoriesAdd";
+        return "storeAdmin/categoriesAdd";
     }
 
     @PostMapping("/store/{storeId}/categories/add")
@@ -94,7 +94,7 @@ public class StoreAdminController {
             UserStore userStore = storeService.getStoreById(storeId);
             model.addAttribute("store", userStore);
             model.addAttribute("category", category.get());
-            return "categoriesAdd";
+            return "storeAdmin/categoriesAdd";
         }
         return "404";  //redirect to categories page
     }
@@ -113,7 +113,7 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("products", productsPage.getContent());
         model.addAttribute("page", productsPage);
-        return "products";
+        return "storeAdmin/products";
     }
 
     @GetMapping("/store/{storeId}/products/add")
@@ -123,7 +123,7 @@ public class StoreAdminController {
         model.addAttribute("product", new Product());
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
         model.addAttribute("isUpdate", false);
-        return "productsAdd";
+        return "storeAdmin/productsAdd";
     }
 
     //post method for category
@@ -151,7 +151,7 @@ public class StoreAdminController {
         model.addAttribute("product", productService.getProductById(id).orElse(null));
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
         model.addAttribute("isUpdate", true);
-        return "productsAdd";
+        return "storeAdmin/productsAdd";
     }
 
 
@@ -163,7 +163,7 @@ public class StoreAdminController {
         List<User> customers = orderService.getCustomersPurchasedFromStore(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("customers", customers);
-        return "customer";
+        return "storeAdmin/customer";
     }
 
 
@@ -176,7 +176,7 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("formatter", formatter);
         model.addAttribute("orders", orderService.getAllOrdersByStoreId(storeId));
-        return "orders";
+        return "storeAdmin/orders";
     }
 
     @GetMapping("/store/{storeId}/orders/update/{id}")
@@ -187,7 +187,7 @@ public class StoreAdminController {
         model.addAttribute("order", orderService.getOrderById(id));
         model.addAttribute("statuses", statuses);
         model.addAttribute("isUpdate", true);
-        return "ordersAdd";
+        return "storeAdmin/ordersAdd";
     }
 
     @PostMapping("/store/{storeId}/orders/add")
@@ -209,7 +209,7 @@ public class StoreAdminController {
     public String getSales(Model model, @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
-        return "sales";
+        return "storeAdmin/sales";
     }
 
 
@@ -219,6 +219,6 @@ public class StoreAdminController {
     public String getVouchers(Model model, @PathVariable("storeId") Long storeId){
         model.addAttribute("store", storeService.getStoreById(storeId));
         model.addAttribute("vouchers", voucherService.findAllVouchersByStore(storeId));
-        return "voucher";
+        return "storeAdmin/voucher";
     }
 }

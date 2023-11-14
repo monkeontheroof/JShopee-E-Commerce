@@ -30,13 +30,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(){
-        CartUtil.cart.clear();
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public  String getRegister() {
-        return "register";
+        return "clients/sign-in";
     }
 
     @PostMapping("/register")
@@ -48,6 +42,6 @@ public class LoginController {
         user.setRoles(roles);
         userRepository.save(user);
         request.login(user.getEmail(), password);
-        return "redirect:/";
+        return "redirect:/login";
     }
 }
