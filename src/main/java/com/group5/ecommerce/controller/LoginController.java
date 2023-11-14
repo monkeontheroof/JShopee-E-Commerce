@@ -1,9 +1,11 @@
 package com.group5.ecommerce.controller;
 
+import com.group5.ecommerce.model.RegistrationForm;
 import com.group5.ecommerce.model.Role;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.repository.RoleRepository;
 import com.group5.ecommerce.repository.UserRepository;
+import com.group5.ecommerce.service.UserService;
 import com.group5.ecommerce.utils.CartUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,29 +23,18 @@ import java.util.List;
 @Controller
 public class LoginController {
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    private UserService userService;
 
     @GetMapping("/login")
     public String login(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new RegistrationForm());
         return "clients/sign-in";
     }
 
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute("user") User user, HttpServletRequest request) throws ServletException {
-        String password = user.getPassword();
-        user.setPassword(bCryptPasswordEncoder.encode(password));
-        List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findById(2L).get());
-        user.setRoles(roles);
-        userRepository.save(user);
-        request.login(user.getEmail(), password);
-        return "redirect:/login";
+    public String postRegister(@ModelAttribute("user") RegistrationForm registerUser, HttpServletRequest request) throws ServletException {
+        userService.register(registerUser);
+        request.login(registerUser.getEmail(), registerUser.getPassword());
+        return "redirect:/home";
     }
 }

@@ -243,32 +243,32 @@
 <div class="col-md-6 col-sm-6 create-new-account">
 	<h4 class="checkout-subtitle">Create a new account</h4>
 	<p class="text title-tag-line">Create your new account.</p>
-	<form th:action="@{/register}" th:object="*{user}" method="post" class="register-form outer-top-xs" role="form">
+	<form th:action="@{/register}" th:object="${user}" method="post" class="register-form outer-top-xs" role="form">
 		<div class="form-group">
 	    	<label class="info-title" for="registerEmail">Email Address <span>*</span></label>
-	    	<input type="email" class="form-control unicase-form-control text-input" id="registerEmail" th:field="*{email}" name="email">
+	    	<input type="email" class="form-control unicase-form-control text-input" id="registerEmail" th:field="*{email}" name="email" required>
 	  	</div>
         <div class="form-group">
 		    <label class="info-title" for="registerFirstName">First Name <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="registerFirstName" th:field="*{firstName}" name="email">
+		    <input type="text" class="form-control unicase-form-control text-input" id="registerFirstName" th:field="*{firstName}" name="firstName" required>
 		</div>
 		<div class="form-group">
 			<label class="info-title" for="registerLastName">Last Name <span>*</span></label>
-			<input type="email" class="form-control unicase-form-control text-input" id="registerLastName" th:field="*{lastName}">
+			<input type="text" class="form-control unicase-form-control text-input" id="registerLastName" th:field="*{lastName}" name="lastName" required>
 		</div>
         <div class="form-group">
 		    <label class="info-title" for="registerPhone">Phone Number <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="registerPhone" th:field="*{phone}">
+		    <input type="number" class="form-control unicase-form-control text-input" id="registerPhone" th:field="*{phone}" name="phone" required>
 		</div>
         <div class="form-group">
 		    <label class="info-title" for="registerPassword">Password <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="registerPassword" th:field="*{password}">
+		    <input type="password" class="form-control unicase-form-control text-input" id="registerPassword" th:field="*{password}" name="password" required>
 		</div>
          <div class="form-group">
 		    <label class="info-title" for="registerConfirmPassword">Confirm Password <span>*</span></label>
-		    <input type="email" class="form-control unicase-form-control text-input" id="registerConfirmPassword" >
+		    <input type="password" class="form-control unicase-form-control text-input" id="registerConfirmPassword" th:field="*{confirmPassword}" name="confirmPassword" required>
 		</div>
-	  	<button type="submit" class="btn-upper btn btn-primary checkout-page-button">Sign Up</button>
+	  	<button type="submit" value="Register" class="btn-upper btn btn-primary checkout-page-button">Sign Up</button>
 	</form>
 	
 	

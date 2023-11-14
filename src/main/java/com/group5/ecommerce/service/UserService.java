@@ -1,11 +1,18 @@
 package com.group5.ecommerce.service;
 
+import com.group5.ecommerce.model.RegistrationForm;
+import com.group5.ecommerce.model.Role;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
+import com.group5.ecommerce.repository.RoleRepository;
 import com.group5.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,12 +21,34 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
+    }
+
+    public void register(RegistrationForm registerUser){
+        if(registerUser.getPassword().equals(registerUser.getConfirmPassword())){
+            List<Role> roles = new ArrayList<>();
+            roles.add(roleRepository.findByName("ROLE_USER"));
+            User user = User.builder()
+                    .firstName(registerUser.getFirstName())
+                    .lastName(registerUser.getLastName())
+                    .phone(registerUser.getPhone())
+                    .password(bCryptPasswordEncoder.encode(registerUser.getPassword()))
+                    .email(registerUser.getEmail())
+                    .roles(roles)
+                    .build();
+            userRepository.save(user);
+        }
     }
 
     public void save(User user){
