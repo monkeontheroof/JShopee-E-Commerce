@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
 <!-- Meta -->
@@ -2331,7 +2330,7 @@
                 <div class="products">
                   <div class="product">
                     <div class="product-image">
-                      <div class="image"> <a href="detail.html"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.imageName}}" th:alt="${product.name}"></a> </div>
+                      <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${product.id})}"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.imageName}}" th:alt="${product.name}"></a> </div>
                       <!-- /.image -->
 
                       <div class="tag hot"><span>hot</span></div>

@@ -57,7 +57,7 @@ public class ShopController {
         model.addAttribute("userReviews", product.getReviews());
         model.addAttribute("cartCount", CartUtil.cart.size());
 
-        return "viewProduct";
+        return "clients/detail";
     }
 
     @PostMapping("/deleteReview")
