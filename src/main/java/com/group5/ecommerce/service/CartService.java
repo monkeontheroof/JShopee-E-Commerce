@@ -53,10 +53,9 @@ public class CartService {
         cartItemRepository.save(item);
 
         int totalItem = totalItem(cartItems);
-        double totalPrice = totalPrice(cartItems);
 
         cart.setTotalItem(totalItem);
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalPrice();
 
         return cartRepository.save(cart);
     }
@@ -100,10 +99,9 @@ public class CartService {
         }
         cart.setCartItems(cartItemList);
 
-        double totalPrice = totalPrice(cart.getCartItems());
         int totalItem = totalItem(cart.getCartItems());
 
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalPrice();
         cart.setTotalItem(totalItem);
         cart.setUser(user);
 
@@ -124,7 +122,7 @@ public class CartService {
         double totalPrice = totalPrice(cart.getCartItems());
         int totalItem = totalItem(cart.getCartItems());
         cart.setCartItems(cartItems);
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalPrice();
         cart.setTotalItem(totalItem);
 
         cartRepository.save(cart);

@@ -2324,11 +2324,11 @@
         <!-- ============================================== FEATURED PRODUCTS ============================================== -->
         <section class="section featured-product wow fadeInUp">
           <h3 class="section-title">Featured products</h3>
-          <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs" th:each="product, iStat : ${products}">
-            <div class="item item-carousel">
+          <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
+            <div class="item item-carousel" th:each="product, iStat : ${products}">
               <form th:action="@{/addItemToCart}" method="post">
-                <div class="products">
-                  <div class="product">
+                <div class="products" >
+                  <div class="product" >
                     <div class="product-image">
                       <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${product.id})}"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.imageName}}" th:alt="${product.name}"></a> </div>
                       <!-- /.image -->

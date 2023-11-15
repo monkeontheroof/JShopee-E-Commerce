@@ -1,6 +1,7 @@
 package com.group5.ecommerce.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @Table(name = "cart")
 public class Cart {
     @Id
@@ -25,4 +26,24 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public void setTotalPrice() {
+        this.totalPrice = getCartItems().stream().mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice()).sum();
+    }
+
+    public void setTotalItem(int totalItem) {
+        this.totalItem = totalItem;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

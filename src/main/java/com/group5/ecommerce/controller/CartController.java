@@ -50,12 +50,17 @@ public class CartController {
     @PostMapping(value = "/update-cart", params = "action=update")
     public String updateCart(@RequestParam("quantity") int quantity,
                              @RequestParam("productId") Long productId,
-                             Model model){
+                             Model model,
+                             HttpServletRequest request){
 
         Cart cart = cartService.updateItemInCart(productId, quantity, SecurityUtil.getPrincipal().get().getId());
-
         model.addAttribute("cart", cart);
-        return "redirect:/cart";
+
+        String referer = request.getHeader("Referer");
+        if(referer == null || referer.isEmpty())
+            return "redirect:/cart";
+
+        return "redirect:" + referer;
     }
 
     @PostMapping(value = "/update-cart", params = "action=delete")
