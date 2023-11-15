@@ -1,9 +1,7 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.model.CustomUserDetail;
-import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.Review;
-import com.group5.ecommerce.model.User;
+import com.group5.ecommerce.model.*;
+import com.group5.ecommerce.service.CartService;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ReviewService;
 import com.group5.ecommerce.utils.CartUtil;
@@ -32,12 +30,26 @@ public class HomeController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping({"/", "/home"})
     public String getHome(Model model) {
         List<Product> products = productService.getAllProduct();
         DecimalFormat formatter = new DecimalFormat("#,###");
+        getUserId(model, cartService);
         model.addAttribute("products", products);
         model.addAttribute("formatter", formatter);
         return "clients/home";
+    }
+
+    static void getUserId(Model model, CartService cartService) {
+        User user = SecurityUtil.getPrincipal().orElse(null);
+        if(user != null && user.getId() != null){
+            Cart cart = cartService.getCartByUserId(user.getId());
+            int cartCount = cartService.countCartItems(cart);
+            model.addAttribute("cartCount", cartCount);
+            model.addAttribute("cart", cart);
+        }
     }
 }

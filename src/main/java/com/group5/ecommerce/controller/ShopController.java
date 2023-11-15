@@ -1,6 +1,8 @@
 package com.group5.ecommerce.controller;
 
+import com.group5.ecommerce.model.Cart;
 import com.group5.ecommerce.model.Product;
+import com.group5.ecommerce.service.CartService;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ProductService;
 import com.group5.ecommerce.service.ReviewService;
@@ -27,6 +29,9 @@ public class ShopController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping
     public String getShop(Model model) {
         model.addAttribute("categories", categoryService.getAllCategory());
@@ -51,14 +56,18 @@ public class ShopController {
 
         SecurityUtil.getPrincipal().ifPresent(principal -> {
             Long userId = principal.getId();
-            if(userId != null && userId.equals(product.getStore().getUser().getId()))
+            if(userId != null && userId.equals(product.getStore().getUser().getId())){
+                Cart cart = cartService.getCartByUserId(userId);
+                int cartCount = cartService.countCartItems(cart);
+                model.addAttribute("cartCount", cartCount);
+                model.addAttribute("cart", cart);
                 model.addAttribute("canDelete", true);
+            }
         });
         model.addAttribute("product", product);
         model.addAttribute("dateTimeFormatter", dateTimeFormatter);
         model.addAttribute("decimalFormatter", decimalFormat);
         model.addAttribute("userReviews", product.getReviews());
-        model.addAttribute("cartCount", CartUtil.cart.size());
 
         return "clients/detail";
     }

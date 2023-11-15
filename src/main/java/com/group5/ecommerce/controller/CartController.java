@@ -31,13 +31,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String getCart(Model model){
-        User user = SecurityUtil.getPrincipal().orElse(null);
-        if(user != null && user.getId() != null){
-            Cart cart = cartService.getCartByUserId(user.getId());
-            int cartCount = cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
-            model.addAttribute("cartCount", cartCount);
-            model.addAttribute("cart", cart);
-        }
+        HomeController.getUserId(model, cartService);
         DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("formatter", formatter);
         return "clients/shopping-cart";

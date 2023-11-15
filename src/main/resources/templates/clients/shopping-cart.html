@@ -63,16 +63,16 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="cart-romove item">Remove</th>
+					<th></th>
 					<th class="cart-description item">Image</th>
 					<th class="cart-product-name item">Product Name</th>
 					<th class="cart-sub-total item">Subtotal</th>
 					<th class="cart-total last-item">Grand total</th>
 					<th class="cart-qty item">Quantity</th>
-					<th class="cart-qty item">Action</th>
+					<th class="cart-qty item">Update</th>
+					<th class="cart-romove item">Remove</th>
 				</tr>
 			</thead><!-- /thead -->
-			<form th:action="@{/update-cart}" method="post">
 			<tfoot>
 				<tr>
 					<td colspan="7">
@@ -87,7 +87,10 @@
 			</tfoot>
 			<tbody>
 				<tr th:each="item, iStat: ${cart.getCartItems()}">
-					<td class="romove-item"><a href="#" title="cancel" class="icon"><i class="fa fa-trash-o"></i></a></td>
+					<form th:action="@{/update-cart}" method="post">
+						<td>
+							<p th:text="${iStat.index + 1}"></p>
+						</td>
 					<td class="cart-image">
 						<a class="entry-thumbnail" th:href="@{/shop/viewProduct/{id}(id=${item.product.id})}">
 						    <img th:src="@{${'/productImages/' + item.product.imageName}}" alt="">
@@ -126,9 +129,22 @@
 								<input type="text" name="quantity" class="quantity" th:value="${item.quantity}" min="1" step="1" max="999">
 							</div>
 					</td>
+					<td>
+						<div class="" style="display: flex; gap: 10px">
+							<button type="submit" name="action" value="update" title="Update" class="btn btn-primary">
+								<!--                                                        <i class="fas fa-trash-alt mr-1"></i> -->
+								Update
+							</button>
+						</div>
+					</td>
+						<td class="remove-item">
+							<button type="submit" name="action" value="delete" title="Delete" class="btn btn-danger">
+								<i class="fa fa-trash-o"></i>
+							</button>
+						</td>
+					</form>
 				</tr>
 			</tbody><!-- /tbody -->
-			</form>
 		</table><!-- /table -->
 	</div>
 </div><!-- /.shopping-cart-table -->				<div class="col-md-4 col-sm-12 estimate-ship-tax">

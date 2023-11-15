@@ -150,6 +150,10 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    public int countCartItems(Cart cart){
+        return cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
+    }
+
     private double totalPrice(List<CartItem> cartItemList) {
         double totalPrice = 0.0;
         for (CartItem item : cartItemList) {
