@@ -11,7 +11,7 @@ h1 {
     font-size: 24px;
 }
 
-.container h2 {
+.container-voucher h2 {
     font-size: 20px;
     margin-bottom: 10px;
 }
@@ -70,4 +70,21 @@ h1 {
 
 .add-voucher-form button:hover {
     background-color: #64CCC5;
+}
+
+.container-voucher {
+    position: absolute;
+    left: 300px;
+    width: 70%;
+    margin-right: 100px;
+    top:300px;
+}
+
+.container-table {
+    position: absolute;
+    left: 300px;
+    width: 70%;
+    margin-right: 100px;
+    top: 10px;
+    margin-bottom: 100px;
 }
