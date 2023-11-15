@@ -15,6 +15,7 @@
     <link rel="stylesheet" th:href="@{assets/css/animate.min.css}">
     <link rel="stylesheet" th:href="@{assets/css/rateit.css}">
     <link rel="stylesheet" th:href="@{assets/css/bootstrap-select.min.css}">
+    <link rel="stylesheet" th:href="@{assets/css/lightbox.css}">
 
     <!-- Icons/Glyphs -->
     <link rel="stylesheet" th:href="@{assets/css/font-awesome.css}">
@@ -29,9 +30,10 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
+                        <li sec:authorize="isAuthenticated()"><a th:href="@{/store/home}"><i class="icon fa fa-user"></i>My Store</a></li>
                         <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
                         <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
-                        <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
+                        <li sec:authorize="isAuthenticated()"><a th:href="@{/cart}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
                         <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>
                         <li sec:authorize="isAnonymous()"><a th:href="@{/login}"><i class="icon fa fa-lock"></i>Login</a></li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" href="#"><i class="icon fa fa-lock"></i>Logout</a></li>
@@ -39,25 +41,7 @@
                 </div>
                 <!-- /.cnt-account -->
 
-                <div class="cnt-block">
-                    <ul class="list-unstyled list-inline">
-                        <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"><span class="value">USD </span><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">USD</a></li>
-                                <li><a href="#">INR</a></li>
-                                <li><a href="#">GBP</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"><span class="value">English </span><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">English</a></li>
-                                <li><a href="#">French</a></li>
-                                <li><a href="#">German</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <!-- /.list-unstyled -->
-                </div>
+
                 <!-- /.cnt-cart -->
                 <div class="clearfix"></div>
             </div>
@@ -72,7 +56,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-3 logo-holder">
                     <!-- ============================================================= LOGO ============================================================= -->
-                    <div class="logo"> <a href="home.html"> <img src="assets\images\logo.png" alt="logo"> </a> </div>
+                    <div class="logo"> <a th:href="@{/}"> <img src="assets\images\logo.png" alt="logo"> </a> </div>
                     <!-- /.logo -->
                     <!-- ============================================================= LOGO : END ============================================================= --> </div>
                 <!-- /.logo-holder -->

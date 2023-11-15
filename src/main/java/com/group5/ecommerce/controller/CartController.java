@@ -31,13 +31,16 @@ public class CartController {
 
     @GetMapping("/cart")
     public String getCart(Model model){
-        Cart cart = cartService.getCartByUserId(SecurityUtil.getPrincipal().get().getId());
-        int cartCount = cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
+        User user = SecurityUtil.getPrincipal().orElse(null);
+        if(user != null && user.getId() != null){
+            Cart cart = cartService.getCartByUserId(user.getId());
+            int cartCount = cart.getCartItems().stream().mapToInt(CartItem::getQuantity).sum();
+            model.addAttribute("cartCount", cartCount);
+            model.addAttribute("cart", cart);
+        }
         DecimalFormat formatter = new DecimalFormat("#,###");
-        model.addAttribute("cart", cart);
         model.addAttribute("formatter", formatter);
-        model.addAttribute("cartCount", cartCount);
-        return "cart";
+        return "clients/shopping-cart";
     }
 
     @PostMapping("/addItemToCart")
