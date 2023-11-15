@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -28,9 +29,15 @@ import java.util.Optional;
 @Controller
 public class HomeController {
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping({"/", "/home"})
     public String getHome(Model model) {
-        model.addAttribute("cartCount", CartUtil.cart.size());
+        List<Product> products = productService.getAllProduct();
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        model.addAttribute("products", products);
+        model.addAttribute("formatter", formatter);
         return "clients/home";
     }
 }

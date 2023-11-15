@@ -30,34 +30,36 @@
             <button type="submit">Thêm</button>
         </form>
     </div>
-    <table class="table table-custom">
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"><h1>Name</h1></th>
-            <th scope="col"><h1>Code</h1></th>
-            <th scope="col"><h1>Discount</h1></th>
-            <th scope="col"><h1>Quantity</h1></th>
-            <th scope="col"><h1>Action</h1></th>
-        </tr>
-        <tr th:each="voucher, iStat : ${vouchers}">
-            <td scope="row" th:text="${iStat.index + 1}">1</td>
-            <td th:text="${voucher.name}">Larry</td>
-            <td th:text="${voucher.code}">Larry</td>
-            <td th:text="${voucher.discountPercent} * 100 + ' %'">Larry</td>
-            <td th:text="${voucher.quantity}">Larry</td>
-            <td>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/update/' + ${voucher.id}}" class="btn btn-success">
-                    Update
-                </a>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/delete/' + ${voucher.id}}" class="btn btn-danger">
-                    Delete
-                </a>
-                <a href="" class="btn btn-info">
-                    Details
-                </a>
-            </td>
-        </tr>
-    </table>
+    <div>
+        <table class="table table-custom">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"><h1>Name</h1></th>
+                <th scope="col"><h1>Code</h1></th>
+                <th scope="col"><h1>Discount</h1></th>
+                <th scope="col"><h1>Quantity</h1></th>
+                <th scope="col"><h1>Action</h1></th>
+            </tr>
+            <tr th:each="voucher, iStat : ${vouchers}">
+                <td scope="row" th:text="${iStat.index + 1}">1</td>
+                <td th:text="${voucher.name}">Larry</td>
+                <td th:text="${voucher.code}">Larry</td>
+                <td th:text="${voucher.discountPercent} * 100 + ' %'">Larry</td>
+                <td th:text="${voucher.quantity}">Larry</td>
+                <td>
+                    <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/update/' + ${voucher.id}}" class="btn btn-success">
+                        Update
+                    </a>
+                    <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/delete/' + ${voucher.id}}" class="btn btn-danger">
+                        Delete
+                    </a>
+                    <a href="" class="btn btn-info">
+                        Details
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 
