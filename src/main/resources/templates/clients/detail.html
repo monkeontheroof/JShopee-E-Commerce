@@ -70,8 +70,8 @@
 <div class="sidebar-widget hot-deals wow fadeInUp outer-top-vs">
 	<h3 class="section-title">hot deals</h3>
 	<div class="owl-carousel sidebar-carousel custom-carousel owl-theme outer-top-xs">
-		
-														<div class="item">
+
+												<div class="item">
 					<div class="products">
 						<div class="hot-deal-wrapper">
 							<div class="image">
@@ -205,8 +205,8 @@
 								
 							</div><!-- /.action -->
 						</div><!-- /.cart -->
-					</div>	
-					</div>		        
+					</div>
+													</div>
 													<div class="item">
 					<div class="products">
 						<div class="hot-deal-wrapper">
@@ -273,8 +273,8 @@
 								
 							</div><!-- /.action -->
 						</div><!-- /.cart -->
-					</div>	
-					</div>		        
+					</div>
+													</div>
 						
 	    
     </div><!-- /.sidebar-widget -->
@@ -458,7 +458,7 @@
 </div><!-- /.gallery-holder -->        			
 					<div class='col-sm-6 col-md-7 product-info-block'>
 						<div class="product-info">
-							<h1 class="name">Floral Print Buttoned</h1>
+							<h1 class="name" th:text="${product.name}">Product name</h1>
 							
 							<div class="rating-reviews m-t-20">
 								<div class="row">
@@ -467,7 +467,7 @@
 									</div>
 									<div class="col-sm-8">
 										<div class="reviews">
-											<a href="#" class="lnk">(13 Reviews)</a>
+											<a href="#" class="lnk" th:text="(${product.reviews.size()} + ' Reviews')">(13 Reviews)</a>
 										</div>
 									</div>
 								</div><!-- /.row -->		
@@ -482,14 +482,14 @@
 									</div>
 									<div class="col-sm-9">
 										<div class="stock-box">
-											<span class="value">In Stock</span>
+											<span class="value" th:text="${product.quantity}">In Stock</span>
 										</div>	
 									</div>
 								</div><!-- /.row -->	
 							</div><!-- /.stock-container -->
 
-							<div class="description-container m-t-20">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+							<div class="description-container m-t-20" th:text="${product.description}">
+
 							</div><!-- /.description-container -->
 
 							<div class="price-container info-container m-t-20">
@@ -498,8 +498,8 @@
 
 									<div class="col-sm-6">
 										<div class="price-box">
-											<span class="price">$800.00</span>
-											<span class="price-strike">$900.00</span>
+											<span class="price" th:text="${decimalFormatter.format(product.price)} + ' đ'">$800.00</span>
+											<span class="price-strike" th:text="${decimalFormatter.format(product.price + 2000000)} + ' đ'"></span>
 										</div>
 									</div>
 
@@ -1264,17 +1264,17 @@
 	<!-- For demo purposes – can be removed on production : End -->
 
 	<!-- JavaScripts placed at the end of the document so the pages load faster -->
-		<script th:src="@{assets/js/jquery-1.11.1.min.js}"></script>
-		<script th:src="@{assets/js/bootstrap.min.js}"></script>
-		<script th:src="@{assets/js/bootstrap-hover-dropdown.min.js}"></script>
-		<script th:src="@{assets/js/owl.carousel.min.js}"></script>
-		<script th:src="@{assets/js/echo.min.js}"></script>
-		<script th:src="@{assets/js/jquery.easing-1.3.min.js}"></script>
-		<script th:src="@{assets/js/bootstrap-slider.min.js}"></script>
-		<script th:src="@{assets/js/jquery.rateit.min.js}"></script>
-		<script type="text/javascript" th:src="@{assets/js/lightbox.min.js}"></script>
-		<script th:src="@{assets/js/bootstrap-select.min.js}"></script>
-		<script th:src="@{assets/js/wow.min.js}"></script>
-		<script th:src="@{assets/js/scripts.js}"></script>
+		<script th:src="@{/assets/js/jquery-1.11.1.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap-hover-dropdown.min.js}"></script>
+		<script th:src="@{/assets/js/owl.carousel.min.js}"></script>
+		<script th:src="@{/assets/js/echo.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.easing-1.3.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap-slider.min.js}"></script>
+		<script th:src="@{/assets/js/jquery.rateit.min.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/js/lightbox.min.js}"></script>
+		<script th:src="@{/assets/js/bootstrap-select.min.js}"></script>
+		<script th:src="@{/assets/js/wow.min.js}"></script>
+		<script th:src="@{/assets/js/scripts.js}"></script>
 </body>
 </html>

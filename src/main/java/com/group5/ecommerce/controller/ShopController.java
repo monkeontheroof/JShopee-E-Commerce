@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 
 @Controller
@@ -44,16 +45,18 @@ public class ShopController {
 
     @GetMapping("/viewProduct/{id}")
     public String viewProduct(Model model, @PathVariable("id") long id) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
         Product product = productService.getProductById(id).get();
 
         SecurityUtil.getPrincipal().ifPresent(principal -> {
             Long userId = principal.getId();
-            if(userId.equals(product.getStore().getUser().getId()))
+            if(userId != null && userId.equals(product.getStore().getUser().getId()))
                 model.addAttribute("canDelete", true);
         });
         model.addAttribute("product", product);
-        model.addAttribute("dateTimeFormatter", formatter);
+        model.addAttribute("dateTimeFormatter", dateTimeFormatter);
+        model.addAttribute("decimalFormatter", decimalFormat);
         model.addAttribute("userReviews", product.getReviews());
         model.addAttribute("cartCount", CartUtil.cart.size());
 
