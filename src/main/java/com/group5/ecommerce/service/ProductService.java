@@ -1,9 +1,7 @@
 package com.group5.ecommerce.service;
 
-import com.group5.ecommerce.model.OrderItem;
-import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.Review;
-import com.group5.ecommerce.model.UserStore;
+import com.group5.ecommerce.model.*;
+import com.group5.ecommerce.repository.ProductDetailRepository;
 import com.group5.ecommerce.repository.ProductRepository;
 import com.group5.ecommerce.repository.ReviewRepository;
 import org.modelmapper.ModelMapper;
@@ -20,9 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +32,9 @@ public class ProductService {
     private ReviewRepository reviewRepository;
 
     @Autowired
+    private ProductDetailRepository productDetailRepository;
+
+    @Autowired
     private StoreService storeService;
 
     @Autowired
@@ -46,6 +45,15 @@ public class ProductService {
         return productRepository.findAll().stream()
                 .map(p -> mapper.map(p, Product.class))
                 .collect(Collectors.toList());
+    }
+
+    public Page<ProductDetail> getProductDetailsByProductId(Long productId, Pageable pageRequest) {
+        Optional<Product> product = getProductById(productId);
+        if(product.isPresent()) {
+            return productDetailRepository.getProductDetailsByProductId(productId, pageRequest);
+        }else {
+            throw new RuntimeException("Product not found.");
+        }
     }
 
     public Page<Product> getAllProductByStoreId(Long storeId, Pageable pageRequest){
@@ -72,6 +80,28 @@ public class ProductService {
         product.setImageName(imageUUID);
         product.setStore(store);
         productRepository.save(product);
+    }
+
+    public void addDetail(ProductDetail detail, Long productId){
+        Optional<Product> product = productRepository.findById(productId);
+        if(product.isPresent()){
+            product.get().getDetails().add(detail);
+            detail.setProduct(product.get());
+            productDetailRepository.save(detail);
+        }
+    }
+
+    public void updateDetail(Long detailId, String description){
+        Optional<ProductDetail> detail = productDetailRepository.findById(detailId);
+        detail.ifPresent(d -> {
+            d.setDescription(description);
+            productDetailRepository.save(d);
+        });
+    }
+
+    public void removeDetail(Long detailId){
+        Optional<ProductDetail> detail = productDetailRepository.findById(detailId);
+        detail.ifPresent(d -> productDetailRepository.deleteById(d.getId()));
     }
 
     public void removeProductById(Long id){

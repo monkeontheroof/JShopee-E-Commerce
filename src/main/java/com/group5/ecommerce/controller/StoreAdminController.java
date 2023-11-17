@@ -11,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class StoreAdminController {
@@ -59,7 +61,8 @@ public class StoreAdminController {
     }
 
     @GetMapping("/store/{storeId}/categories")
-    public String getCat(Model model, @PathVariable("storeId") Long storeId) {
+    public String getCat(Model model,
+                         @PathVariable("storeId") Long storeId) {
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
@@ -67,7 +70,8 @@ public class StoreAdminController {
     }
 
     @GetMapping("/store/{storeId}/categories/add")
-    public String getAddCat(@PathVariable("storeId") Long storeId , Model model){
+    public String getAddCat(@PathVariable("storeId") Long storeId,
+                            Model model){
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("category", new Category());
@@ -76,19 +80,22 @@ public class StoreAdminController {
     }
 
     @PostMapping("/store/{storeId}/categories/add")
-    public String postAddCat(@ModelAttribute("category") Category category, @PathVariable("storeId") Long storeId) {
+    public String postAddCat(@ModelAttribute("category") Category category,
+                             @PathVariable("storeId") Long storeId) {
         categoryService.addCategory(category, storeId);
         return "redirect:/store/" + storeId + "/categories";
     }
 
     @GetMapping("/store/{storeId}/categories/delete/{id}")
-    public String deleteCat(@PathVariable("id") Long categoryId, @PathVariable("storeId") Long storeId){
+    public String deleteCat(@PathVariable("id") Long categoryId,
+                            @PathVariable("storeId") Long storeId){
         categoryService.removeCategoryById(categoryId);
         return "redirect:/store/" + storeId + "/categories";
     }
 
     @GetMapping("/store/{storeId}/categories/update/{id}")
-    public String updateCat(@PathVariable("id") Long id, Model model, @PathVariable("storeId") Long storeId){
+    public String updateCat(@PathVariable("id") Long id, Model model,
+                            @PathVariable("storeId") Long storeId){
         Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isPresent()) {
             UserStore userStore = storeService.getStoreById(storeId);
@@ -116,8 +123,68 @@ public class StoreAdminController {
         return "storeAdmin/products";
     }
 
+    @GetMapping("/store/{storeId}/products/{id}/details")
+    public String getProductDetails(@PathVariable("storeId") Long storeId,
+                                    @PathVariable("id") Long productId,
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    Model model){
+        UserStore userStore = storeService.getStoreById(storeId);
+        Page<ProductDetail> productDetails = productService.getProductDetailsByProductId(productId, PageRequest.of(page, size));
+        model.addAttribute("store", userStore);
+        model.addAttribute("productDetails", productDetails);
+        model.addAttribute("productId", productId);
+        return "storeAdmin/productDetail";
+    }
+
+    @GetMapping("/store/{storeId}/products/{id}/details/add")
+    public String getAddDetail(@PathVariable("storeId") Long storeId,
+                               @PathVariable("id") Long productId,
+                               Model model){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("detail", new ProductDetail());
+        model.addAttribute("storeId", storeId);
+        model.addAttribute("productId", productId);
+        return "storeAdmin/productDetailAdd";
+    }
+
+    @PostMapping("/store/{storeId}/products/{id}/details/add")
+    public String postAddDetail(@ModelAttribute("detail") ProductDetail productDetail,
+                                @PathVariable("storeId") Long storeId) {
+        productService.addDetail(productDetail, storeId);
+        return "redirect:/store/" + storeId + "/products/" + productDetail.getProduct().getId() + "/details";
+    }
+
+    @PostMapping(value = "/update-detail", params = "action=update")
+    public String updateDetail(@RequestParam("description") String description,
+                             @RequestParam("id") Long detailId,
+                             HttpServletRequest request){
+
+        productService.updateDetail(detailId, description);
+
+        String referer = request.getHeader("Referer");
+        if(referer == null || referer.isEmpty())
+            return "redirect:/details";
+
+        return "redirect:" + referer;
+    }
+
+    @PostMapping(value = "/update-detail", params = "action=delete")
+    public String deleteDetail(@RequestParam("id") Long detailId,
+                               HttpServletRequest request){
+        productService.removeDetail(detailId);
+
+        String referer = request.getHeader("Referer");
+        if(referer == null || referer.isEmpty())
+            return "redirect:/details";
+
+        return "redirect:" + referer;
+    }
+
     @GetMapping("/store/{storeId}/products/add")
-    public String getAddProduct(Model model, @PathVariable("storeId") Long storeId){
+    public String getAddProduct(Model model,
+                                @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("product", new Product());
@@ -136,7 +203,8 @@ public class StoreAdminController {
     }
 
     @GetMapping("/store/{storeId}/products/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long id, @PathVariable("storeId") Long storeId){
+    public String deleteProduct(@PathVariable("id") Long id,
+                                @PathVariable("storeId") Long storeId){
         productService.removeProductById(id);
         return "redirect:/store/" + storeId + "/products";  //redirect to categories page
     }
@@ -158,7 +226,8 @@ public class StoreAdminController {
 
     // CUSTOMER SESSIONS //
     @GetMapping("/store/{storeId}/customers")
-    public String getCustomers(Model model, @PathVariable("storeId") Long storeId){
+    public String getCustomers(Model model,
+                               @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
         List<User> customers = orderService.getCustomersPurchasedFromStore(storeId);
         model.addAttribute("store", userStore);
@@ -170,7 +239,8 @@ public class StoreAdminController {
 
     // ORDER SESSIONS //
     @GetMapping("/store/{storeId}/orders")
-    public String getOrders(Model model, @PathVariable("storeId") Long storeId){
+    public String getOrders(Model model,
+                            @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
         DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("store", userStore);
@@ -180,7 +250,9 @@ public class StoreAdminController {
     }
 
     @GetMapping("/store/{storeId}/orders/update/{id}")
-    public String updateOrder(Model model, @PathVariable("storeId") Long storeId, @PathVariable("id") Long id){
+    public String updateOrder(Model model,
+                              @PathVariable("storeId") Long storeId,
+                              @PathVariable("id") Long id){
         UserStore userStore = storeService.getStoreById(storeId);
         List<String> statuses = List.of("Pending", "Processing", "Delivering", "Delivered", "Canceled");
         model.addAttribute("store", userStore);
@@ -191,13 +263,15 @@ public class StoreAdminController {
     }
 
     @PostMapping("/store/{storeId}/orders/add")
-    public String postAddOrder(@ModelAttribute("order") Order order, @PathVariable("storeId") Long storeId){
+    public String postAddOrder(@ModelAttribute("order") Order order,
+                               @PathVariable("storeId") Long storeId){
         orderService.saveOrder(order, storeId);
         return "redirect:/store/" + storeId + "/orders";
     }
 
     @GetMapping("/store/{storeId}/orders/delete/{id}")
-    public String deleteOrder(@PathVariable("id") Long id, @PathVariable("storeId") Long storeId){
+    public String deleteOrder(@PathVariable("id") Long id,
+                              @PathVariable("storeId") Long storeId){
         orderService.deleteOrder(id);
         return "redirect:/store/" + storeId + "/orders";
     }

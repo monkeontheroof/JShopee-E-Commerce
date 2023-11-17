@@ -572,7 +572,14 @@
 								
 								<div id="description" class="tab-pane in active">
 									<div class="product-tab">
-										<p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+										<table class="table table-striped">
+											<tr th:each="detail : ${product.getDetails()}">
+												<td th:text="${detail.name}"></td>
+												<td th:text="${detail.description}"></td>
+											</tr>
+										</table>
+
+										<p readonly class="border-0" th:text="${product.description}"></p>
 									</div>	
 								</div><!-- /.tab-pane -->
 
@@ -582,18 +589,20 @@
 										<div class="product-reviews">
 											<h4 class="title">Customer Reviews</h4>
 
-											<div class="reviews">
+											<div class="reviews" th:each="review : ${product.getReviews()}">
 												<div class="review">
-													<div class="review-title"><span class="summary">We love this product</span><span class="date"><i class="fa fa-calendar"></i><span>1 days ago</span></span></div>
-													<div class="text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aliquam suscipit."</div>
-																										</div>
-											
+													<div class="review-title">
+														<span class="summary" th:text="${review.user.lastName} + ' ' + ${review.user.firstName}"></span>
+														<span class="date"><i class="fa fa-calendar"></i><span th:text="${dateTimeFormatter.format(review.dateTime)}">1 days ago</span></span>
+													</div>
+													<div class="text" th:text="${review.comment}"></div>
+												</div>
 											</div><!-- /.reviews -->
 										</div><!-- /.product-reviews -->
 										
 
 										
-										<div class="product-add-review">
+										<div class="product-add-review" sec:authorize="isAuthenticated()">
 											<h4 class="title">Write your own review</h4>
 											<div class="review-table">
 												<div class="table-responsive">
@@ -640,30 +649,19 @@
 											
 											<div class="review-form">
 												<div class="form-container">
-													<form role="form" class="cnt-form">
-														
+													<form role="form" class="cnt-form" method="post" th:action="@{/shop/submitReview}">
 														<div class="row">
-															<div class="col-sm-6">
+															<div class="col-md-auto">
 																<div class="form-group">
-																	<label for="exampleInputName">Your Name <span class="astk">*</span></label>
-																	<input type="text" class="form-control txt" id="exampleInputName" placeholder="">
-																</div><!-- /.form-group -->
-																<div class="form-group">
-																	<label for="exampleInputSummary">Summary <span class="astk">*</span></label>
-																	<input type="text" class="form-control txt" id="exampleInputSummary" placeholder="">
-																</div><!-- /.form-group -->
-															</div>
-
-															<div class="col-md-6">
-																<div class="form-group">
-																	<label for="exampleInputReview">Review <span class="astk">*</span></label>
-																	<textarea class="form-control txt txt-review" id="exampleInputReview" rows="4" placeholder=""></textarea>
+																	<input th:value="${product.id}" id="productId" name="productId" hidden="hidden" type="hidden">
+																	<label for="comment">Review<span class="astk">*</span></label>
+																	<textarea class="form-control txt txt-review" id="comment" name="comment" rows="4" placeholder=""></textarea>
 																</div><!-- /.form-group -->
 															</div>
 														</div><!-- /.row -->
 														
-														<div class="action text-right">
-															<button class="btn btn-primary btn-upper">SUBMIT REVIEW</button>
+														<div class="action text-left">
+															<button class="btn btn-primary btn-upper" type="submit">SUBMIT REVIEW</button>
 														</div><!-- /.action -->
 
 													</form><!-- /.cnt-form -->

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class Product {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
 
@@ -35,6 +36,9 @@ public class Product {
     private String description;
 
     private String imageName;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<ProductImage> images;
 
     private int quantity;
 
@@ -48,4 +52,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductDetail> details;
 }

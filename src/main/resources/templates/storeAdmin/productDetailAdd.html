@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -10,38 +10,30 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}">
-    <title>Document</title>
+    <title>Add detail</title>
 </head>
 <body>
-<div th:replace="fragments/sideMenu :: sideMenu">
-</div>
-<div class="container-fluid">
-    <a th:href="@{/store/{storeId}/categories/add(storeId=${store.getId()})}" style="margin: 20px 0" class="btn btn-primary">Add Category</a>
-    <table class="table">
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"><h1>Category Name</h1></th>
-            <th scope="col"><h1>Action</h1></th>
-        </tr>
+<div th:replace="fragments/sideMenu :: sideMenu"></div>
 
-        <tr th:each="category, iStat : ${categories}">
-            <td scope="row" th:text="${iStat.index + 1}">1</td>
-            <td th:text="${category.name}">Larry</td>
-
-            <td>
-                <a href="" th:href="@{'/store/' + ${store.getId()} + '/categories/update/' + ${category.id}}" class="btn btn-success">
-                    <i class="fa fa-edit"></i>
-                </a>
-                <a th:data-confirm-delete="|Are you sure you want to delete this category: ${category.name}?|"
-                   onclick="return confirm(this.getAttribute('data-confirm-delete'))"
-                   th:href="@{'/store/' + ${store.getId()} + '/categories/delete/' + ${category.id}}" class="btn btn-danger">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </td>
-        </tr>
-    </table>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <form th:action="@{/store/{storeId}/products/{id}/details/add(storeId=${storeId}, id=${productId})}" method="post" th:object="${detail}">
+                <input type="hidden" name="id" th:field="*{id}">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" required th:field="*{name}" name="name" id="name"  placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Name</label>
+                    <textarea type="text" class="form-control" required th:field="*{description}" name="description" id="description" rows="4" cols="50" placeholder="Enter description"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

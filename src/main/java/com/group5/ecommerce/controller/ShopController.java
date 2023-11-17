@@ -1,7 +1,9 @@
 package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.model.Cart;
+import com.group5.ecommerce.model.CustomUserDetail;
 import com.group5.ecommerce.model.Product;
+import com.group5.ecommerce.model.Review;
 import com.group5.ecommerce.service.CartService;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ProductService;
@@ -9,12 +11,16 @@ import com.group5.ecommerce.service.ReviewService;
 import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/shop")
@@ -70,6 +76,20 @@ public class ShopController {
         model.addAttribute("userReviews", product.getReviews());
 
         return "clients/detail";
+    }
+
+    @PostMapping("/submitReview")
+    public String submitReview(@RequestParam("comment") String comment,
+                               @RequestParam("productId") Long productId,
+                               HttpServletRequest request){
+        Optional<CustomUserDetail> authentication = SecurityUtil.getPrincipal();
+        authentication.ifPresent(userDetail -> reviewService.save(comment, productId, userDetail.getId()));
+
+        String referer = request.getHeader("Referer");
+        if(referer == null || referer.isEmpty())
+            return "redirect:/shop/viewProduct/" + productId;
+
+        return "redirect:" + referer;
     }
 
     @PostMapping("/deleteReview")

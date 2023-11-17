@@ -1,6 +1,10 @@
 package com.group5.ecommerce.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,6 +14,9 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "user_review")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Review {
 
     @Id
