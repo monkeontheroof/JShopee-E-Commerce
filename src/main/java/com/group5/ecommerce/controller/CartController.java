@@ -79,7 +79,7 @@ public class CartController {
         model.addAttribute("cartCount", cartCount);
         model.addAttribute("cart", cart);
         model.addAttribute("formatter", formatter);
-        return "checkout";
+        return "clients/checkout";
     }
 
     @PostMapping(value = "/place-order", params = "action=place-order")
