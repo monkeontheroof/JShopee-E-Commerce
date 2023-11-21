@@ -30,7 +30,8 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
-                        <li sec:authorize="isAuthenticated()"><a th:href="@{/store/home}"><i class="icon fa fa-user"></i>My Store</a></li>
+                        <li th:unless="${#authorization.expression('hasRole(''STORE_ADMIN'')')}"><a href=""><i class="icon fa fa-user"></i>Become a seller</a></li>
+                        <li th:if="${#authorization.expression('hasRole(''STORE_ADMIN'')')}"><a th:href="@{/store/home}"><i class="icon fa fa-user"></i>My Store</a></li>
                         <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
                         <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/cart}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>

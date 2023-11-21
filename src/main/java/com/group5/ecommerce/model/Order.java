@@ -32,9 +32,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "order")
-    private List<Voucher> vouchers;
-
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;

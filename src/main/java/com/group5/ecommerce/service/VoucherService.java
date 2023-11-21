@@ -5,14 +5,12 @@ import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.model.Voucher;
 import com.group5.ecommerce.repository.OrderRepository;
 import com.group5.ecommerce.repository.VoucherRepository;
-import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class VoucherService {
@@ -26,12 +24,14 @@ public class VoucherService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Voucher createVoucher(Long storeId, double discount, String name){
+    public Voucher createVoucher(Long storeId, String name, double discount, int quantity){
         UserStore store = storeService.getStoreById(storeId);
         return Voucher.builder()
                 .code(RandomStringUtils.randomAlphanumeric(5).toUpperCase())
-                .discountPercent(discount)
+                .discountAmount(discount)
+                .expiryDate(LocalDateTime.now())
                 .name(name)
+                .quantity(quantity)
                 .store(store)
                 .build();
     }
@@ -42,16 +42,13 @@ public class VoucherService {
 
         if (order != null && voucher != null && voucher.getQuantity() > 0) {
             // Áp dụng giảm giá từ voucher
-            double discountAmount = order.getTotalPrice() * (voucher.getDiscountPercent() / 100);
+            double discountAmount = order.getTotalPrice() * (voucher.getDiscountAmount() / 100);
             double discountedTotalPrice = order.getTotalPrice() - discountAmount;
             order.setTotalPrice(discountedTotalPrice);
 
             // Giảm quantity của voucher
             voucher.setQuantity(voucher.getQuantity() - 1);
             voucherRepository.save(voucher);
-
-            // Thêm voucher vào danh sách vouchers của đơn hàng
-            order.getVouchers().add(voucher);
             orderRepository.save(order);
         }
 
@@ -60,6 +57,10 @@ public class VoucherService {
 
     public List<Voucher> findAllVouchersByStore(Long storeId) {
         return voucherRepository.findAllByStoreId(storeId);
+    }
+
+    public Voucher findByCode(String code) {
+        return voucherRepository.findByCode(code);
     }
 
     public void saveVoucher(Voucher voucher){

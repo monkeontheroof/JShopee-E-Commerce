@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +25,11 @@ public class ReviewService {
     private UserService userService;
 
     public Review getById(Long id) {
-        return reviewRepository.findById(id).get();
+        return reviewRepository.findById(id).orElse(null);
+    }
+
+    public List<Review> getReviewsByProductId(Long productId) {
+        return reviewRepository.findAllByProductId(productId);
     }
 
     public void save(String comment, Long productId, Long userId) {

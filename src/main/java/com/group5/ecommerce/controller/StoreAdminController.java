@@ -14,9 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.group5.ecommerce.controller.HomeController.getUserId;
 
 @Controller
 public class StoreAdminController {
@@ -35,6 +38,12 @@ public class StoreAdminController {
 
     @Autowired
     private VoucherService voucherService;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private CartService cartService;
 
 //    @GetMapping("/sideMenu")
 //    public String getSideMenu(Model model) {
@@ -151,8 +160,9 @@ public class StoreAdminController {
 
     @PostMapping("/store/{storeId}/products/{id}/details/add")
     public String postAddDetail(@ModelAttribute("detail") ProductDetail productDetail,
-                                @PathVariable("storeId") Long storeId) {
-        productService.addDetail(productDetail, storeId);
+                                @PathVariable("storeId") Long storeId,
+                                @PathVariable("id") Long productId) {
+        productService.addDetail(productDetail, productId);
         return "redirect:/store/" + storeId + "/products/" + productDetail.getProduct().getId() + "/details";
     }
 
@@ -193,12 +203,10 @@ public class StoreAdminController {
         return "storeAdmin/productsAdd";
     }
 
-    //post method for category
     @PostMapping("/store/{storeId}/products/add")
     public String postAddProduct(@ModelAttribute("product") Product product,
-                                 @RequestParam("productImage") MultipartFile file,
-                                 @RequestParam("imgName") String imgName, @PathVariable("storeId") Long storeId) throws IOException {
-        productService.addProduct(product, file, imgName, storeId);
+                                 @PathVariable("storeId") Long storeId) throws IOException {
+        productService.addProduct(product, storeId);
         return "redirect:/store/" + storeId + "/products";
     }
 
@@ -294,5 +302,21 @@ public class StoreAdminController {
         model.addAttribute("store", storeService.getStoreById(storeId));
         model.addAttribute("vouchers", voucherService.findAllVouchersByStore(storeId));
         return "storeAdmin/voucher";
+    }
+
+
+
+    // REVIEWS SESSIONS //
+    @GetMapping("/store/{storeId}/products/{id}/reviews")
+    public String getReviewsByProductId(Model model,
+                                        @PathVariable("storeId") Long storeId,
+                                        @PathVariable("id") Long productId){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        List<Review> reviews = reviewService.getReviewsByProductId(productId);
+
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("formatter", formatter);
+        model.addAttribute("store", storeService.getStoreById(storeId));
+        return "storeAdmin/productReviews";
     }
 }

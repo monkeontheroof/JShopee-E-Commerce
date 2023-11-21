@@ -70,13 +70,13 @@ public class CartService {
         double unitPrice = product.getPrice();
 
         int itemQuantity = 0;
-        if (cartItemList == null) {
+        if (cartItemList.isEmpty()) {
             cartItemList = new ArrayList<>();
             cartItem = new CartItem();
             cartItem.setProduct(product);
 
             cartItem.setQuantity(quantity);
-            cartItem.setTotalPrice(unitPrice);
+            cartItem.setTotalPrice(unitPrice * quantity);
             cartItem.setCart(cart);
             cartItemList.add(cartItem);
             cartItem.setCart(cart);
@@ -87,13 +87,14 @@ public class CartService {
                 cartItem.setProduct(product);
 
                 cartItem.setQuantity(quantity);
-                cartItem.setTotalPrice(unitPrice);
+                cartItem.setTotalPrice(unitPrice * quantity);
                 cartItem.setCart(cart);
                 cartItemList.add(cartItem);
                 cartItemRepository.save(cartItem);
             } else {
                 itemQuantity = cartItem.getQuantity() + quantity;
                 cartItem.setQuantity(itemQuantity);
+                cartItem.setTotalPrice(itemQuantity * cartItem.getProduct().getPrice());
                 cartItemRepository.save(cartItem);
             }
         }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,15 +26,13 @@ public class Voucher {
 
     private String name;
 
-    private double discountPercent;
+    private double discountAmount;
 
     private int quantity;
+
+    private LocalDateTime expiryDate;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private Order order;
 }

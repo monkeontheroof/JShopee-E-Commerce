@@ -45,7 +45,7 @@
             <td scope="row" th:text="${iStat.index + 1}">1</td>
             <td th:text="${voucher.name}">Larry</td>
             <td th:text="${voucher.code}">Larry</td>
-            <td th:text="${voucher.discountPercent} * 100 + ' %'">Larry</td>
+            <td th:text="${voucher.getDiscountAmount} * 100 + ' %'">Larry</td>
             <td th:text="${voucher.quantity}">Larry</td>
             <td>
                 <a href="" th:href="@{'/store/' + ${store.getId()} + '/vouchers/update/' + ${voucher.id}}" class="btn btn-success">

@@ -3,7 +3,6 @@ package com.group5.ecommerce.controller;
 import com.group5.ecommerce.model.Cart;
 import com.group5.ecommerce.model.CustomUserDetail;
 import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.Review;
 import com.group5.ecommerce.service.CartService;
 import com.group5.ecommerce.service.CategoryService;
 import com.group5.ecommerce.service.ProductService;
@@ -11,8 +10,6 @@ import com.group5.ecommerce.service.ReviewService;
 import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
+import static com.group5.ecommerce.controller.HomeController.getUserId;
+
 @Controller
+
 @RequestMapping("/shop")
 public class ShopController {
 
@@ -52,6 +53,15 @@ public class ShopController {
         model.addAttribute("products", productService.getProductsByCategoryId(id));
         model.addAttribute("cartCount", CartUtil.cart.size());
         return "shop"; //shop.html will be rendered here.
+    }
+    @GetMapping("/products")
+    public String getProductsByCategory(Model model){
+        List<Product> products = productService.getAllProduct();
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        getUserId(model, cartService);
+        model.addAttribute("products", products);
+        model.addAttribute("formatter", formatter);
+        return "clients/products";
     }
 
     @GetMapping("/viewProduct/{id}")

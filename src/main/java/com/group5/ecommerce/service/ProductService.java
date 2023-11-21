@@ -74,13 +74,29 @@ public class ProductService {
         return productRepository.findByQuantityLessThan(quantity);
     }
 
-    public void addProduct(Product product, MultipartFile file, String imgName, Long storeId) throws IOException {
-        String imageUUID = (file != null && !file.isEmpty()) ? saveImage(file) : imgName;
-        UserStore store = storeService.getStoreById(storeId);
-        product.setImageName(imageUUID);
-        product.setStore(store);
+    public void addProduct(Product product, Long storeId){
+        product.setStore(storeService.getStoreById(storeId));
         productRepository.save(product);
     }
+
+//    public void addProduct(Product product, MultipartFile[] files, Long storeId) throws IOException {
+//        List<ProductImage> imageFiles = Arrays.stream(files).map(file -> {
+//            ProductImage image = null;
+//            try {
+//                image = ProductImage.builder()
+//                        .imageName(saveImage(file))
+//                        .product(product)
+//                        .build();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//            return image;
+//        }).collect(Collectors.toList());
+//        product.setImages(imageFiles);
+//        UserStore store = storeService.getStoreById(storeId);
+//        product.setStore(store);
+//        productRepository.save(product);
+//    }
 
     public void addDetail(ProductDetail detail, Long productId){
         Optional<Product> product = productRepository.findById(productId);

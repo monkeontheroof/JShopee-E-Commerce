@@ -38,7 +38,7 @@ public class HomeController {
         List<Product> products = productService.getAllProduct();
         DecimalFormat formatter = new DecimalFormat("#,###");
         getUserId(model, cartService);
-        model.addAttribute("products", products);
+        model.addAttribute("products", products.subList(0, Math.min(5, products.size())));
         model.addAttribute("formatter", formatter);
         return "clients/home";
     }
