@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -17,9 +16,6 @@ import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import static com.group5.ecommerce.controller.HomeController.getUserId;
 
 @Controller
 public class StoreAdminController {
@@ -66,7 +62,7 @@ public class StoreAdminController {
         model.addAttribute("orderCount", orders.size());
         model.addAttribute("productCount", userStore.getProducts().size());
         model.addAttribute("productAlmostOutCount", productsAlmostOut.size());
-        return "storeAdmin/adminHome";
+        return "store/index";
     }
 
     @GetMapping("/store/{storeId}/categories")
