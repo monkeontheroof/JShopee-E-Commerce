@@ -71,7 +71,7 @@ public class StoreAdminController {
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
-        return "storeAdmin/categories";
+        return "store/categories";
     }
 
     @GetMapping("/store/{storeId}/categories/add")
@@ -81,7 +81,7 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("category", new Category());
         model.addAttribute("storeId", storeId);
-        return "storeAdmin/categoriesAdd";
+        return "store/categories-add";
     }
 
     @PostMapping("/store/{storeId}/categories/add")
