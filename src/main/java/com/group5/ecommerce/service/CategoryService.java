@@ -22,6 +22,10 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public List<Category> getCategoriesByNameContaining(String name) {
+        return categoryRepository.findAllByNameContaining(name);
+    }
+
     public List<Category> getAllCategoryByStoreId(Long id) {
         return categoryRepository.findAllByStoreId(id);
     }

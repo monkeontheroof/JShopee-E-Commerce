@@ -64,6 +64,18 @@ public class ShopController {
         return "clients/products";
     }
 
+    //get all products by category name
+    @GetMapping("/{categoryName}/products")
+    public String getProductsByCategoryName(Model model,
+                                            @PathVariable("categoryName") String categoryName){
+        List<Product> products = productService.getProductsByCategoryName(categoryName);
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        getUserId(model, cartService);
+        model.addAttribute("products", products);
+        model.addAttribute("formatter", formatter);
+        return "clients/products";
+    }
+
     @GetMapping("/viewProduct/{id}")
     public String viewProduct(Model model, @PathVariable("id") long id) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -72,11 +84,11 @@ public class ShopController {
 
         SecurityUtil.getPrincipal().ifPresent(principal -> {
             Long userId = principal.getId();
-            if(userId != null && userId.equals(product.getStore().getUser().getId())){
-                Cart cart = cartService.getCartByUserId(userId);
-                int cartCount = cartService.countCartItems(cart);
-                model.addAttribute("cartCount", cartCount);
-                model.addAttribute("cart", cart);
+            Cart cart = cartService.getCartByUserId(userId);
+            int cartCount = cartService.countCartItems(cart);
+            model.addAttribute("cartCount", cartCount);
+            model.addAttribute("cart", cart);
+            if(userId.equals(product.getStore().getUser().getId())){
                 model.addAttribute("canDelete", true);
             }
         });

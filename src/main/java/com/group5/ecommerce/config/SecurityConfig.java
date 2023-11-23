@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -42,23 +44,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        SecurityContextRepository repo = new HttpSessionSecurityContextRepository();
         http
-            .authorizeRequests()
-                .antMatchers("/", "/shop/**", "/register", "/static/**","/assets/**", "/css/**", "/js/**", "/images/**", "/productImages/**")
+                .authorizeRequests()
+                .antMatchers("/", "/shop/**", "/register", "/static/**", "/assets/**", "/css/**", "/js/**", "/images/**", "/productImages/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/store/{storeId}/**").hasRole("STORE_ADMIN")
                 .anyRequest()
                 .authenticated()
-            .and()
+                .and()
                 .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .maximumSessions(1)
                 .expiredUrl("/login?expired")
                 .and()
                 .and()
 //                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            .formLogin()
+                .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .successHandler(customAuthenticationSuccessHandler)
@@ -77,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .and()
                 .exceptionHandling()
+                .accessDeniedPage("/404")
                 .and()
                 .csrf()
                 .disable();
@@ -90,18 +93,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
-    }
-
-    @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/resources/**", "/static/**", "/images/**", "/productImages/**", "/css/**", "/js/**");
     }
 
     @Bean
-    public SessionRegistry sessionRegistry(){
-        return new SessionRegistryImpl();
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }

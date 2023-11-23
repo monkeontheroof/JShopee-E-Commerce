@@ -3,6 +3,7 @@ package com.group5.ecommerce.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -18,4 +19,7 @@ public class Category {
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

@@ -1,27 +1,29 @@
 package com.group5.ecommerce.controller;
 
+import com.group5.ecommerce.config.JwtUtils;
+import com.group5.ecommerce.model.LoginRequest;
 import com.group5.ecommerce.model.RegistrationForm;
-import com.group5.ecommerce.model.Role;
-import com.group5.ecommerce.model.User;
-import com.group5.ecommerce.repository.RoleRepository;
-import com.group5.ecommerce.repository.UserRepository;
+import com.group5.ecommerce.service.CustomUserDetailService;
 import com.group5.ecommerce.service.UserService;
-import com.group5.ecommerce.utils.CartUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
-public class LoginController {
+public class AuthController {
     @Autowired
     private UserService userService;
 

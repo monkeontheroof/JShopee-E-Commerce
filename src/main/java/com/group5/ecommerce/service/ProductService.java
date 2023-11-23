@@ -23,19 +23,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    private static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/productImages";
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
 
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
     @Autowired
     private StoreService storeService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private ModelMapper mapper;
@@ -66,6 +65,17 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<Product> getProductsByCategoryName(String categoryName){
+        List<Category> categories = categoryService.getCategoriesByNameContaining(categoryName.trim());
+        List<Product> products = new ArrayList<>();
+        if(!categories.isEmpty()){
+            categories.forEach(c -> {
+                products.addAll(c.getProducts());
+            });
+        }
+        return products;
+    }
+
     public Optional<Product> getProductById(Long id){
         return productRepository.findById(id).map(p -> mapper.map(p, Product.class));
     }
@@ -78,25 +88,6 @@ public class ProductService {
         product.setStore(storeService.getStoreById(storeId));
         productRepository.save(product);
     }
-
-//    public void addProduct(Product product, MultipartFile[] files, Long storeId) throws IOException {
-//        List<ProductImage> imageFiles = Arrays.stream(files).map(file -> {
-//            ProductImage image = null;
-//            try {
-//                image = ProductImage.builder()
-//                        .imageName(saveImage(file))
-//                        .product(product)
-//                        .build();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//            return image;
-//        }).collect(Collectors.toList());
-//        product.setImages(imageFiles);
-//        UserStore store = storeService.getStoreById(storeId);
-//        product.setStore(store);
-//        productRepository.save(product);
-//    }
 
     public void addDetail(ProductDetail detail, Long productId){
         Optional<Product> product = productRepository.findById(productId);
@@ -124,13 +115,6 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    private String saveImage(MultipartFile file) throws IOException {
-        String imageUUID = file.getOriginalFilename();
-        Path fileNameAndPath = Paths.get(uploadDir, imageUUID);
-        Files.write(fileNameAndPath, file.getBytes());
-        return imageUUID;
-    }
-
     public List<Review> getReviewsByProductId(long productId){
         Product product = getProductById(productId).get();
         List<Review> productReviews = product.getReviews();
@@ -140,5 +124,9 @@ public class ProductService {
             productRepository.save(product);
         }
         return productReviews;
+    }
+
+    public void saveProduct(Product product){
+        productRepository.save(product);
     }
 }

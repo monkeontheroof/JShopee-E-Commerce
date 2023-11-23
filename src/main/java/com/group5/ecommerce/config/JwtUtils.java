@@ -3,7 +3,6 @@ package com.group5.ecommerce.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +16,12 @@ public class JwtUtils {
 
     private final String secretKey = "secret";
 
-    public String generateToken(UserDetails userDetails, Map<String, Object> claims) {
-        return createToken(claims, userDetails);
+    public String generateToken(UserDetails userDetails) {
+        return createToken(userDetails);
     }
 
-    private String createToken(Map<String, Object> claims, UserDetails userDetails) {
+    private String createToken(UserDetails userDetails) {
         return Jwts.builder()
-                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .claim("authorities", userDetails.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -32,7 +30,7 @@ public class JwtUtils {
     }
 
     public Boolean isTokenValid(String token, UserDetails userDetails){
-        final String username = extractUsername(token);
+        final String username = extractEmail(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
@@ -44,7 +42,7 @@ public class JwtUtils {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public String extractUsername(String token) {
+    public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 

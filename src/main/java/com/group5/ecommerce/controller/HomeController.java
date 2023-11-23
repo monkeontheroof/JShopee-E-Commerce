@@ -43,6 +43,11 @@ public class HomeController {
         return "clients/home";
     }
 
+    @GetMapping("/404")
+    public String get404() {
+        return "clients/404";
+    }
+
     static void getUserId(Model model, CartService cartService) {
         User user = SecurityUtil.getPrincipal().orElse(null);
         if(user != null && user.getId() != null){
