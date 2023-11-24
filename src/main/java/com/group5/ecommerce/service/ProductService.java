@@ -85,6 +85,8 @@ public class ProductService {
     }
 
     public void addProduct(Product product, Long storeId){
+        if(product.getQuantity() < 1)
+            throw new RuntimeException("Product quantity must be greater than 0");
         product.setStore(storeService.getStoreById(storeId));
         productRepository.save(product);
     }

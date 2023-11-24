@@ -37,12 +37,8 @@ public class ImageService {
         return;
     }
 
-    public void removeProductImages(Long productId, Long imageId) throws IOException {
-        Optional<Product> product = productService.getProductById(productId);
-        product.ifPresent(value -> {
-            value.getImages().remove(productImageRepository.findById(imageId).orElse(null));
-            productService.saveProduct(product.get());
-        });
+    public void removeProductImages(Long imageId){
+        productImageRepository.deleteById(imageId);
     }
 
     private String saveImage(MultipartFile file) throws IOException {

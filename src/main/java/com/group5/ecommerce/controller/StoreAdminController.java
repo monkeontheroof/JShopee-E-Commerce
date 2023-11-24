@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -39,6 +40,9 @@ public class StoreAdminController {
     private ReviewService reviewService;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private CartService cartService;
 
 //    @GetMapping("/sideMenu")
@@ -67,10 +71,16 @@ public class StoreAdminController {
 
     @GetMapping("/store/{storeId}/categories")
     public String getCat(Model model,
-                         @PathVariable("storeId") Long storeId) {
+                         @PathVariable("storeId") Long storeId,
+                         @RequestParam(name = "page", defaultValue = "1") int page,
+                         @RequestParam(name = "size", defaultValue = "10") int size) {
         UserStore userStore = storeService.getStoreById(storeId);
+        Page<Category> categoriesPage = categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(page - 1, size));
         model.addAttribute("store", userStore);
-        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
+        model.addAttribute("categories", categoriesPage.getContent());
+        model.addAttribute("totalPages", categoriesPage.getTotalPages());
+        model.addAttribute("currentPage", categoriesPage.getNumber() + 1);
+        model.addAttribute("pageSize", size);
         return "store/categories";
     }
 
@@ -112,20 +122,21 @@ public class StoreAdminController {
     }
 
 
-
     //PRODUCT SESSIONS
 
     @GetMapping("/store/{storeId}/products")
     public String getProducts(Model model,
                               @PathVariable("storeId") Long storeId,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "10") int size){
+                              @RequestParam(name = "page", defaultValue = "1") int page,
+                              @RequestParam(name = "size", defaultValue = "10") int size){
         UserStore userStore = storeService.getStoreById(storeId);
-        Page<Product> productsPage = productService.getAllProductByStoreId(storeId, PageRequest.of(page, size));
+        Page<Product> productsPage = productService.getAllProductByStoreId(storeId, PageRequest.of(page - 1, size));
         model.addAttribute("store", userStore);
         model.addAttribute("products", productsPage.getContent());
-        model.addAttribute("page", productsPage);
-        return "storeAdmin/products";
+        model.addAttribute("totalPages", productsPage.getTotalPages());
+        model.addAttribute("currentPage", productsPage.getNumber() + 1);
+        model.addAttribute("pageSize", size);
+        return "store/products";
     }
 
     @GetMapping("/store/{storeId}/products/{id}/details")
@@ -157,9 +168,10 @@ public class StoreAdminController {
     @PostMapping("/store/{storeId}/products/{id}/details/add")
     public String postAddDetail(@ModelAttribute("detail") ProductDetail productDetail,
                                 @PathVariable("storeId") Long storeId,
-                                @PathVariable("id") Long productId) {
+                                @PathVariable("id") Long productId,
+                                HttpServletRequest request) {
         productService.addDetail(productDetail, productId);
-        return "redirect:/store/" + storeId + "/products/" + productDetail.getProduct().getId() + "/details";
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @PostMapping(value = "/update-detail", params = "action=update")
@@ -170,9 +182,6 @@ public class StoreAdminController {
         productService.updateDetail(detailId, description);
 
         String referer = request.getHeader("Referer");
-        if(referer == null || referer.isEmpty())
-            return "redirect:/details";
-
         return "redirect:" + referer;
     }
 
@@ -191,12 +200,16 @@ public class StoreAdminController {
     @GetMapping("/store/{storeId}/products/add")
     public String getAddProduct(Model model,
                                 @PathVariable("storeId") Long storeId){
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
+        model.addAttribute("decimalFormatter", formatter);
+        model.addAttribute("datetimeFormatter", dateTimeFormatter);
         model.addAttribute("product", new Product());
-        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
+        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(1, 1)).getContent());
         model.addAttribute("isUpdate", false);
-        return "storeAdmin/productsAdd";
+        return "store/product-add";
     }
 
     @PostMapping("/store/{storeId}/products/add")
@@ -221,13 +234,25 @@ public class StoreAdminController {
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("product", productService.getProductById(id).orElse(null));
-        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId));
+        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(1,1)).getContent());
         model.addAttribute("isUpdate", true);
-        return "storeAdmin/productsAdd";
+        return "store/product-add";
     }
 
+    @PostMapping(value = "/upload-productImage")
+    public String postProductImage(@RequestParam("image")MultipartFile file,
+                                   @RequestParam("productId") Long productId,
+                                   HttpServletRequest request) throws IOException {
+        imageService.addProductImages(productId, file);
+        return "redirect:" + request.getHeader("Referer");
+    }
 
-
+    @GetMapping("/remove-productImage/{imageId}")
+    public String removeProductImage(@PathVariable("imageId") Long imageId,
+                                     HttpServletRequest request) {
+        imageService.removeProductImages(imageId);
+        return "redirect:" + request.getHeader("Referer");
+    }
     // CUSTOMER SESSIONS //
     @GetMapping("/store/{storeId}/customers")
     public String getCustomers(Model model,
@@ -239,8 +264,13 @@ public class StoreAdminController {
         return "storeAdmin/customer";
     }
 
-
-
+    @GetMapping("/delete-reviews/{id}")
+    public String deleteReviews(Model model,
+                                @PathVariable("id") Long reviewId,
+                                HttpServletRequest request){
+        reviewService.remove(reviewId);
+        return "redirect:" + request.getHeader("Referer");
+    }
     // ORDER SESSIONS //
     @GetMapping("/store/{storeId}/orders")
     public String getOrders(Model model,

@@ -5,6 +5,8 @@ import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,8 +28,8 @@ public class CategoryService {
         return categoryRepository.findAllByNameContaining(name);
     }
 
-    public List<Category> getAllCategoryByStoreId(Long id) {
-        return categoryRepository.findAllByStoreId(id);
+    public Page<Category> getAllCategoryByStoreId(Long id, Pageable pageRequest) {
+        return categoryRepository.findAllByStoreId(id, pageRequest);
     }
 
     public Optional<Category> getCategoryById(Long id) {

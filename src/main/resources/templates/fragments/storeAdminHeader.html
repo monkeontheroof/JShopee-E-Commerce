@@ -104,7 +104,7 @@
                                             <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
                                                 <li><a href="#"><span class="icon nalika-user author-log-ic"></span> My Profile</a>
                                                 </li>
-                                                <li><a th:href="@{/logout}"><span class="icon nalika-unlocked author-log-ic"></span> Log Out</a>
+                                                <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}"><span class="icon nalika-unlocked author-log-ic"></span> Log Out</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -125,18 +125,15 @@
                     <div class="mobile-menu">
                         <nav id="dropdown">
                             <ul class="mobile-menu-nav">
-                                <li><a data-toggle="collapse" data-target="#Charts" href="#">Home <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>
+                                <li>
+                                    <a data-toggle="collapse" data-target="#Charts" th:href="@{/store/home}">Trang chủ
+                                        <span class="admin-project-icon nalika-icon nalika-down-arrow"></span>
+                                    </a>
                                     <ul class="collapse dropdown-header-top">
-                                        <li><a href="index.html">Dashboard v.1</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/index-1.html">Dashboard v.2</a></li>
-                                        <li><a href="index-3.html">Dashboard v.3</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/product-list.html">Product List</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/product-edit.html">Product Edit</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/product-detail.html">Product Detail</a></li>
-                                        <li><a href="product-cart.html">Product Cart</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/product-payment.html">Product Payment</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/analytics.html">Analytics</a></li>
-                                        <li><a href="../../../../../../../Downloads/nalika/widgets.html">Widgets</a></li>
+                                        <li><a th:href="@{/store/home}"><span class="mini-sub-pro">Dashboard</span></a></li>
+                                        <li><a th:href="@{/store/{id}/categories(id=${store.id})}"><span class="mini-sub-pro">Danh mục</span></a></li>
+                                        <li><a th:href="@{/nalika/order.html}"><span class="mini-sub-pro">Order</span></a></li>
+                                        <li><a th:href="@{/product-cart.html}"><span class="mini-sub-pro">Analytics</span></a></li>
                                     </ul>
                                 </li>
                                 <li><a data-toggle="collapse" data-target="#demo" href="#">Mailbox <span class="admin-project-icon nalika-icon nalika-down-arrow"></span></a>

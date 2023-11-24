@@ -21,6 +21,7 @@ public class ProductDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(unique = true)
     private String name;
 
     private String description;

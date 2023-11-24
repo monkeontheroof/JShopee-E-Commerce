@@ -50,9 +50,12 @@ public class Product {
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 //    private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductDetail> details;
+
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "product")
+    private CartItem cartItem;
 }

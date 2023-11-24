@@ -30,14 +30,14 @@
             <nav class="sidebar-nav left-sidebar-menu-pro">
                 <ul class="metismenu" id="menu1">
                     <li class="active">
-                        <a class="has-arrow" href="index.html">
+                        <a class="has-arrow" href="#">
                             <i class="icon nalika-home icon-wrap"></i>
                             <span class="mini-click-non">Trang chủ</span>
                         </a>
                         <ul class="submenu-angle" aria-expanded="true">
                             <li><a title="Dashboard v.1" th:href="@{/store/home}"><span class="mini-sub-pro">Dashboard</span></a></li>
                             <li><a title="Product List" th:href="@{/store/{id}/categories(id=${store.id})}"><span class="mini-sub-pro">Danh mục</span></a></li>
-                            <li><a title="Product Payment" href="/nalika/order.html"><span class="mini-sub-pro">Order</span></a></li>
+                            <li><a title="Product Payment" th:href="@{/store/{id}/products(id=${store.id})}"><span class="mini-sub-pro">Sản phẩm</span></a></li>
                             <li><a title="Product Cart" href="product-cart.html"><span class="mini-sub-pro">Analytics</span></a></li>
                         </ul>
                     </li>
@@ -52,7 +52,7 @@
                     <li id="removable">
                         <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">Pages</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="Login" href="/nalika/login.html"><span class="mini-sub-pro">Login</span></a></li>
+                            <li><a title="Login" th:href="@{/store/home}"><span class="mini-sub-pro">Login</span></a></li>
                             <li><a title="Register" href="/nalika/register.html"><span class="mini-sub-pro">Register</span></a></li>
                             <li><a title="Lock" href="/nalika/lock.html"><span class="mini-sub-pro">Lock</span></a></li>
                             <li><a title="Password Recovery" href="/nalika/password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>

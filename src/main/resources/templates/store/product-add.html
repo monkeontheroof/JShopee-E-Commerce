@@ -91,233 +91,149 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="review-tab-pro-inner">
                                 <ul id="myTab3" class="tab-review-design">
-                                    <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i> Product Edit</a></li>
-                                    <li><a href="#reviews"><i class="icon nalika-picture" aria-hidden="true"></i> Pictures</a></li>
-                                    <li><a href="#INFORMATION"><i class="icon nalika-chat" aria-hidden="true"></i> Review</a></li>
+                                    <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true" ></i> Sản phẩm</a></li>
+                                    <li th:if="${product.id != null}"><a href="#details"><i class="fa fa-info-circle" aria-hidden="true" ></i>Chi tiết</a></li>
+                                    <li th:if="${product.id != null}"><a href="#reviews"><i class="icon nalika-picture" aria-hidden="true"></i>Hình ảnh</a></li>
+                                    <li th:if="${product.id != null}"><a href="#INFORMATION"><i class="icon nalika-chat" aria-hidden="true"></i>Đánh giá</a></li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content custom-product-edit">
                                     <div class="product-tab-list tab-pane fade active in" id="description">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                <div class="review-content-section">
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="First Name">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-edit" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Product Title">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Regular Price">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-new-file" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Tax">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-favorites" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Quantity">
+                                        <form th:action="@{/store/{storeId}/products/add(storeId=${store.getId()})}" method="post" th:object="${product}">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <input type="hidden" name="id" th:field="*{id}">
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
+                                                            <input type="text" class="form-control" placeholder="Tên sản phẩm" required th:field="*{name}" name="name" id="name">
+                                                        </div>
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                                            <select th:field="*{category}" id="category" name="category" required class="form-control pro-edt-select form-control-primary">
+                                                                <option th:each="category :${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
+                                                            <input type="number" class="form-control" placeholder="Giá tiền" required th:field="*{price}"
+                                                                   th:value="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}" name="price" id="price">
+                                                        </div>
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i class="icon nalika-favorites" aria-hidden="true"></i></span>
+                                                            <input type="text" class="form-control" placeholder="Số lượng" th:field="*{quantity}" name="quantity" id="quantity">
+                                                        </div>
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i class="icon nalika-new-file" aria-hidden="true"></i></span>
+                                                            <textarea type="text" class="form-control" placeholder="Mô tả sản phẩm" th:field="*{description}" rows="5" name="description" id="description" required></textarea>
+                                                        </div>
+                                                        <div class="">
+                                                            <div class="text-center custom-pro-edt-ds">
+                                                                <button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
+                                                                </button>
+                                                                <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                <div class="review-content-section">
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Last Name">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-favorites-button" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Product Description">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Sale Price">
-                                                    </div>
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="icon nalika-like" aria-hidden="true"></i></span>
-                                                        <input type="text" class="form-control" placeholder="Category">
-                                                    </div>
-                                                    <select name="select" class="form-control pro-edt-select form-control-primary">
-															<option value="opt1">Select One Value Only</option>
-															<option value="opt2">2</option>
-															<option value="opt3">3</option>
-															<option value="opt4">4</option>
-															<option value="opt5">5</option>
-															<option value="opt6">6</option>
-														</select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </form>
+                                    </div>
+                                    <div th:if="${product.id != null}" class="product-tab-list tab-pane fade" id="details">
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="text-center custom-pro-edt-ds">
-                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save
-														</button>
-                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard
-														</button>
+                                                <form th:action="@{/update-detail}" method="post">
+                                                <div class="product-status-wrap">
+                                                    <a th:href="@{/store/{storeId}/products/{id}/details/add (storeId=${storeId}, id=${product.id})}" style="margin: 20px 0" class="btn btn-primary">Thêm chi tiết
+                                                    </a>
+                                                    <table>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Tên chi tiết</th>
+                                                            <th>Mô tả</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        <tr th:each="detail, iStat : ${product.details}">
+                                                            <td th:text="${iStat.index} + 1"></td>
+                                                            <td th:text="${detail.name}"></td>
+                                                            <td>
+                                                                <textarea type="text" class="form-control" th:text="${detail.description}" rows="3" cols="1" id="description" name="description"></textarea>
+                                                            </td>
+                                                            <td>
+                                                                <input name="id" id="id" th:value="${detail.id}" hidden="hidden">
+                                                                <button type="submit" name="action" value="update" class="btn btn-success">
+                                                                    <i class="fa fa-cog"></i>
+                                                                </button>
+                                                                <!--                    <a th:data-confirm-delete="|Are you sure you want to delete this detail: ${detail.name}?|"-->
+                                                                <!--                       onclick="return confirm(this.getAttribute('data-confirm-delete'))"-->
+                                                                <!--                       href="" th:href="@{'/store/' + ${store.getId()} + '/products' + ${detail.product.id} + '/delete/' + ${detail.id}}" class="btn btn-danger">-->
+                                                                <!--                        Delete-->
+                                                                <!--                    </a>-->
+                                                                <button th:data-confirm-delete="|Are you sure you want to delete this detail: ${detail.name}?|"
+                                                                        onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+                                                                        type="submit" name="action" value="delete" title="Delete" class="btn btn-danger">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:if="${product.id != null}" class="product-tab-list tab-pane fade" id="reviews">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <div class="product-status-wrap">
+                                                        <form th:action="@{/upload-productImage}" method="post" enctype="multipart/form-data">
+                                                            <div class="col-lg">
+                                                                <input type="hidden" th:value="${product.id}" th:name="productId">
+                                                                <div style="height: 100px; width: 100px" class="pro-edt-img">
+                                                                    <img src="/nalika/img/logo/logosn.png" alt="" id="selectedImage"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="product-edt-pix-wrap">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-addon"><i class="fa fa-file-image-o"></i></span>
+                                                                                <input required accept="image/*" type="file" class="form-control" th:name="image" placeholder="Thêm hình ảnh sản phẩm" id="imageInput">
+                                                                            </div>
+                                                                            <div class="text-right">
+                                                                                <button class="btn btn-primary" type="submit">Thêm hình ảnh</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    <table>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Hình ảnh</th>
+                                                            <th>Tên hình ảnh</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        <tr th:each="image, iStat : ${product.images}">
+                                                            <td th:text="${iStat.index} + 1"></td>
+                                                            <td><img src="" height="50px" width="50px"  th:src="@{${'/productImages/' + image.imageName}}"></td>
+                                                            <td th:text="${image.imageName}"></td>
+                                                            <td>
+                                                                <a th:data-confirm-delete="|Are you sure you want to delete this image: ${image.imageName}?|"
+                                                                   onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+                                                                   th:href="@{/remove-productImage/{id}(id=${image.id})}" class="btn btn-danger" aria-hidden="true">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="product-tab-list tab-pane fade" id="reviews">
-                                        <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="review-content-section">
-                                                    <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <div class="pro-edt-img">
-                                                                <img src="img/new-product/5-small.jpg" alt="" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="product-edt-pix-wrap">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">TT</span>
-                                                                            <input type="text" class="form-control" placeholder="Label Name">
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="form-radio">
-                                                                                    <form>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Largest Image
-																								</label>
-                                                                                        </div>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Medium Image
-																								</label>
-                                                                                        </div>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Small Image
-																								</label>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="product-edt-remove">
-                                                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Remove
-																							<i class="fa fa-times" aria-hidden="true"></i>
-																						</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <div class="pro-edt-img">
-                                                                <img src="img/new-product/6-small.jpg" alt="" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="product-edt-pix-wrap">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">TT</span>
-                                                                            <input type="text" class="form-control" placeholder="Label Name">
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="form-radio">
-                                                                                    <form>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Largest Image
-																								</label>
-                                                                                        </div>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Medium Image
-																								</label>
-                                                                                        </div>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Small Image
-																								</label>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="product-edt-remove">
-                                                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Remove
-																							<i class="fa fa-times" aria-hidden="true"></i>
-																						</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <div class="pro-edt-img mg-b-0">
-                                                                <img src="img/new-product/7-small.jpg" alt="" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="product-edt-pix-wrap">
-                                                                        <div class="input-group">
-                                                                            <span class="input-group-addon">TT</span>
-                                                                            <input type="text" class="form-control" placeholder="Label Name">
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="form-radio">
-                                                                                    <form>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Largest Image
-																								</label>
-                                                                                        </div>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Medium Image
-																								</label>
-                                                                                        </div>
-                                                                                        <div class="radio radiofill">
-                                                                                            <label>
-																									<input type="radio" name="radio"><i class="helper"></i>Small Image
-																								</label>
-                                                                                        </div>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="product-edt-remove">
-                                                                                    <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Remove
-																							<i class="fa fa-times" aria-hidden="true"></i>
-																						</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-tab-list tab-pane fade" id="INFORMATION">
+                                    <div th:if="${product.id != null}" class="product-tab-list tab-pane fade" id="INFORMATION">
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="review-content-section">
@@ -357,23 +273,30 @@
                                                                 <div class="clear"></div>
                                                             </div>
                                                         </div>
-                                                        <div class="input-group mg-b-15 mg-t-15">
-                                                            <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                                                            <input type="text" class="form-control" placeholder="User Name">
-                                                        </div>
-                                                        <div class="input-group mg-b-15">
-                                                            <span class="input-group-addon"><i class="icon nalika-user" aria-hidden="true"></i></span>
-                                                            <input type="text" class="form-control" placeholder="Last Name">
-                                                        </div>
-                                                        <div class="input-group mg-b-15">
-                                                            <span class="input-group-addon"><i class="icon nalika-mail" aria-hidden="true"></i></span>
-                                                            <input type="text" class="form-control" placeholder="Email">
-                                                        </div>
-                                                        <div class="form-group review-pro-edt mg-b-0-pt">
-                                                            <button type="submit" class="btn btn-ctl-bt waves-effect waves-light">Submit
-																</button>
-                                                        </div>
                                                     </div>
+                                                </div>
+                                                <div class="product-status-wrap">
+                                                    <table>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Khách hàng</th>
+                                                            <th>Ngày đánh giá</th>
+                                                            <th>Đánh giá</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        <tr th:each="review, iStat : ${product.reviews}">
+                                                            <td th:text="${iStat.index} + 1"></td>
+                                                            <td th:text="${review.user.firstName} + ' ' + ${review.user.lastName}"></td>
+                                                            <td th:text="${datetimeFormatter.format(review.dateTime)}"></td>
+                                                            <td>
+                                                                <a th:data-confirm-delete="|Are you sure you want to delete this category: ${product.name}?|"
+                                                                   onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+                                                                   href="" th:href="@{/delete-review/{id}(id=${review.id})}" class="btn btn-danger">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,6 +374,21 @@
 <!-- main JS
     ============================================ -->
 <script th:src="@{/nalika/js/main.js}"></script>
+<script>
+    $(document).ready(function() {
+        $('#imageInput').change(function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#selectedImage').attr('src', e.target.result)
+                                        .css({'height': '100px', 'width': '100px'});
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+</script>
 </body>
 
 </html>
