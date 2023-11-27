@@ -40,7 +40,7 @@
                             <li><a title="Product Payment" th:href="@{/store/{id}/products(id=${store.id})}"><span class="mini-sub-pro">Sản phẩm</span></a></li>
                             <li><a title="Product Cart" th:href="@{/store/{id}/orders(id=${store.id})}"><span class="mini-sub-pro">Đơn hàng</span></a></li>
                             <li><a title="Product Cart" th:href="@{/store/{id}/sales(id=${store.id})}"><span class="mini-sub-pro">Doanh thu</span></a></li>
-                            <li><a title="Product Cart" href="product-cart.html"><span class="mini-sub-pro">Analytics</span></a></li>
+                            <li><a title="Product Cart" th:href="@{/store/{id}/vouchers(id=${store.id})}"><span class="mini-sub-pro">Voucher</span></a></li>
                         </ul>
                     </li>
                     <li>

@@ -7,8 +7,12 @@ import com.group5.ecommerce.repository.OrderRepository;
 import com.group5.ecommerce.repository.VoucherRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,16 +28,17 @@ public class VoucherService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Voucher createVoucher(Long storeId, String name, double discount, int quantity){
+    public void createVoucher(Long storeId, Voucher createdVoucher){
         UserStore store = storeService.getStoreById(storeId);
-        return Voucher.builder()
+        Voucher voucher = Voucher.builder()
                 .code(RandomStringUtils.randomAlphanumeric(5).toUpperCase())
-                .discountAmount(discount)
-                .expiryDate(LocalDateTime.now())
-                .name(name)
-                .quantity(quantity)
+                .discountAmount(createdVoucher.getDiscountAmount())
+                .expiryDate(createdVoucher.getExpiryDate())
+                .name(createdVoucher.getName())
+                .quantity(createdVoucher.getQuantity())
                 .store(store)
                 .build();
+        saveVoucher(voucher);
     }
 
     public Order applyVoucherToOrder(Long orderId, Long voucherId) {
@@ -55,8 +60,8 @@ public class VoucherService {
         return order;
     }
 
-    public List<Voucher> findAllVouchersByStore(Long storeId) {
-        return voucherRepository.findAllByStoreId(storeId);
+    public Page<Voucher> findAllVouchersByStore(Long storeId, Pageable pageable) {
+        return voucherRepository.findAllByStoreId(storeId, pageable);
     }
 
     public Voucher findByCode(String code) {

@@ -10,11 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -335,13 +337,45 @@ public class StoreAdminController {
 
     // VOUCHER SESSIONS //
     @GetMapping("/{storeId}/vouchers")
-    public String getVouchers(Model model, @PathVariable("storeId") Long storeId){
+    public String getVouchers(Model model, @PathVariable("storeId") Long storeId,
+                              @RequestParam(name = "page", defaultValue = "1") int page,
+                              @RequestParam(name = "size", defaultValue = "10") int size){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        Page<Voucher> voucherPages = voucherService.findAllVouchersByStore(storeId, PageRequest.of(page - 1, size));
         model.addAttribute("store", storeService.getStoreById(storeId));
-        model.addAttribute("vouchers", voucherService.findAllVouchersByStore(storeId));
-        return "storeAdmin/voucher";
+        model.addAttribute("vouchers", voucherPages.getContent());
+        model.addAttribute("formatter", dateTimeFormatter);
+        model.addAttribute("totalPages", voucherPages.getTotalPages());
+        model.addAttribute("currentPage", voucherPages.getNumber() + 1);
+        model.addAttribute("pageSize", size);
+        return "store/vouchers";
     }
 
+    @GetMapping("/{storeId}/vouchers/add")
+    public String getAddVoucher(@PathVariable("storeId") Long storeId,
+                            Model model){
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("store", userStore);
+        model.addAttribute("voucher", new Voucher());
+        model.addAttribute("storeId", storeId);
+        return "store/vouchers-add";
+    }
 
+    @PostMapping("/{storeId}/vouchers/add")
+    public String postAddVoucher(@ModelAttribute("voucher") Voucher voucher,
+                                 @PathVariable("storeId") Long storeId,
+                                 Model model) {
+        UserStore userStore = storeService.getStoreById(storeId);
+        if(voucher.getExpiryDate().isBefore(LocalDate.now())){
+            model.addAttribute("error", true);
+            model.addAttribute("store", userStore);
+            model.addAttribute("voucher", new Voucher());
+            model.addAttribute("storeId", storeId);
+            return "store/vouchers-add";
+        }
+        voucherService.createVoucher(storeId, voucher);
+        return "redirect:/store/" + storeId + "/vouchers";
+    }
 
     // REVIEWS SESSIONS //
     @GetMapping("/{storeId}/products/{id}/reviews")

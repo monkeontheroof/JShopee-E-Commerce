@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -30,7 +32,8 @@ public class Voucher {
 
     private int quantity;
 
-    private LocalDateTime expiryDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate expiryDate;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
