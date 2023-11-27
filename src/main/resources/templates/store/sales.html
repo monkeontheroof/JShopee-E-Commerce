@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Product Edit | Nalika - Material Admin Template</title>
+    <title>Danh mục sản phẩm</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
@@ -67,7 +67,7 @@
 </head>
 
 <body>
-<div th:replace="fragments/leftSidebar :: leftSidebar">
+    <div th:replace="fragments/leftSidebar :: leftSidebar">
 
 </div>
     <!-- Start Welcome area -->
@@ -82,18 +82,16 @@
             </div>
         </div>
         <div th:replace="fragments/storeAdminHeader :: storeAdminHeader"></div>
-        <!-- Single pro tab start-->
-        <div class="single-product-tab-area mg-b-30">
-            <!-- Single pro tab review Start-->
+        <div class="product-status mg-b-30">
             <div class="single-pro-review-area">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="review-tab-pro-inner">
                                 <ul id="myTab3" class="tab-review-design">
-                                    <li class="active"><a href="#productDetail"><i class="icon nalika-edit" aria-hidden="true" ></i> Sản phẩm</a></li>
-                                    <li th:if="${product.id != null}"><a href="#details"><i class="fa fa-info-circle" aria-hidden="true" ></i>Chi tiết</a></li>
-                                    <li th:if="${product.id != null}"><a href="#reviews"><i class="icon nalika-picture" aria-hidden="true"></i>Hình ảnh</a></li>
+                                    <li class="active"><a href="#productDetail"><i class="icon nalika-edit" aria-hidden="true" ></i>Theo sản phẩm</a></li>
+                                    <li th:if="${product.id != null}"><a href="#details"><i class="fa fa-info-circle" aria-hidden="true" ></i>Theo ngày</a></li>
+                                    <li th:if="${product.id != null}"><a href="#reviews"><i class="icon nalika-picture" aria-hidden="true"></i></a></li>
                                     <li th:if="${product.id != null}"><a href="#INFORMATION"><i class="icon nalika-chat" aria-hidden="true"></i>Đánh giá</a></li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content custom-product-edit">
@@ -117,10 +115,10 @@
                                                             <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
                                                             <input type="number" class="form-control" placeholder="Giá tiền" required th:field="*{price}"
                                                                    th:value="${#numbers.formatCurrency(product.price)}" name="price" id="price">
-                                                        </div>
+                                                        </div>1
                                                         <div class="input-group mg-b-pro-edt">
-                                                            <span class="input-group-addon"><i class="icon nalika-settings" aria-hidden="true"></i></span>
-                                                            <input type="number" class="form-control" placeholder="Số lượng" required th:value="${product.quantity}" name="quantity" id="quantity">
+                                                            <span class="input-group-addon"><i class="icon nalika-favorites" aria-hidden="true"></i></span>
+                                                            <input type="number" class="form-control" placeholder="Số lượng" th:field="*{quantity}" name="quantity" id="quantity">
                                                         </div>
                                                         <div class="input-group mg-b-pro-edt">
                                                             <span class="input-group-addon"><i class="icon nalika-new-file" aria-hidden="true"></i></span>
@@ -142,42 +140,42 @@
                                     <div th:if="${product.id != null}" class="product-tab-list tab-pane fade" id="details">
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <form th:action="@{/store/update-detail}" method="post">
-                                                <div class="product-status-wrap">
-                                                    <a th:href="@{/store/{storeId}/products/{id}/details/add (storeId=${storeId}, id=${product.id})}" style="margin: 20px 0" class="btn btn-primary">Thêm chi tiết
-                                                    </a>
-                                                    <table>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Tên chi tiết</th>
-                                                            <th>Mô tả</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        <tr th:each="detail, iStat : ${product.details}">
-                                                            <td th:text="${iStat.index} + 1"></td>
-                                                            <td th:text="${detail.name}"></td>
-                                                            <td>
-                                                                <textarea type="text" class="form-control" th:text="${detail.description}" rows="3" cols="1" id="description" name="description"></textarea>
-                                                            </td>
-                                                            <td>
-                                                                <input name="id" id="id" th:value="${detail.id}" hidden="hidden">
-                                                                <button type="submit" name="action" value="update" class="btn btn-success">
-                                                                    <i class="fa fa-cog"></i>
-                                                                </button>
-                                                                <!--                    <a th:data-confirm-delete="|Are you sure you want to delete this detail: ${detail.name}?|"-->
-                                                                <!--                       onclick="return confirm(this.getAttribute('data-confirm-delete'))"-->
-                                                                <!--                       href="" th:href="@{'/store/' + ${store.getId()} + '/products' + ${detail.product.id} + '/delete/' + ${detail.id}}" class="btn btn-danger">-->
-                                                                <!--                        Delete-->
-                                                                <!--                    </a>-->
-                                                                <button th:data-confirm-delete="|Are you sure you want to delete this detail: ${detail.name}?|"
-                                                                        onclick="return confirm(this.getAttribute('data-confirm-delete'))"
-                                                                        type="submit" name="action" value="delete" title="Delete" class="btn btn-danger">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
+                                                <form th:action="@{/update-detail}" method="post">
+                                                    <div class="product-status-wrap">
+                                                        <a th:href="@{/store/{storeId}/products/{id}/details/add (storeId=${storeId}, id=${product.id})}" style="margin: 20px 0" class="btn btn-primary">Thêm chi tiết
+                                                        </a>
+                                                        <table>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Tên chi tiết</th>
+                                                                <th>Mô tả</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                            <tr th:each="detail, iStat : ${product.details}">
+                                                                <td th:text="${iStat.index} + 1"></td>
+                                                                <td th:text="${detail.name}"></td>
+                                                                <td>
+                                                                    <textarea type="text" class="form-control" th:text="${detail.description}" rows="3" cols="1" id="description" name="description"></textarea>
+                                                                </td>
+                                                                <td>
+                                                                    <input name="id" id="id" th:value="${detail.id}" hidden="hidden">
+                                                                    <button type="submit" name="action" value="update" class="btn btn-success">
+                                                                        <i class="fa fa-cog"></i>
+                                                                    </button>
+                                                                    <!--                    <a th:data-confirm-delete="|Are you sure you want to delete this detail: ${detail.name}?|"-->
+                                                                    <!--                       onclick="return confirm(this.getAttribute('data-confirm-delete'))"-->
+                                                                    <!--                       href="" th:href="@{'/store/' + ${store.getId()} + '/products' + ${detail.product.id} + '/delete/' + ${detail.id}}" class="btn btn-danger">-->
+                                                                    <!--                        Delete-->
+                                                                    <!--                    </a>-->
+                                                                    <button th:data-confirm-delete="|Are you sure you want to delete this detail: ${detail.name}?|"
+                                                                            onclick="return confirm(this.getAttribute('data-confirm-delete'))"
+                                                                            type="submit" name="action" value="delete" title="Delete" class="btn btn-danger">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -186,29 +184,29 @@
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                 <div class="product-status-wrap">
-                                                        <form th:action="@{/store/upload-productImage}" method="post" enctype="multipart/form-data">
-                                                            <div class="col-lg">
-                                                                <input type="hidden" th:value="${product.id}" th:name="productId">
-                                                                <div style="height: 100px; width: 100px" class="pro-edt-img">
-                                                                    <img src="/nalika/img/logo/logosn.png" alt="" id="selectedImage"/>
-                                                                </div>
+                                                    <form th:action="@{/upload-productImage}" method="post" enctype="multipart/form-data">
+                                                        <div class="col-lg">
+                                                            <input type="hidden" th:value="${product.id}" th:name="productId">
+                                                            <div style="height: 100px; width: 100px" class="pro-edt-img">
+                                                                <img src="/nalika/img/logo/logosn.png" alt="" id="selectedImage"/>
                                                             </div>
-                                                            <div class="col-lg-8">
-                                                                <div class="row">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="product-edt-pix-wrap">
-                                                                            <div class="input-group">
-                                                                                <span class="input-group-addon"><i class="fa fa-file-image-o"></i></span>
-                                                                                <input required accept="image/*" type="file" class="form-control" th:name="image" placeholder="Thêm hình ảnh sản phẩm" id="imageInput">
-                                                                            </div>
-                                                                            <div class="text-right">
-                                                                                <button class="btn btn-primary" type="submit">Thêm hình ảnh</button>
-                                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="product-edt-pix-wrap">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon"><i class="fa fa-file-image-o"></i></span>
+                                                                            <input required accept="image/*" type="file" class="form-control" th:name="image" placeholder="Thêm hình ảnh sản phẩm" id="imageInput">
+                                                                        </div>
+                                                                        <div class="text-right">
+                                                                            <button class="btn btn-primary" type="submit">Thêm hình ảnh</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </form>
+                                                        </div>
+                                                    </form>
                                                     <table>
                                                         <tr>
                                                             <th></th>
@@ -321,74 +319,59 @@
         </div>
     </div>
 
-<!-- jquery
-    ============================================ -->
-<script th:src="@{/nalika/js/vendor/jquery-1.12.4.min.js}"></script>
-<!-- bootstrap JS
-    ============================================ -->
-<script th:src="@{/nalika/js/bootstrap.min.js}"></script>
-<!-- wow JS
-    ============================================ -->
-<script th:src="@{/nalika/js/wow.min.js}"></script>
-<!-- price-slider JS
-    ============================================ -->
-<script th:src="@{/nalika/js/jquery-price-slider.js}"></script>
-<!-- meanmenu JS
-    ============================================ -->
-<script th:src="@{/nalika/js/jquery.meanmenu.js}"></script>
-<!-- owl.carousel JS
-    ============================================ -->
-<script th:src="@{/nalika/js/owl.carousel.min.js}"></script>
-<!-- sticky JS
-    ============================================ -->
-<script th:src="@{/nalika/js/jquery.sticky.js}"></script>
-<!-- scrollUp JS
-    ============================================ -->
-<script th:src="@{/nalika/js/jquery.scrollUp.min.js}"></script>
-<!-- mCustomScrollbar JS
-    ============================================ -->
-<script th:src="@{/nalika/js/scrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
-<script th:src="@{/nalika/js/scrollbar/mCustomScrollbar-active.js}"></script>
-<!-- metisMenu JS
-    ============================================ -->
-<script th:src="@{/nalika/js/metisMenu/metisMenu.min.js}"></script>
-<script th:src="@{/nalika/js/metisMenu/metisMenu-active.js}"></script>
-<!-- sparkline JS
-    ============================================ -->
-<script th:src="@{/nalika/js/sparkline/jquery.sparkline.min.js}"></script>
-<script th:src="@{/nalika/js/sparkline/jquery.charts-sparkline.js}"></script>
-<!-- calendar JS
-    ============================================ -->
-<script th:src="@{/nalika/js/calendar/moment.min.js}"></script>
-<script th:src="@{/nalika/js/calendar/fullcalendar.min.js}"></script>
-<script th:src="@{/nalika/js/calendar/fullcalendar-active.js}"></script>
-<!-- float JS
-    ============================================ -->
-<script th:src="@{/nalika/js/flot/jquery.flot.js}"></script>
-<script th:src="@{/nalika/js/flot/jquery.flot.resize.js}"></script>
-<script th:src="@{/nalika/js/flot/curvedLines.js}"></script>
-<script th:src="@{/nalika/js/flot/flot-active.js}"></script>
-<!-- plugins JS
-    ============================================ -->
-<script th:src="@{/nalika/js/plugins.js}"></script>
-<!-- main JS
-    ============================================ -->
-<script th:src="@{/nalika/js/main.js}"></script>
-<script>
-    $(document).ready(function() {
-        $('#imageInput').change(function() {
-            var input = this;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#selectedImage').attr('src', e.target.result)
-                                        .css({'height': '100px', 'width': '100px'});
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        });
-    });
-</script>
+    <!-- jquery
+		============================================ -->
+    <script th:src="@{/nalika/js/vendor/jquery-1.12.4.min.js}"></script>
+    <!-- bootstrap JS
+		============================================ -->
+    <script th:src="@{/nalika/js/bootstrap.min.js}"></script>
+    <!-- wow JS
+		============================================ -->
+    <script th:src="@{/nalika/js/wow.min.js}"></script>
+    <!-- price-slider JS
+		============================================ -->
+    <script th:src="@{/nalika/js/jquery-price-slider.js}"></script>
+    <!-- meanmenu JS
+		============================================ -->
+    <script th:src="@{/nalika/js/jquery.meanmenu.js}"></script>
+    <!-- owl.carousel JS
+		============================================ -->
+    <script th:src="@{/nalika/js/owl.carousel.min.js}"></script>
+    <!-- sticky JS
+		============================================ -->
+    <script th:src="@{/nalika/js/jquery.sticky.js}"></script>
+    <!-- scrollUp JS
+		============================================ -->
+    <script th:src="@{/nalika/js/jquery.scrollUp.min.js}"></script>
+    <!-- mCustomScrollbar JS
+		============================================ -->
+    <script th:src="@{/nalika/js/scrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+    <script th:src="@{/nalika/js/scrollbar/mCustomScrollbar-active.js}"></script>
+    <!-- metisMenu JS
+		============================================ -->
+    <script th:src="@{/nalika/js/metisMenu/metisMenu.min.js}"></script>
+    <script th:src="@{/nalika/js/metisMenu/metisMenu-active.js}"></script>
+    <!-- sparkline JS
+		============================================ -->
+    <script th:src="@{/nalika/js/sparkline/jquery.sparkline.min.js}"></script>
+    <script th:src="@{/nalika/js/sparkline/jquery.charts-sparkline.js}"></script>
+    <!-- calendar JS
+		============================================ -->
+    <script th:src="@{/nalika/js/calendar/moment.min.js}"></script>
+    <script th:src="@{/nalika/js/calendar/fullcalendar.min.js}"></script>
+    <script th:src="@{/nalika/js/calendar/fullcalendar-active.js}"></script>
+    <!-- float JS
+        ============================================ -->
+    <script th:src="@{/nalika/js/flot/jquery.flot.js}"></script>
+    <script th:src="@{/nalika/js/flot/jquery.flot.resize.js}"></script>
+    <script th:src="@{/nalika/js/flot/curvedLines.js}"></script>
+    <script th:src="@{/nalika/js/flot/flot-active.js}"></script>
+    <!-- plugins JS
+		============================================ -->
+    <script th:src="@{/nalika/js/plugins.js}"></script>
+    <!-- main JS
+		============================================ -->
+    <script th:src="@{/nalika/js/main.js}"></script>
 </body>
 
 </html>

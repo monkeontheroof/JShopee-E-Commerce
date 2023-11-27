@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,7 +36,21 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public void register(RegistrationForm registerUser){
+    public User getUserByEmail(String email){
+        if(isValidEmail(email)){
+            Optional<User> user = userRepository.findByEmail(email);
+            if(user.isPresent())
+                return user.get();
+        }
+        return null;
+    }
+
+    private boolean isValidEmail(String email) {
+        //check if the email is valid using regex pattern
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") && !email.isEmpty();
+    }
+
+    public void createNewUser(RegistrationForm registerUser){
         if(registerUser.getPassword().equals(registerUser.getConfirmPassword())){
             List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findByName("ROLE_USER"));

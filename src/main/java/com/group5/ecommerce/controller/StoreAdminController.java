@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/store")
 public class StoreAdminController {
 
     @Autowired
@@ -43,6 +45,9 @@ public class StoreAdminController {
     private ImageService imageService;
 
     @Autowired
+    private SaleService saleService;
+
+    @Autowired
     private CartService cartService;
 
 //    @GetMapping("/sideMenu")
@@ -54,7 +59,7 @@ public class StoreAdminController {
 //    }
 
 
-    @GetMapping("/store/home")
+    @GetMapping("/home")
     public String getHome(Model model) {
         Long userId = SecurityUtil.getPrincipal().get().getId();
         UserStore userStore = storeService.getStoreByUserId(userId);
@@ -69,7 +74,7 @@ public class StoreAdminController {
         return "store/index";
     }
 
-    @GetMapping("/store/{storeId}/categories")
+    @GetMapping("/{storeId}/categories")
     public String getCat(Model model,
                          @PathVariable("storeId") Long storeId,
                          @RequestParam(name = "page", defaultValue = "1") int page,
@@ -84,7 +89,7 @@ public class StoreAdminController {
         return "store/categories";
     }
 
-    @GetMapping("/store/{storeId}/categories/add")
+    @GetMapping("/{storeId}/categories/add")
     public String getAddCat(@PathVariable("storeId") Long storeId,
                             Model model){
         UserStore userStore = storeService.getStoreById(storeId);
@@ -94,21 +99,21 @@ public class StoreAdminController {
         return "store/categories-add";
     }
 
-    @PostMapping("/store/{storeId}/categories/add")
+    @PostMapping("/{storeId}/categories/add")
     public String postAddCat(@ModelAttribute("category") Category category,
                              @PathVariable("storeId") Long storeId) {
         categoryService.addCategory(category, storeId);
         return "redirect:/store/" + storeId + "/categories";
     }
 
-    @GetMapping("/store/{storeId}/categories/delete/{id}")
+    @GetMapping("/{storeId}/categories/delete/{id}")
     public String deleteCat(@PathVariable("id") Long categoryId,
                             @PathVariable("storeId") Long storeId){
         categoryService.removeCategoryById(categoryId);
         return "redirect:/store/" + storeId + "/categories";
     }
 
-    @GetMapping("/store/{storeId}/categories/update/{id}")
+    @GetMapping("/{storeId}/categories/update/{id}")
     public String updateCat(@PathVariable("id") Long id, Model model,
                             @PathVariable("storeId") Long storeId){
         Optional<Category> category = categoryService.getCategoryById(id);
@@ -124,7 +129,7 @@ public class StoreAdminController {
 
     //PRODUCT SESSIONS
 
-    @GetMapping("/store/{storeId}/products")
+    @GetMapping("/{storeId}/products")
     public String getProducts(Model model,
                               @PathVariable("storeId") Long storeId,
                               @RequestParam(name = "page", defaultValue = "1") int page,
@@ -139,7 +144,7 @@ public class StoreAdminController {
         return "store/products";
     }
 
-    @GetMapping("/store/{storeId}/products/{id}/details")
+    @GetMapping("/{storeId}/products/{id}/details")
     public String getProductDetails(@PathVariable("storeId") Long storeId,
                                     @PathVariable("id") Long productId,
                                     @RequestParam(defaultValue = "0") int page,
@@ -153,7 +158,7 @@ public class StoreAdminController {
         return "storeAdmin/productDetail";
     }
 
-    @GetMapping("/store/{storeId}/products/{id}/details/add")
+    @GetMapping("/{storeId}/products/{id}/details/add")
     public String getAddDetail(@PathVariable("storeId") Long storeId,
                                @PathVariable("id") Long productId,
                                Model model){
@@ -165,7 +170,7 @@ public class StoreAdminController {
         return "storeAdmin/productDetailAdd";
     }
 
-    @PostMapping("/store/{storeId}/products/{id}/details/add")
+    @PostMapping("/{storeId}/products/{id}/details/add")
     public String postAddDetail(@ModelAttribute("detail") ProductDetail productDetail,
                                 @PathVariable("storeId") Long storeId,
                                 @PathVariable("id") Long productId,
@@ -197,7 +202,7 @@ public class StoreAdminController {
         return "redirect:" + referer;
     }
 
-    @GetMapping("/store/{storeId}/products/add")
+    @GetMapping("/{storeId}/products/add")
     public String getAddProduct(Model model,
                                 @PathVariable("storeId") Long storeId){
         DecimalFormat formatter = new DecimalFormat("#,###");
@@ -207,26 +212,26 @@ public class StoreAdminController {
         model.addAttribute("decimalFormatter", formatter);
         model.addAttribute("datetimeFormatter", dateTimeFormatter);
         model.addAttribute("product", new Product());
-        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(1, 1)).getContent());
+        model.addAttribute("categories", categoryService.getCategoriesByStoreId(storeId));
         model.addAttribute("isUpdate", false);
         return "store/product-add";
     }
 
-    @PostMapping("/store/{storeId}/products/add")
+    @PostMapping("/{storeId}/products/add")
     public String postAddProduct(@ModelAttribute("product") Product product,
                                  @PathVariable("storeId") Long storeId) throws IOException {
         productService.addProduct(product, storeId);
         return "redirect:/store/" + storeId + "/products";
     }
 
-    @GetMapping("/store/{storeId}/products/delete/{id}")
+    @GetMapping("/{storeId}/products/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id,
                                 @PathVariable("storeId") Long storeId){
         productService.removeProductById(id);
         return "redirect:/store/" + storeId + "/products";  //redirect to categories page
     }
 
-    @GetMapping("/store/{storeId}/products/update/{id}")
+    @GetMapping("/{storeId}/products/update/{id}")
     public String updateProduct(@PathVariable("id") Long id,
                                 Model model,
                                 @PathVariable("storeId") Long storeId){
@@ -254,7 +259,7 @@ public class StoreAdminController {
         return "redirect:" + request.getHeader("Referer");
     }
     // CUSTOMER SESSIONS //
-    @GetMapping("/store/{storeId}/customers")
+    @GetMapping("/{storeId}/customers")
     public String getCustomers(Model model,
                                @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
@@ -272,18 +277,24 @@ public class StoreAdminController {
         return "redirect:" + request.getHeader("Referer");
     }
     // ORDER SESSIONS //
-    @GetMapping("/store/{storeId}/orders")
+    @GetMapping("/{storeId}/orders")
     public String getOrders(Model model,
-                            @PathVariable("storeId") Long storeId){
+                            @PathVariable("storeId") Long storeId,
+                            @RequestParam(name = "page", defaultValue = "1") int page,
+                            @RequestParam(name = "size", defaultValue = "10") int size){
+        Page<Order> orderPage = orderService.getAllOrdersByStoreId(storeId, PageRequest.of(page - 1, size));
         UserStore userStore = storeService.getStoreById(storeId);
         DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("store", userStore);
         model.addAttribute("formatter", formatter);
-        model.addAttribute("orders", orderService.getAllOrdersByStoreId(storeId));
-        return "storeAdmin/orders";
+        model.addAttribute("orders", orderPage.getContent());
+        model.addAttribute("totalPages", orderPage.getTotalPages());
+        model.addAttribute("currentPage", orderPage.getNumber() + 1);
+        model.addAttribute("pageSize", size);
+        return "store/orders";
     }
 
-    @GetMapping("/store/{storeId}/orders/update/{id}")
+    @GetMapping("/{storeId}/orders/update/{id}")
     public String updateOrder(Model model,
                               @PathVariable("storeId") Long storeId,
                               @PathVariable("id") Long id){
@@ -293,17 +304,17 @@ public class StoreAdminController {
         model.addAttribute("order", orderService.getOrderById(id));
         model.addAttribute("statuses", statuses);
         model.addAttribute("isUpdate", true);
-        return "storeAdmin/ordersAdd";
+        return "store/order-add";
     }
 
-    @PostMapping("/store/{storeId}/orders/add")
+    @PostMapping("/{storeId}/orders/add")
     public String postAddOrder(@ModelAttribute("order") Order order,
                                @PathVariable("storeId") Long storeId){
         orderService.saveOrder(order, storeId);
         return "redirect:/store/" + storeId + "/orders";
     }
 
-    @GetMapping("/store/{storeId}/orders/delete/{id}")
+    @GetMapping("/{storeId}/orders/delete/{id}")
     public String deleteOrder(@PathVariable("id") Long id,
                               @PathVariable("storeId") Long storeId){
         orderService.deleteOrder(id);
@@ -313,17 +324,17 @@ public class StoreAdminController {
 
 
     // SALES SESSIONS //
-    @GetMapping("/store/{storeId}/sales")
+    @GetMapping("/{storeId}/sales")
     public String getSales(Model model, @PathVariable("storeId") Long storeId){
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
-        return "storeAdmin/sales";
+        return "store/sales";
     }
 
 
 
     // VOUCHER SESSIONS //
-    @GetMapping("/store/{storeId}/vouchers")
+    @GetMapping("/{storeId}/vouchers")
     public String getVouchers(Model model, @PathVariable("storeId") Long storeId){
         model.addAttribute("store", storeService.getStoreById(storeId));
         model.addAttribute("vouchers", voucherService.findAllVouchersByStore(storeId));
@@ -333,7 +344,7 @@ public class StoreAdminController {
 
 
     // REVIEWS SESSIONS //
-    @GetMapping("/store/{storeId}/products/{id}/reviews")
+    @GetMapping("/{storeId}/products/{id}/reviews")
     public String getReviewsByProductId(Model model,
                                         @PathVariable("storeId") Long storeId,
                                         @PathVariable("id") Long productId){

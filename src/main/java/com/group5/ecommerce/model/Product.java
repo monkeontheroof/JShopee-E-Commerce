@@ -56,6 +56,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductDetail> details;
 
-    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "product")
-    private CartItem cartItem;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "product")
+    private List<CartItem> cartItem;
 }

@@ -1,0 +1,221 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Product Edit | Nalika - Material Admin Template</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+		============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+    <!-- Google Fonts
+		============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/bootstrap.min.css}">
+    <!-- Bootstrap CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/font-awesome.min.css}">
+    <!-- nalika Icon CSS
+        ============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/nalika-icon.css}">
+    <!-- owl.carousel CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/nalika/css/owl.theme.css}">
+    <link rel="stylesheet" th:href="@{/nalika/css/owl.transitions.css}">
+    <!-- animate CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/animate.css}">
+    <!-- normalize CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/normalize.css}">
+    <!-- meanmenu icon CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/meanmenu.min.css}">
+    <!-- main CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/main.css}">
+    <!-- morrisjs CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/morrisjs/morris.css}">
+    <!-- mCustomScrollbar CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/scrollbar/jquery.mCustomScrollbar.min.css}">
+    <!-- metisMenu CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/metisMenu/metisMenu.min.css}">
+    <link rel="stylesheet" th:href="@{/nalika/css/metisMenu/metisMenu-vertical.css}">
+    <!-- calendar CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/calendar/fullcalendar.min.css}">
+    <link rel="stylesheet" th:href="@{/nalika/css/calendar/fullcalendar.print.min.css}">
+    <!-- style CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/style.css}">
+    <!-- responsive CSS
+		============================================ -->
+    <link rel="stylesheet" th:href="@{/nalika/css/responsive.css}">
+    <!-- modernizr JS
+		============================================ -->
+    <script th:src="@{/nalika/js/vendor/modernizr-2.8.3.min.js}"></script>
+</head>
+
+<body>
+<div th:replace="fragments/leftSidebar :: leftSidebar">
+
+</div>
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="logo-pro">
+                        <a th:href="@{/store/home}"><img class="main-logo" th:src="@{/nalika/img/logo/logo.png}" alt="" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments/storeAdminHeader :: storeAdminHeader"></div>
+        <!-- Single pro tab start-->
+        <div class="single-product-tab-area mg-b-30">
+            <!-- Single pro tab review Start-->
+            <div class="single-pro-review-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="review-tab-pro-inner">
+                                <ul id="myTab3" class="tab-review-design">
+                                    <li class="active"><a href="#description"><i class="icon nalika-edit" aria-hidden="true"></i>Thêm danh mục</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content custom-product-edit">
+                                    <form th:action="@{/store/{storeId}/orders/add(storeId=${storeId})}" method="post" th:object="${order}">
+                                        <div class="product-tab-list tab-pane fade active in" id="description">
+                                            <div class="row">
+                                                <input type="hidden" name="id"  th:field="*{id}">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="input-group mg-b-pro-edt ">
+                                                            <span class="input-group-addon"><i class="icon fa fa-calendar-check-o" aria-hidden="true"></i></span>
+                                                            <input type="date" class="form-control" required th:field="*{date}" name="date" id="date"  placeholder="Enter date" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="input-group mg-b-pro-edt ">
+                                                            <span class="input-group-addon"><i class="icon fa fa-money" aria-hidden="true"></i></span>
+                                                            <input type="number" class="form-control" required th:field="*{totalPrice}" name="total" id="total"  placeholder="Total price" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="input-group mg-b-pro-edt ">
+                                                            <span class="input-group-addon"><i class="icon fa fa-money" aria-hidden="true"></i></span>
+                                                            <input type="text" class="form-control" required th:field="*{user}" name="total" id="user"  placeholder="User" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="input-group mg-b-pro-edt ">
+                                                            <span class="input-group-addon"><i class="icon fa fa-check-circle" aria-hidden="true"></i></span>
+                                                            <select id="status" name="status" class="form-control" th:field="${order.status}">
+                                                                <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="custom-pro-edt-ds">
+                                                        <button type="submit" class="btn btn-ctl-bt waves-effect waves-light m-r-10">Save</button>
+                                                        <button type="button" class="btn btn-ctl-bt waves-effect waves-light">Discard</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer-copy-right">
+                            <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- jquery
+    ============================================ -->
+<script th:src="@{/nalika/js/vendor/jquery-1.12.4.min.js}"></script>
+<!-- bootstrap JS
+    ============================================ -->
+<script th:src="@{/nalika/js/bootstrap.min.js}"></script>
+<!-- wow JS
+    ============================================ -->
+<script th:src="@{/nalika/js/wow.min.js}"></script>
+<!-- price-slider JS
+    ============================================ -->
+<script th:src="@{/nalika/js/jquery-price-slider.js}"></script>
+<!-- meanmenu JS
+    ============================================ -->
+<script th:src="@{/nalika/js/jquery.meanmenu.js}"></script>
+<!-- owl.carousel JS
+    ============================================ -->
+<script th:src="@{/nalika/js/owl.carousel.min.js}"></script>
+<!-- sticky JS
+    ============================================ -->
+<script th:src="@{/nalika/js/jquery.sticky.js}"></script>
+<!-- scrollUp JS
+    ============================================ -->
+<script th:src="@{/nalika/js/jquery.scrollUp.min.js}"></script>
+<!-- mCustomScrollbar JS
+    ============================================ -->
+<script th:src="@{/nalika/js/scrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/nalika/js/scrollbar/mCustomScrollbar-active.js}"></script>
+<!-- metisMenu JS
+    ============================================ -->
+<script th:src="@{/nalika/js/metisMenu/metisMenu.min.js}"></script>
+<script th:src="@{/nalika/js/metisMenu/metisMenu-active.js}"></script>
+<!-- sparkline JS
+    ============================================ -->
+<script th:src="@{/nalika/js/sparkline/jquery.sparkline.min.js}"></script>
+<script th:src="@{/nalika/js/sparkline/jquery.charts-sparkline.js}"></script>
+<!-- calendar JS
+    ============================================ -->
+<script th:src="@{/nalika/js/calendar/moment.min.js}"></script>
+<script th:src="@{/nalika/js/calendar/fullcalendar.min.js}"></script>
+<script th:src="@{/nalika/js/calendar/fullcalendar-active.js}"></script>
+<!-- float JS
+    ============================================ -->
+<script th:src="@{/nalika/js/flot/jquery.flot.js}"></script>
+<script th:src="@{/nalika/js/flot/jquery.flot.resize.js}"></script>
+<script th:src="@{/nalika/js/flot/curvedLines.js}"></script>
+<script th:src="@{/nalika/js/flot/flot-active.js}"></script>
+<!-- plugins JS
+    ============================================ -->
+<script th:src="@{/nalika/js/plugins.js}"></script>
+<!-- main JS
+    ============================================ -->
+<script th:src="@{/nalika/js/main.js}"></script>
+</body>
+
+</html>

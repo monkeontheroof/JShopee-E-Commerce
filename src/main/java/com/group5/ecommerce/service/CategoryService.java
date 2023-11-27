@@ -28,6 +28,10 @@ public class CategoryService {
         return categoryRepository.findAllByNameContaining(name);
     }
 
+    public List<Category> getCategoriesByStoreId(Long storeId) {
+        return categoryRepository.findAllByStoreId(storeId);
+    }
+
     public Page<Category> getAllCategoryByStoreId(Long id, Pageable pageRequest) {
         return categoryRepository.findAllByStoreId(id, pageRequest);
     }

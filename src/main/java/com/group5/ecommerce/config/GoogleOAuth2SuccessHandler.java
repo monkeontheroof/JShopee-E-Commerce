@@ -1,6 +1,5 @@
 package com.group5.ecommerce.config;
 
-import com.group5.ecommerce.config.JwtUtils;
 import com.group5.ecommerce.model.Role;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.repository.RoleRepository;

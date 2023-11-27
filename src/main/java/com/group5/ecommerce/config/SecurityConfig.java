@@ -42,22 +42,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailService customUserDetailsService;
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/shop/**", "/register", "/static/**", "/assets/**", "/css/**", "/js/**", "/images/**", "/productImages/**")
+                .antMatchers("/", "/home/**", "/shop/**", "/register", "/static/**", "/assets/**", "/css/**", "/js/**", "/images/**", "/productImages/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/store/{storeId}/**").hasRole("STORE_ADMIN")
+                .antMatchers("/store/**").hasRole("STORE_ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
-                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .maximumSessions(1)
-                .expiredUrl("/login?expired")
-                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
 //                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
@@ -78,9 +78,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/404")
                 .and()
                 .csrf()
                 .disable();

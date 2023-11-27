@@ -61,7 +61,9 @@
 				<!-- Sign-in -->			
 <div class="col-md-6 col-sm-6 sign-in">
 	<h4 class="">Sign in</h4>
-	<p class="">Hello, Welcome to your account.</p>
+	<div th:if="${param.error}" class="alert alert-danger">
+		Email hoặc mật khẩu không đúng!
+	</div>
 	<div class="social-sign-in outer-top-xs">
 		<a href="#" class="facebook-sign-in"><i class="fa fa-facebook"></i> Sign In with Facebook</a>
 		<a href="#" class="twitter-sign-in"><i class="fa fa-twitter"></i> Sign In with Twitter</a>
@@ -90,7 +92,12 @@
 <!-- create a new account -->
 <div class="col-md-6 col-sm-6 create-new-account">
 	<h4 class="checkout-subtitle">Create a new account</h4>
-	<p class="text title-tag-line">Create your new account.</p>
+	<div th:if="${emailExists}" class="alert alert-danger">
+		Email đã tồn tại, vui lòng sử dụng email khác!
+	</div>
+	<div th:if="${passwordMismatch}" class="alert alert-danger">
+		Mật khẩu không khớp, vui lòng thử lại!
+	</div>
 	<form th:action="@{/register}" th:object="${user}" method="post" class="register-form outer-top-xs" role="form">
 		<div class="form-group">
 	    	<label class="info-title" for="registerEmail">Email Address <span>*</span></label>

@@ -2330,7 +2330,7 @@
                 <div class="products" >
                   <div class="product" >
                     <div class="product-image">
-                      <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${product.id})}"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.imageName}}" th:alt="${product.name}"></a> </div>
+                      <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${product.id})}"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.images.get(0).imageName}}" th:alt="${product.name}"></a> </div>
                       <!-- /.image -->
 
                       <div class="tag hot"><span>hot</span></div>
@@ -2339,7 +2339,7 @@
 
                     <div class="product-info text-left">
                       <input type="hidden" name="id" th:value="${product.id}">
-                      <h3 class="name"><a href="detail.html" th:text="${product.name}">Floral Print Buttoned</a></h3>
+                      <h3 class="name"><a th:href="@{/shop/viewProduct/{id}(id=${product.id})}" th:text="${product.name}">Floral Print Buttoned</a></h3>
                       <div class="rating rateit-small"></div>
                       <div th:text="'Quantity: ' + ${product.quantity}"></div>
                       <div class="description" th:text="${product.description}"></div>

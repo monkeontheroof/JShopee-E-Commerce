@@ -52,7 +52,6 @@ public class CartController {
                              @RequestParam("productId") Long productId,
                              Model model,
                              HttpServletRequest request){
-
         Cart cart = cartService.updateItemInCart(productId, quantity, SecurityUtil.getPrincipal().get().getId());
         model.addAttribute("cart", cart);
 

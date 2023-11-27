@@ -32,12 +32,14 @@
                     <li class="active">
                         <a class="has-arrow" href="#">
                             <i class="icon nalika-home icon-wrap"></i>
-                            <span class="mini-click-non">Trang chủ</span>
+                            <span class="mini-click-non">Cửa hàng</span>
                         </a>
                         <ul class="submenu-angle" aria-expanded="true">
                             <li><a title="Dashboard v.1" th:href="@{/store/home}"><span class="mini-sub-pro">Dashboard</span></a></li>
                             <li><a title="Product List" th:href="@{/store/{id}/categories(id=${store.id})}"><span class="mini-sub-pro">Danh mục</span></a></li>
                             <li><a title="Product Payment" th:href="@{/store/{id}/products(id=${store.id})}"><span class="mini-sub-pro">Sản phẩm</span></a></li>
+                            <li><a title="Product Cart" th:href="@{/store/{id}/orders(id=${store.id})}"><span class="mini-sub-pro">Đơn hàng</span></a></li>
+                            <li><a title="Product Cart" th:href="@{/store/{id}/sales(id=${store.id})}"><span class="mini-sub-pro">Doanh thu</span></a></li>
                             <li><a title="Product Cart" href="product-cart.html"><span class="mini-sub-pro">Analytics</span></a></li>
                         </ul>
                     </li>

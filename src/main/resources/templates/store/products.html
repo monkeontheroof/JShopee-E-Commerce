@@ -89,7 +89,7 @@
                         <div class="product-status-wrap">
                             <h4 th:text="'Tổng sản phẩm: ' + ${products.size()}"></h4>
                             <div class="add-product">
-                                <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}">Thêm mới</a>
+                                <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}" class="btn btn-success">Thêm mới</a>
                             </div>
                             <table>
                                 <tr>

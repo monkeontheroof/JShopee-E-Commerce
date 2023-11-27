@@ -968,7 +968,7 @@
                                     <div class="products" >
                                         <div class="product" >
                                             <div class="product-image">
-                                                <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${product.id})}"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.imageName}}" th:alt="${product.name}"></a> </div>
+                                                <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${product.id})}"><img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.images.get(0).imageName}}" th:alt="${product.name}"></a> </div>
                                                 <!-- /.image -->
 
                                                 <div class="tag hot"><span>hot</span></div>

@@ -25,7 +25,7 @@ public class Review {
 
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 

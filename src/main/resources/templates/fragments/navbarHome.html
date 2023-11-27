@@ -30,11 +30,10 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
-                        <li th:if="${#authorization.expression('hasRole(''STORE_ADMIN'')')}"><a th:href="@{/store/home}"><i class="icon fa fa-user"></i>My Store</a></li>
-                        <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
-                        <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
+                        <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-heart"></i>Đơn hàng</a></li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/cart}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
-                        <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>
+                        <li th:if="${#authorization.expression('hasRole(''STORE_ADMIN'')')}"><a th:href="@{/store/home}"><i class="icon fa fa-user"></i>Cửa hàng của tôi</a></li>
+                        <li sec:authorize="isAuthenticated()"><a href="#"><i class="icon fa fa-user"></i>Tài khoản</a></li>
                         <li sec:authorize="isAnonymous()"><a th:href="@{/login}"><i class="icon fa fa-lock"></i>Login</a></li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" href="#"><i class="icon fa fa-lock"></i>Logout</a></li>
                     </ul>
@@ -95,16 +94,17 @@
                             <div th:replace="fragments/cartCount :: cartCount"></div>
                         </div>
                     </a>
-                        <ul class="dropdown-menu" sec:authorize="isAuthenticated()">
+                        <ul class="dropdown-menu" sec:authorize="isAuthenticated()" th:if="${cart} != null">
                             <li>
-                                <div class="cart-item product-summary" th:if="${!cart.getCartItems().isEmpty()}" th:each="cartItem, iStat : ${cart.getCartItems()}">
+                                <div class="cart-item product-summary" th:each="cartItem, iStat : ${cart.getCartItems()}">
                                     <div class="row">
                                         <form th:action="@{/update-cart}" method="post">
                                         <div class="col-xs-4">
-                                            <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${cartItem.product.id})}"><img th:src="@{${'/productImages/' + cartItem.product.imageName}}" alt=""></a> </div>
+                                            <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${cartItem.product.id})}"><img th:src="@{${'/productImages/' + cartItem.product.images.get(0).imageName}}" alt=""></a> </div>
                                         </div>
                                         <div class="col-xs-7">
                                             <h3 class="name"><a href="index.php?page-detail" th:text="${cartItem.product.name}">Simple Product</a></h3>
+                                            <p th:text="${cartItem.quantity}"></p>
                                             <div class="price" th:text="${cartItem.product.price}">$600.00</div>
                                         </div>
                                         <div class="col-xs-1 action">
@@ -122,7 +122,7 @@
                                 <div class="clearfix cart-total">
 
                                     <div class="clearfix"></div>
-                                    <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a> </div>
+                                    <a th:href="@{/cart}" class="btn btn-upper btn-primary btn-block m-t-20">Xem giỏ hàng</a> </div>
                                 <!-- /.cart-total-->
 
                             </li>
@@ -244,7 +244,7 @@
                                 </li>
 
                                 <li class="dropdown mega-menu">
-                                    <a th:href="@{/shop/{categoryName}/products(categoryName='Điện tử')}" data-hover="dropdown">Điện tử
+                                    <a th:href="@{/shop/{categoryName}/products(categoryName='Công nghệ')}" data-hover="dropdown">Công nghệ
                                         <span class="menu-label hot-menu hidden-xs">hot</span>
                                     </a>
 <!--                                    <ul class="dropdown-menu container">-->

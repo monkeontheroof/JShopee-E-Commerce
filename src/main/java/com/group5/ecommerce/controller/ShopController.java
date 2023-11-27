@@ -3,10 +3,8 @@ package com.group5.ecommerce.controller;
 import com.group5.ecommerce.model.Cart;
 import com.group5.ecommerce.model.CustomUserDetail;
 import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.service.CartService;
-import com.group5.ecommerce.service.CategoryService;
-import com.group5.ecommerce.service.ProductService;
-import com.group5.ecommerce.service.ReviewService;
+import com.group5.ecommerce.model.ProductImage;
+import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +37,9 @@ public class ShopController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private StoreService storeService;
 
     @GetMapping
     public String getShop(Model model) {
@@ -81,18 +83,21 @@ public class ShopController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         Product product = productService.getProductById(id).get();
-
+        List<ProductImage> productImages = product.getImages();
+        productImages.sort(Comparator.comparing(ProductImage::getId));
         SecurityUtil.getPrincipal().ifPresent(principal -> {
             Long userId = principal.getId();
             Cart cart = cartService.getCartByUserId(userId);
             int cartCount = cartService.countCartItems(cart);
             model.addAttribute("cartCount", cartCount);
+            model.addAttribute("store", storeService.getStoreByUserId(userId));
             model.addAttribute("cart", cart);
             if(userId.equals(product.getStore().getUser().getId())){
                 model.addAttribute("canDelete", true);
             }
         });
         model.addAttribute("product", product);
+        model.addAttribute("productImages", productImages);
         model.addAttribute("dateTimeFormatter", dateTimeFormatter);
         model.addAttribute("decimalFormatter", decimalFormat);
         model.addAttribute("userReviews", product.getReviews());

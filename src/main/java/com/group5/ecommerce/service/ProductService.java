@@ -41,9 +41,7 @@ public class ProductService {
 
     public List<Product> getAllProduct(){
 
-        return productRepository.findAll().stream()
-                .map(p -> mapper.map(p, Product.class))
-                .collect(Collectors.toList());
+        return productRepository.findAll();
     }
 
     public Page<ProductDetail> getProductDetailsByProductId(Long productId, Pageable pageRequest) {

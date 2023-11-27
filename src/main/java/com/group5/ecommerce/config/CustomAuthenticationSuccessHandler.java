@@ -25,7 +25,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         authorities.forEach(authority -> {
             if(authority.getAuthority().equals("ROLE_STORE_ADMIN")){
                 try {
-                    redirectStrategy.sendRedirect(request, response, "/store/home");
+                    redirectStrategy.sendRedirect(request, response, "/home");
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to redirect.");
                 }

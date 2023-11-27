@@ -7,6 +7,8 @@ import com.group5.ecommerce.repository.OrderRepository;
 import com.group5.ecommerce.repository.ProductRepository;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,12 +35,19 @@ public class OrderService {
     @Autowired
     private VoucherService voucherService;
 
+    public Page<Order> getAllOrdersByStoreId(Long storeId, Pageable pageable){
+        return orderRepository.findAllByStoreId(storeId, pageable);
+    }
+
     public List<Order> getAllOrdersByStoreId(Long storeId){
         return orderRepository.findAllByStoreId(storeId);
     }
+    public List<Order> getAll(){
+        return orderRepository.findAll();
+    }
 
     public List<User> getCustomersPurchasedFromStore(Long storeId){
-        List<Order> orders = getAllOrdersByStoreId(storeId);
+        List<Order> orders = orderRepository.findAllByStoreId(storeId);
         return orders.stream()
                 .map(Order::getUser)
                 .distinct()
