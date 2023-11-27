@@ -94,16 +94,19 @@
                             <div th:replace="fragments/cartCount :: cartCount"></div>
                         </div>
                     </a>
-                        <ul class="dropdown-menu" sec:authorize="isAuthenticated()" th:if="${cart} != null">
+                        <ul class="dropdown-menu" sec:authorize="isAuthenticated()">
+                            <div th:if="${cart.getCartItems().isEmpty()}" class="alert alert-info">
+                                Giỏ hàng trống.
+                            </div>
                             <li>
-                                <div class="cart-item product-summary" th:each="cartItem, iStat : ${cart.getCartItems()}">
+                                <div class="cart-item product-summary" th:if="${cart} != null" th:each="cartItem, iStat : ${cart.getCartItems()}">
                                     <div class="row">
                                         <form th:action="@{/update-cart}" method="post">
                                         <div class="col-xs-4">
                                             <div class="image"> <a th:href="@{/shop/viewProduct/{id}(id=${cartItem.product.id})}"><img th:src="@{${'/productImages/' + cartItem.product.images.get(0).imageName}}" alt=""></a> </div>
                                         </div>
                                         <div class="col-xs-7">
-                                            <h3 class="name"><a href="index.php?page-detail" th:text="${cartItem.product.name}">Simple Product</a></h3>
+                                            <h3 class="name"><a th:href="@{/shop/viewProduct/{id}(id=${cartItem.product.id})}" th:text="${cartItem.product.name}">Simple Product</a></h3>
                                             <p th:text="${cartItem.quantity}"></p>
                                             <div class="price" th:text="${cartItem.product.price}">$600.00</div>
                                         </div>
