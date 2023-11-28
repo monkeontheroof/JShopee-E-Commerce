@@ -321,7 +321,7 @@ public class StoreAdminController {
                               @PathVariable("id") Long id){
         UserStore userStore = storeService.getStoreById(storeId);
         List<String> statuses = List.of("Đang xác nhận", "Đang xử lý", "Đang giao hàng", "Đã giao", "Đã hủy");
-        List<String> isPaid = List.of("Chưa thanh toán", "Đã thanh toán");
+        List<Boolean> isPaid = List.of(true, false);
         model.addAttribute("store", userStore);
         model.addAttribute("order", orderService.getOrderById(id));
         model.addAttribute("statuses", statuses);
@@ -334,11 +334,9 @@ public class StoreAdminController {
     public String postUpdateOrder(Model model,
                               @PathVariable("storeId") Long storeId,
                               @PathVariable("id") Long orderId,
-                              @RequestParam("isPaid") String isPaid,
+                              @RequestParam("isPaid") boolean isPaid,
                               @RequestParam("status") String status){
-        boolean thanhToan;
-        thanhToan = isPaid.trim().equals("Đã thanh toán");
-        orderService.updateOrderStatus(thanhToan, status, orderId);
+        orderService.updateOrderStatus(isPaid, status, orderId);
         UserStore store = storeService.getStoreById(storeId);
         model.addAttribute("store", store);
         return "redirect:/store/" + storeId + "/orders";

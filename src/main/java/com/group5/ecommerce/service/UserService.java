@@ -1,9 +1,6 @@
 package com.group5.ecommerce.service;
 
-import com.group5.ecommerce.model.RegistrationForm;
-import com.group5.ecommerce.model.Role;
-import com.group5.ecommerce.model.User;
-import com.group5.ecommerce.model.UserStore;
+import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.RoleRepository;
 import com.group5.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +58,7 @@ public class UserService {
                     .password(bCryptPasswordEncoder.encode(registerUser.getPassword()))
                     .email(registerUser.getEmail())
                     .roles(roles)
+                    .cart(new Cart())
                     .build();
             userRepository.save(user);
         }

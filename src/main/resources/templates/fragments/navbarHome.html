@@ -377,11 +377,10 @@
                                     </ul>
                                 </li>
                                 <li th:unless="${#authorization.expression('hasRole(''STORE_ADMIN'')')}" class="navbar-right">
-                                    <a href="">
+                                    <a th:href="@{/register-shop}">
                                         <i class="icon fa fa-user"></i>Become a seller
                                     </a>
                                 </li>
-
 
                             </ul><!-- /.navbar-nav -->
                             <div class="clearfix"></div>

@@ -146,6 +146,10 @@
                                                 <div class="product-status-wrap">
                                                     <a th:href="@{/store/{storeId}/products/{id}/details/add (storeId=${storeId}, id=${product.id})}" style="margin: 20px 0" class="btn btn-primary">Thêm chi tiết
                                                     </a>
+                                                    <div class="form-group">
+                                                        <label for="tenChiTiet" style="color: white">Tên chi tiết: </label><input name="tenChiTiet" id="tenChiTiet" type="text" required>
+                                                        <label for="moTa" style="color: white">Mô tả: </label><input name="moTa" id="moTa" type="text" required>
+                                                    </div>
                                                     <table>
                                                         <tr>
                                                             <th></th>

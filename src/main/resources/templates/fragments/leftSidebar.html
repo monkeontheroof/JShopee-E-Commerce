@@ -18,13 +18,6 @@
                 <a href="#"><img th:src="@{/nalika/img/notification/4.jpg}" alt="" /></a>
                 <h2 th:text="${store.getUser().firstName}"> <span class="min-dtn" th:text="${store.getUser().lastName}"></span></h2>
             </div>
-            <div class="profile-social-dtl">
-                <ul class="dtl-social">
-                    <li><a href="#"><i class="icon nalika-facebook"></i></a></li>
-                    <li><a href="#"><i class="icon nalika-twitter"></i></a></li>
-                    <li><a href="#"><i class="icon nalika-linkedin"></i></a></li>
-                </ul>
-            </div>
         </div>
         <div class="left-custom-menu-adp-wrap comment-scrollbar">
             <nav class="sidebar-nav left-sidebar-menu-pro">
@@ -43,23 +36,23 @@
                             <li><a title="Product Cart" th:href="@{/store/{id}/vouchers(id=${store.id})}"><span class="mini-sub-pro">Voucher</span></a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="has-arrow" href="/nalika/mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>
-                        <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="Inbox" href="/nalika/mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>
-                            <li><a title="View Mail" href="/nalika/mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>
-                            <li><a title="Compose Mail" href="/nalika/mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>
-                        </ul>
-                    </li>
-                    <li id="removable">
-                        <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">Pages</span></a>
-                        <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="Login" th:href="@{/store/home}"><span class="mini-sub-pro">Login</span></a></li>
-                            <li><a title="Register" href="/nalika/register.html"><span class="mini-sub-pro">Register</span></a></li>
-                            <li><a title="Lock" href="/nalika/lock.html"><span class="mini-sub-pro">Lock</span></a></li>
-                            <li><a title="Password Recovery" href="/nalika/password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>
-                        </ul>
-                    </li>
+<!--                    <li>-->
+<!--                        <a class="has-arrow" href="/nalika/mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>-->
+<!--                        <ul class="submenu-angle" aria-expanded="false">-->
+<!--                            <li><a title="Inbox" href="/nalika/mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>-->
+<!--                            <li><a title="View Mail" href="/nalika/mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>-->
+<!--                            <li><a title="Compose Mail" href="/nalika/mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                    <li id="removable">-->
+<!--                        <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">Pages</span></a>-->
+<!--                        <ul class="submenu-angle" aria-expanded="false">-->
+<!--                            <li><a title="Login" th:href="@{/store/home}"><span class="mini-sub-pro">Login</span></a></li>-->
+<!--                            <li><a title="Register" href="/nalika/register.html"><span class="mini-sub-pro">Register</span></a></li>-->
+<!--                            <li><a title="Lock" href="/nalika/lock.html"><span class="mini-sub-pro">Lock</span></a></li>-->
+<!--                            <li><a title="Password Recovery" href="/nalika/password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
                 </ul>
             </nav>
         </div>

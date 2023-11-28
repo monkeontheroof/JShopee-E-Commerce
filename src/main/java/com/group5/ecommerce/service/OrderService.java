@@ -92,8 +92,8 @@ public class OrderService {
         List<OrderItem> orderItems = createOrderItems(order, cartItems);
         order.setOrderItems(orderItems);
 
-        double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
-        order.setTotalPrice(totalPrice + (totalPrice * 0.04) + 30000.0);
+        double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum() + 30000.0;
+        order.setTotalPrice(totalPrice + (totalPrice * 0.04));
 
         updateProductQuantities(cartItems);
 

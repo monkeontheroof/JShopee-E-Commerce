@@ -109,8 +109,8 @@
                                     <td th:text="${order.status}"></td>
                                     <td th:text="${formatter.format(order.totalPrice) + ' đ'}"></td>
                                     <td><textarea th:text="${order.address}" rows="3" cols="11" type="text" class="form-control"></textarea></td>
-                                    <td th:if="${order.isPaid()}" th:text="Đã thanh toán"></td>
-                                    <td th:unless="${order.isPaid()}" th:text="Chưa"></td>
+                                    <td th:if="${order.isPaid()}" th:text="'Đã thanh toán'"></td>
+                                    <td th:unless="${order.isPaid()}" th:text="'Chưa'"></td>
                                     <td>
                                         <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/' + ${order.id} + '/details'}" class="btn btn-primary"><i class="fa fa-info-circle"></i></a>
                                         <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/update/' + ${order.id}}" class="btn btn-success"><i class="fa fa-cog"></i></a>

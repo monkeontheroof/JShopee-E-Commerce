@@ -1,5 +1,6 @@
 package com.group5.ecommerce.service;
 
+import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ public class StoreService {
     public UserStore getStoreByUserId(Long userId){
         return storeRepository.findByUserId(userId);
     }
-
 
     public void addStore(UserStore store){
         storeRepository.save(store);

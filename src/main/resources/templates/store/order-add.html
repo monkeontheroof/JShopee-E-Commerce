@@ -145,8 +145,7 @@
                                                         <div class="input-group mg-b-pro-edt ">
                                                             <span class="input-group-addon"><i class="icon fa fa-check-circle" aria-hidden="true"></i></span>
                                                             <select id="isPaid" name="isPaid" class="form-control">
-                                                                <option value="true" label="Đã thanh toán"></option>
-                                                                <option value="false" label="Chưa thanh toán" selected></option>
+                                                                <option th:each="option : ${isPaid}" th:value="${option}" th:text="${option == true} ? 'Đã thanh toán' : 'Chưa thanh toán'"></option>
                                                             </select>
                                                         </div>
                                                     </div>

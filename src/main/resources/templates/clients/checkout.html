@@ -140,7 +140,7 @@
 											</tr>
 											<tr>
 												<td><strong>Tổng tiền:</strong></td>
-												<td><input style="border: none" id="tongTien" name="tongTien" readonly th:value="${formatter.format(cart.totalPrice + (cart.totalPrice * 0.04) + 30000)}"></td>
+												<td><input style="border: none" id="tongTien" name="tongTien" readonly th:value="${formatter.format((cart.totalPrice + 30000) + ((cart.totalPrice + 30000) * 0.04))}"></td>
 											</tr>
 											</tbody>
 										</table>

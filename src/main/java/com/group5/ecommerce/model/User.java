@@ -45,8 +45,6 @@ public class User {
 
     private Integer accumulatePoints;
 
-    private String cardId;
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
     joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -54,7 +52,7 @@ public class User {
     @OrderBy(value = "id ASC")
     private List<Role> roles;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
     @OneToMany(mappedBy = "user")

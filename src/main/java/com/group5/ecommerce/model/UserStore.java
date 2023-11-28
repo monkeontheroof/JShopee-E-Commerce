@@ -17,6 +17,14 @@ public class UserStore {
 
     private String name;
 
+    private String category;
+
+    private String address;
+
+    private String phone;
+
+    private String status;
+
     @OneToOne(mappedBy = "store")
     private User user;
 
