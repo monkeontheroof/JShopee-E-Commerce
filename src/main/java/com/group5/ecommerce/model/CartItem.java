@@ -25,6 +25,10 @@ public class CartItem {
 
     private double totalPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "voucher_id", referencedColumnName = "id")
+    private Voucher voucher;
+
     @Override
     public String toString() {
         return "CartItem{" +

@@ -28,4 +28,8 @@ public class OrderItem {
     private int quantity;
 
     private double totalPrice;
+
+    @ManyToOne()
+    @JoinColumn(name = "voucher_id", referencedColumnName = "id")
+    private Voucher voucher;
 }

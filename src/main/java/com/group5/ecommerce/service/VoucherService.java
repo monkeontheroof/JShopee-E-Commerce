@@ -1,8 +1,6 @@
 package com.group5.ecommerce.service;
 
-import com.group5.ecommerce.model.Order;
-import com.group5.ecommerce.model.UserStore;
-import com.group5.ecommerce.model.Voucher;
+import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.OrderRepository;
 import com.group5.ecommerce.repository.VoucherRepository;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -32,7 +30,7 @@ public class VoucherService {
         UserStore store = storeService.getStoreById(storeId);
         Voucher voucher = Voucher.builder()
                 .code(RandomStringUtils.randomAlphanumeric(5).toUpperCase())
-                .discountAmount(createdVoucher.getDiscountAmount())
+                .discountAmount(createdVoucher.getDiscountAmount() / 100.0)
                 .expiryDate(createdVoucher.getExpiryDate())
                 .name(createdVoucher.getName())
                 .quantity(createdVoucher.getQuantity())
@@ -41,23 +39,14 @@ public class VoucherService {
         saveVoucher(voucher);
     }
 
-    public Order applyVoucherToOrder(Long orderId, Long voucherId) {
-        Order order = orderRepository.findById(orderId).orElse(null);
-        Voucher voucher = voucherRepository.findById(voucherId).orElse(null);
+    public void applyVoucherToCartItem(CartItem cartItem, String voucherCode) {
+        Voucher voucher = voucherRepository.findByCode(voucherCode);
+        if(voucher != null && cartItem.getProduct().getStore().equals(voucher.getStore())){
+            cartItem.setVoucher(voucher);
 
-        if (order != null && voucher != null && voucher.getQuantity() > 0) {
-            // Áp dụng giảm giá từ voucher
-            double discountAmount = order.getTotalPrice() * (voucher.getDiscountAmount() / 100);
-            double discountedTotalPrice = order.getTotalPrice() - discountAmount;
-            order.setTotalPrice(discountedTotalPrice);
-
-            // Giảm quantity của voucher
-            voucher.setQuantity(voucher.getQuantity() - 1);
-            voucherRepository.save(voucher);
-            orderRepository.save(order);
+            double discountedPrice = cartItem.getTotalPrice() * (1 - voucher.getDiscountAmount());
+            cartItem.setTotalPrice(discountedPrice);
         }
-
-        return order;
     }
 
     public Page<Voucher> findAllVouchersByStore(Long storeId, Pageable pageable) {
@@ -74,9 +63,7 @@ public class VoucherService {
         }
     }
 
-    public void deleteVoucher(Voucher voucher){
-        if(voucher != null){
-            voucherRepository.delete(voucher);
-        }
+    public void deleteVoucherById(Long voucherId){
+        voucherRepository.deleteById(voucherId);
     }
 }

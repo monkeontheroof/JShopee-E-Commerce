@@ -50,9 +50,10 @@ public class CartController {
     @PostMapping(value = "/update-cart", params = "action=update")
     public String updateCart(@RequestParam("quantity") int quantity,
                              @RequestParam("productId") Long productId,
+                             @RequestParam("voucherCode") String voucherCode,
                              Model model,
                              HttpServletRequest request){
-        Cart cart = cartService.updateItemInCart(productId, quantity, SecurityUtil.getPrincipal().get().getId());
+        Cart cart = cartService.updateItemInCart(productId, quantity, SecurityUtil.getPrincipal().get().getId(), voucherCode);
         model.addAttribute("cart", cart);
 
         String referer = request.getHeader("Referer");
@@ -69,7 +70,6 @@ public class CartController {
         return "redirect:/cart";
     }
 
-
     @GetMapping("/check-out")
     public String checkout(Model model) {
         Cart cart = cartService.getCartByUserId(SecurityUtil.getPrincipal().get().getId());
@@ -81,15 +81,15 @@ public class CartController {
         return "clients/checkout";
     }
 
-    @PostMapping(value = "/place-order", params = "action=place-order")
-    public String placeOrder(@RequestParam("cart") Long cartId){
-        try {
+    @PostMapping("/place-order")
+    public String placeOrder(@RequestParam("cart") Long cartId,
+                             @RequestParam("billingAddress") String billingAddress,
+                             @RequestParam("paymentMethod") String  paymentMethod){
+
             Cart cart = cartService.findById(cartId);
             User user = SecurityUtil.getPrincipal().get();
-            orderService.createOrderFromCart(cart, user);
-            return "orderPlaced";
-        }catch (Exception e){
-            return "redirect:/";
-        }
+            orderService.createOrderFromCart(cart, user, billingAddress, paymentMethod);
+            return "redirect:/cart";
+
     }
 }

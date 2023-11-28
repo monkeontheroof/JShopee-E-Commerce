@@ -77,7 +77,7 @@
 			</thead><!-- /thead -->
 			<tfoot>
 				<tr>
-					<td colspan="7">
+					<td colspan="3">
 						<div class="shopping-cart-btn">
 							<span class="">
 								<a th:href="@{/}" class="btn btn-upper btn-primary pull-right outer-right-xs" value="update">Continue Shopping</a>
@@ -131,7 +131,8 @@
 							</div>
 					</td>
 						<td>
-							<input id="applyCoupon" name="applyCoupon">
+							<input type="text" id="voucherCode" name="voucherCode" th:if="${item.voucher ne null}" th:value="${item.voucher.code}">
+							<input type="text" id="voucherCode" name="voucherCode" th:unless="${item.voucher ne null}" placeholder="Enter voucher code">
 						</td>
 					<td>
 						<div class="" style="display: flex; gap: 10px">
@@ -151,104 +152,43 @@
 			</tbody><!-- /tbody -->
 		</table><!-- /table -->
 	</div>
-</div><!-- /.shopping-cart-table -->				<div class="col-md-4 col-sm-12 estimate-ship-tax">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					<span class="estimate-title">Estimate shipping and tax</span>
-					<p>Enter your destination to get shipping and tax.</p>
-				</th>
-			</tr>
-		</thead><!-- /thead -->
-		<tbody>
-				<tr>
-					<td>
-						<div class="form-group">
-							<label class="info-title control-label">Country <span>*</span></label>
-							<select class="form-control unicase-form-control selectpicker">
-								<option>--Select options--</option>
-								<option>India</option>
-								<option>SriLanka</option>
-								<option>united kingdom</option>
-								<option>saudi arabia</option>
-								<option>united arab emirates</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label class="info-title control-label">State/Province <span>*</span></label>
-							<select class="form-control unicase-form-control selectpicker">
-								<option>--Select options--</option>
-								<option>TamilNadu</option>
-								<option>Kerala</option>
-								<option>Andhra Pradesh</option>
-								<option>Karnataka</option>
-								<option>Madhya Pradesh</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label class="info-title control-label">Zip/Postal Code</label>
-							<input type="text" class="form-control unicase-form-control text-input" placeholder="">
-						</div>
-						<div class="pull-right">
-							<button type="submit" class="btn-upper btn btn-primary">GET A QOUTE</button>
-						</div>
-					</td>
-				</tr>
-		</tbody>
-	</table>
-</div><!-- /.estimate-ship-tax -->
+</div><!-- /.shopping-cart-table -->
 
-<div class="col-md-4 col-sm-12 estimate-ship-tax">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					<span class="estimate-title">Discount Code</span>
-					<p>Enter your coupon code if you have one..</p>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-				<tr>
-					<td>
-						<div class="form-group">
-							<input type="text" class="form-control unicase-form-control text-input" placeholder="You Coupon..">
-						</div>
-						<div class="clearfix pull-right">
-							<button type="submit" class="btn-upper btn btn-primary">APPLY COUPON</button>
-						</div>
-					</td>
-				</tr>
-		</tbody><!-- /tbody -->
-	</table><!-- /table -->
-</div><!-- /.estimate-ship-tax -->
 
-<div class="col-md-4 col-sm-12 cart-shopping-total">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					<div class="cart-sub-total">
-						Subtotal<span class="inner-left-md" th:text="${formatter.format(cart.totalPrice)} + ' đ'"></span>
-					</div>
-					<div class="cart-grand-total">
-						Grand Total<span class="inner-left-md">$600.00</span>
-					</div>
-				</th>
-			</tr>
-		</thead><!-- /thead -->
-		<tbody>
-				<tr>
-					<td>
-						<div class="cart-checkout-btn pull-right">
-							<a type="submit" class="btn btn-primary checkout-btn" th:href="@{/check-out}">PROCCED TO CHEKOUT</a>
-							<span class="">Checkout with multiples address!</span>
-						</div>
-					</td>
-				</tr>
-		</tbody><!-- /tbody -->
-	</table><!-- /table -->
+
+<div class="col-md-12 col-sm-12 cart-shopping-total">
+	<div class="container">
+		<h4 class="mt-4"></h4>
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table table-bordered">
+					<tbody>
+					<tr>
+						<td><strong>Thành tiền:</strong></td>
+						<td th:text="${formatter.format(cart.getTotalPrice())} + ' đ'">0.00 đ</td>
+					</tr>
+					<!-- Add more rows for additional summary information -->
+					<tr>
+						<td><strong>Thuế:</strong></td>
+						<td>4 %</td>
+					</tr>
+					<tr>
+						<td><strong>Phí giao hàng:</strong></td>
+						<td>50.000 đ</td>
+					</tr>
+					<tr>
+						<td><strong>Tổng tiền:</strong></td>
+						<td th:text="${formatter.format(cart.totalPrice + (cart.totalPrice * 0.04) + 30000)}">$0.00</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<!-- Checkout Button -->
+				<a class="btn btn-primary btn-lg" th:href="@{/check-out}">Tiến hành thanh toán</a>
+			</div>
+		</div>
+	</div>
 </div><!-- /.cart-shopping-total -->			</div><!-- /.shopping-cart -->
 		</div> <!-- /.row -->
 		<!-- ============================================== BRANDS CAROUSEL ============================================== -->

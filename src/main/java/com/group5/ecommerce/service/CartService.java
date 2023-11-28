@@ -1,9 +1,6 @@
 package com.group5.ecommerce.service;
 
-import com.group5.ecommerce.model.Cart;
-import com.group5.ecommerce.model.CartItem;
-import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.User;
+import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.CartItemRepository;
 import com.group5.ecommerce.repository.CartRepository;
 import com.group5.ecommerce.utils.SecurityUtil;
@@ -27,6 +24,9 @@ public class CartService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private VoucherService voucherService;
+
     public Cart getCartByUserId(long userId){
         User user = userService.getUserById(userId);
         if(user.getCart() == null){
@@ -41,7 +41,7 @@ public class CartService {
         return user.getCart();
     }
 
-    public Cart updateItemInCart(long productId, int quantity, long userId){
+    public Cart updateItemInCart(long productId, int quantity, long userId, String voucherCode){
         Product product = productService.getProductById(productId).get();
 
         Cart cart = userService.getUserById(userId).getCart();
@@ -50,13 +50,13 @@ public class CartService {
         CartItem item = findCartItemByProductId(cartItems, product.getId());
         item.setQuantity(quantity);
         item.setTotalPrice(quantity * product.getPrice());
+        voucherService.applyVoucherToCartItem(item, voucherCode);
         cartItemRepository.save(item);
 
         int totalItem = totalItem(cartItems);
 
         cart.setTotalItem(totalItem);
         cart.setTotalPrice();
-
         return cartRepository.save(cart);
     }
 

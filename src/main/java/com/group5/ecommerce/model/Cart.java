@@ -36,7 +36,7 @@ public class Cart {
     }
 
     public void setTotalPrice() {
-        this.totalPrice = getCartItems().stream().mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice()).sum();
+        this.totalPrice = getCartItems().stream().mapToDouble(CartItem::getTotalPrice).sum();
     }
 
     public void setTotalItem(int totalItem) {

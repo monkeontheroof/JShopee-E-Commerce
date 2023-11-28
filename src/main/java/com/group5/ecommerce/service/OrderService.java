@@ -24,6 +24,9 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
     private StoreService storeService;
 
     @Autowired
@@ -54,36 +57,43 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public Page<OrderItem> getOrderItemsByOrderId(Long orderId, Pageable pageable){
+        return orderItemRepository.getOrderItemByOrderId(orderId, pageable);
+    }
+
     public Order getOrderById(Long orderId){
         return orderRepository.findById(orderId).orElse(null);
     }
 
-    public void createOrderFromCart(Cart cart, User user) {
+    public void createOrderFromCart(Cart cart, User user, String billingAddress, String paymentMethod) {
         List<Order> orders = new ArrayList<>();
 
         Map<UserStore, List<CartItem>> storeItemsMap = groupCartItemsByStore(cart);
 
         for (Map.Entry<UserStore, List<CartItem>> entry : storeItemsMap.entrySet()) {
-            Order order = createAndSaveOrder(user, entry.getKey(), entry.getValue());
+            Order order = createAndSaveOrder(user, entry.getKey(), entry.getValue(), billingAddress, paymentMethod);
             orders.add(order);
         }
         orderRepository.saveAll(orders);
         cartRepository.delete(cart);
     }
 
-    private Order createAndSaveOrder(User user, UserStore store, List<CartItem> cartItems) {
+    private Order createAndSaveOrder(User user, UserStore store, List<CartItem> cartItems, String billingAddress, String paymentMethod) {
         Order order = new Order();
         orderRepository.save(order);
         order.setUser(user);
         order.setStore(store);
         order.setDate(LocalDate.now());
-        order.setStatus("Pending");
+        order.setStatus("Đang xác nhận");
+        order.setDelivered(false);
+        order.setAddress(billingAddress.trim());
+        order.setPaid(paymentMethod.trim().equals("Online"));
 
         List<OrderItem> orderItems = createOrderItems(order, cartItems);
         order.setOrderItems(orderItems);
 
         double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
-        order.setTotalPrice(totalPrice + totalPrice * 0.02);
+        order.setTotalPrice(totalPrice + (totalPrice * 0.04) + 30000.0);
 
         updateProductQuantities(cartItems);
 
@@ -97,7 +107,12 @@ public class OrderService {
                     orderItem.setOrder(order);
                     orderItem.setProduct(cartItem.getProduct());
                     orderItem.setQuantity(cartItem.getQuantity());
-                    orderItem.setTotalPrice(cartItem.getTotalPrice()); // Cập nhật giá cho từng OrderItem
+                    if(cartItem.getVoucher() != null){
+                        orderItem.setVoucher(cartItem.getVoucher());
+                        orderItem.setTotalPrice(cartItem.getTotalPrice() * (1 - cartItem.getVoucher().getDiscountAmount()));// Cập nhật giá cho từng OrderItem
+                    } else {
+                        orderItem.setTotalPrice(cartItem.getTotalPrice());
+                    }
                     return orderItem;
                 })
                 .collect(Collectors.toList());
@@ -119,6 +134,13 @@ public class OrderService {
 
     private void updateProductOrderItems(List<OrderItem> orderItems){
 
+    }
+
+    public void updateOrderStatus(boolean isPaid, String status, Long orderId){
+        Order order = getOrderById(orderId);
+        order.setStatus(status);
+        order.setPaid(isPaid);
+        orderRepository.save(order);
     }
 
     public void saveOrder(Order order, Long storeId){

@@ -25,6 +25,12 @@ public class Order {
 
     private Double totalPrice;
 
+    private String address;
+
+    private boolean isPaid;
+
+    private boolean isDelivered;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

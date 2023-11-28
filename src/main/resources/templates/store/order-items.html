@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Đơn hàng</title>
+    <title>Chi tiết đơn hàng</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
@@ -87,35 +87,31 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
-                            <h4 th:text="'Tổng đơn hàng: ' + ${orders.size()}"></h4>
+                            <h4 th:text="'Tổng sản phẩm: ' + ${orderItems.size()}"></h4>
 <!--                            <div class="add-product">-->
 <!--                                <a th:href="@{/store/{storeId}/categories/add(storeId=${store.getId()})}">Thêm mới</a>-->
 <!--                            </div>-->
                             <table>
                                 <tr>
                                     <th></th>
-                                    <th>Khách hàng</th>
-                                    <th>Ngày tạo đơn</th>
-                                    <th>Trạng thái</th>
-                                    <th>Tổng tiền</th>
-                                    <th>Địa chỉ</th>
-                                    <th>Đã thanh toán</th>
+                                    <th>Hình sản phẩm</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Thành tiền</th>
+                                    <th>Voucher</th>
                                     <th></th>
                                 </tr>
-                                <tr th:each="order, iStat : ${orders}">
+                                <tr th:each="item, iStat : ${orderItems}">
                                     <td th:text="${iStat.index} + 1"></td>
-                                    <td th:text="${order.user.lastName} + ' ' + ${order.user.firstName}"></td>
-                                    <td th:text="${order.date}"></td>
-                                    <td th:text="${order.status}"></td>
-                                    <td th:text="${formatter.format(order.totalPrice) + ' đ'}"></td>
-                                    <td><textarea th:text="${order.address}" rows="3" cols="11" type="text" class="form-control"></textarea></td>
-                                    <td th:if="${order.isPaid()}" th:text="Đã thanh toán"></td>
-                                    <td th:unless="${order.isPaid()}" th:text="Chưa"></td>
-                                    <td>
-                                        <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/' + ${order.id} + '/details'}" class="btn btn-primary"><i class="fa fa-info-circle"></i></a>
-                                        <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/update/' + ${order.id}}" class="btn btn-success"><i class="fa fa-cog"></i></a>
-                                        <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/delete/' + ${order.id}}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                    </td>
+                                    <td><img th:src="'/productImages/' + ${item.product.images.get(0).imageName}"></td>
+                                    <td th:text="${item.product.name}"></td>
+                                    <td th:text="${formatter.format(item.totalPrice) + ' đ'}"></td>
+                                    <td th:if="${item.voucher != null}" th:text="${item.voucher.code}"></td>
+                                    <td th:unless="${item.voucher != null}" th:text="'Không có Voucher'"></td>
+<!--                                    <td>-->
+<!--                                        <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/' + ${order.id} + '/details'}" class="btn btn-primary"><i class="fa fa-info-circle"></i></a>-->
+<!--                                        <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/update/' + ${order.id}}" class="btn btn-success"><i class="fa fa-cog"></i></a>-->
+<!--                                        <a href="" th:href="@{'/store/' + ${store.getId()} + '/orders/delete/' + ${order.id}}" class="btn btn-danger"><i class="fa fa-trash"></i></a>-->
+<!--                                    </td>-->
                                 </tr>
                             </table>
                             <div class="custom-pagination" th:if="${totalPages > 0}">

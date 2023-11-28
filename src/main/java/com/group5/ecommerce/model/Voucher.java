@@ -1,17 +1,15 @@
 package com.group5.ecommerce.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "voucher")
 @AllArgsConstructor
@@ -35,7 +33,7 @@ public class Voucher {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
 }

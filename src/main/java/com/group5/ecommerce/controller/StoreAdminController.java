@@ -260,6 +260,7 @@ public class StoreAdminController {
         imageService.removeProductImages(imageId);
         return "redirect:" + request.getHeader("Referer");
     }
+
     // CUSTOMER SESSIONS //
     @GetMapping("/{storeId}/customers")
     public String getCustomers(Model model,
@@ -296,17 +297,51 @@ public class StoreAdminController {
         return "store/orders";
     }
 
+    @GetMapping("/{storeId}/orders/{id}/details")
+    public String getOrderDetails(@PathVariable("storeId") Long storeId,
+                                  @PathVariable("id") Long orderId,
+                                  @RequestParam(name = "page", defaultValue = "1") int page,
+                                  @RequestParam(name = "size", defaultValue = "10") int size,
+                                  Model model){
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        Page<OrderItem> orderItemsPage = orderService.getOrderItemsByOrderId(orderId, PageRequest.of(page - 1, size));
+        UserStore userStore = storeService.getStoreById(storeId);
+        model.addAttribute("formatter", formatter);
+        model.addAttribute("store", userStore);
+        model.addAttribute("orderItems", orderItemsPage.getContent());
+        model.addAttribute("totalPages", orderItemsPage.getTotalPages());
+        model.addAttribute("currentPage", orderItemsPage.getNumber() + 1);
+        model.addAttribute("pageSize", size);
+        return "store/order-items";
+    }
+
     @GetMapping("/{storeId}/orders/update/{id}")
-    public String updateOrder(Model model,
+    public String getUpdateOrder(Model model,
                               @PathVariable("storeId") Long storeId,
                               @PathVariable("id") Long id){
         UserStore userStore = storeService.getStoreById(storeId);
-        List<String> statuses = List.of("Pending", "Processing", "Delivering", "Delivered", "Canceled");
+        List<String> statuses = List.of("Đang xác nhận", "Đang xử lý", "Đang giao hàng", "Đã giao", "Đã hủy");
+        List<String> isPaid = List.of("Chưa thanh toán", "Đã thanh toán");
         model.addAttribute("store", userStore);
         model.addAttribute("order", orderService.getOrderById(id));
         model.addAttribute("statuses", statuses);
+        model.addAttribute("isPaid", isPaid);
         model.addAttribute("isUpdate", true);
         return "store/order-add";
+    }
+
+    @PostMapping("/{storeId}/orders/update/{id}")
+    public String postUpdateOrder(Model model,
+                              @PathVariable("storeId") Long storeId,
+                              @PathVariable("id") Long orderId,
+                              @RequestParam("isPaid") String isPaid,
+                              @RequestParam("status") String status){
+        boolean thanhToan;
+        thanhToan = isPaid.trim().equals("Đã thanh toán");
+        orderService.updateOrderStatus(thanhToan, status, orderId);
+        UserStore store = storeService.getStoreById(storeId);
+        model.addAttribute("store", store);
+        return "redirect:/store/" + storeId + "/orders";
     }
 
     @PostMapping("/{storeId}/orders/add")
@@ -374,6 +409,13 @@ public class StoreAdminController {
             return "store/vouchers-add";
         }
         voucherService.createVoucher(storeId, voucher);
+        return "redirect:/store/" + storeId + "/vouchers";
+    }
+
+    @GetMapping("/{storeId}/vouchers/delete/{id}")
+    public String deleteVoucher(@PathVariable("storeId") Long storeId,
+                                @PathVariable("id") Long voucherId){
+        voucherService.deleteVoucherById(voucherId);
         return "redirect:/store/" + storeId + "/vouchers";
     }
 
