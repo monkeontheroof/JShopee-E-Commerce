@@ -26,7 +26,7 @@ public class ProductDetail {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="product_id", referencedColumnName= "id")
     private Product product;
 }

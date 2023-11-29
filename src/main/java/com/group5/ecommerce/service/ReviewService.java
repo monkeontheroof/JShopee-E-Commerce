@@ -32,11 +32,12 @@ public class ReviewService {
         return reviewRepository.findAllByProductId(productId);
     }
 
-    public void save(String comment, Long productId, Long userId) {
+    public void save(Review review, Long productId, Long userId) {
         Optional<Product> product = productService.getProductById(productId);
         product.ifPresent(p -> {
             Review view = Review.builder()
-                    .comment(comment)
+                    .comment(review.getComment())
+                    .rating(review.getRating())
                     .dateTime(LocalDateTime.now())
                     .user(userService.getUserById(userId))
                     .product(p).build();

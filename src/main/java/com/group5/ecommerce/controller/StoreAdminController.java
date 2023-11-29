@@ -143,6 +143,7 @@ public class StoreAdminController {
         model.addAttribute("totalPages", productsPage.getTotalPages());
         model.addAttribute("currentPage", productsPage.getNumber() + 1);
         model.addAttribute("pageSize", size);
+        model.addAttribute("detail", new ProductDetail());
         return "store/products";
     }
 
@@ -158,18 +159,6 @@ public class StoreAdminController {
         model.addAttribute("productDetails", productDetails);
         model.addAttribute("productId", productId);
         return "storeAdmin/productDetail";
-    }
-
-    @GetMapping("/{storeId}/products/{id}/details/add")
-    public String getAddDetail(@PathVariable("storeId") Long storeId,
-                               @PathVariable("id") Long productId,
-                               Model model){
-        UserStore userStore = storeService.getStoreById(storeId);
-        model.addAttribute("store", userStore);
-        model.addAttribute("detail", new ProductDetail());
-        model.addAttribute("storeId", storeId);
-        model.addAttribute("productId", productId);
-        return "storeAdmin/productDetailAdd";
     }
 
     @PostMapping("/{storeId}/products/{id}/details/add")
@@ -241,6 +230,7 @@ public class StoreAdminController {
         UserStore userStore = storeService.getStoreById(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("product", productService.getProductById(id).orElse(null));
+        model.addAttribute("detail", new ProductDetail());
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(1,1)).getContent());
         model.addAttribute("isUpdate", true);
         return "store/product-add";

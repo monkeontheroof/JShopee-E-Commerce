@@ -4,18 +4,13 @@ import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.CartService;
 import com.group5.ecommerce.service.OrderService;
 import com.group5.ecommerce.service.ProductService;
-import com.group5.ecommerce.service.UserService;
-import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.text.DecimalFormat;
 
 @Controller
@@ -84,12 +79,18 @@ public class CartController {
     @PostMapping("/place-order")
     public String placeOrder(@RequestParam("cart") Long cartId,
                              @RequestParam("billingAddress") String billingAddress,
-                             @RequestParam("paymentMethod") String  paymentMethod){
-
+                             @RequestParam("paymentMethod") String  paymentMethod,
+                             Model model){
+        try {
             Cart cart = cartService.findById(cartId);
             User user = SecurityUtil.getPrincipal().get();
             orderService.createOrderFromCart(cart, user, billingAddress, paymentMethod);
+            model.addAttribute("cart", cart);
+            model.addAttribute("review", new Review());
+            return "clients/order-placed";
+        }
+        catch (Exception e){
             return "redirect:/cart";
-
+        }
     }
 }

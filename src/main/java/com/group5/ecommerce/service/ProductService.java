@@ -92,7 +92,6 @@ public class ProductService {
     public void addDetail(ProductDetail detail, Long productId){
         Optional<Product> product = productRepository.findById(productId);
         if(product.isPresent()){
-            product.get().getDetails().add(detail);
             detail.setProduct(product.get());
             productDetailRepository.save(detail);
         }

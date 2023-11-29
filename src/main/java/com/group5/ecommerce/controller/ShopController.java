@@ -1,9 +1,6 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.model.Cart;
-import com.group5.ecommerce.model.CustomUserDetail;
-import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.ProductImage;
+import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.service.*;
 import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.utils.SecurityUtil;
@@ -13,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -106,17 +104,23 @@ public class ShopController {
     }
 
     @PostMapping("/submitReview")
-    public String submitReview(@RequestParam("comment") String comment,
+    public String submitReview(@Valid Review review,
                                @RequestParam("productId") Long productId,
                                HttpServletRequest request){
         Optional<CustomUserDetail> authentication = SecurityUtil.getPrincipal();
-        authentication.ifPresent(userDetail -> reviewService.save(comment, productId, userDetail.getId()));
+        authentication.ifPresent(userDetail -> reviewService.save(review, productId, userDetail.getId()));
 
         String referer = request.getHeader("Referer");
         if(referer == null || referer.isEmpty())
             return "redirect:/shop/viewProduct/" + productId;
 
         return "redirect:" + referer;
+    }
+
+    @GetMapping("/order-placed")
+    public String orderPlaced(Model model) {
+        model.addAttribute("review", new Review());
+        return "clients/order-placed";
     }
 
     @PostMapping("/deleteReview")
