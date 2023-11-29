@@ -231,7 +231,7 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("product", productService.getProductById(id).orElse(null));
         model.addAttribute("detail", new ProductDetail());
-        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(1,1)).getContent());
+        model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(0,5)).getContent());
         model.addAttribute("isUpdate", true);
         return "store/product-add";
     }

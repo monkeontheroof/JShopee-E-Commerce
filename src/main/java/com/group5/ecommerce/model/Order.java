@@ -31,7 +31,7 @@ public class Order {
 
     private boolean isDelivered;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

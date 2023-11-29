@@ -115,16 +115,17 @@
                                                         </div>
                                                         <div class="input-group mg-b-pro-edt">
                                                             <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-                                                            <input type="number" class="form-control" placeholder="Giá tiền" required th:field="*{price}"
+                                                            <input type="number" class="form-control" th:placeholder="'Giá tiền'" required th:field="*{price}"
                                                                    th:value="${#numbers.formatCurrency(product.price)}" name="price" id="price">
                                                         </div>
                                                         <div class="input-group mg-b-pro-edt">
                                                             <span class="input-group-addon"><i class="icon nalika-settings" aria-hidden="true"></i></span>
-                                                            <input type="number" class="form-control" placeholder="Số lượng" required th:value="${product.quantity}" name="quantity" id="quantity">
+                                                            <input type="number" class="form-control" th:placeholder="'Enter a number'" required th:field="*{quantity}"
+                                                                   th:value="${product.quantity}" name="quantity" id="quantity">
                                                         </div>
                                                         <div class="input-group mg-b-pro-edt">
                                                             <span class="input-group-addon"><i class="icon nalika-new-file" aria-hidden="true"></i></span>
-                                                            <textarea type="text" class="form-control" placeholder="Mô tả sản phẩm" th:field="*{description}" rows="5" name="description" id="description" required></textarea>
+                                                            <textarea type="text" class="form-control" th:placeholder="'Mô tả sản phẩm'" th:field="*{description}" rows="5" name="description" id="description" required></textarea>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                             <div class="text-center custom-pro-edt-ds">

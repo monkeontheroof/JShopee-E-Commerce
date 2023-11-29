@@ -1,7 +1,9 @@
 package com.group5.ecommerce.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.persistence.CascadeType;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "cart")
 public class Cart {
     @Id

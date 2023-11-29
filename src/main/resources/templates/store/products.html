@@ -103,7 +103,7 @@
                                     <td th:text="${iStat.index} + 1"></td>
                                     <td th:text="${product.name}"></td>
                                     <td th:text="${product.category.name}"></td>
-                                    <td th:text="${product.quantity}"></td>
+                                    <td th:text="${product.quantity < 1 ? 'Hết hàng' : product.quantity}"></td>
                                     <td>
                                         <a th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}" class="btn btn-success">
                                             <i class="fa fa-edit"></i>

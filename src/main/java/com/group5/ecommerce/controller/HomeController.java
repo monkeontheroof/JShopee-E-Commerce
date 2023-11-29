@@ -56,7 +56,9 @@ public class HomeController {
     public String getOrders(Model model) {
         User user = SecurityUtil.getPrincipal().orElse(null);
         List<Order> orders = orderService.getOrdersByUserId(user.getId());
+        DecimalFormat formatter = new DecimalFormat("#,###");
         model.addAttribute("orders", orders);
+        model.addAttribute("formatter", formatter);
         model.addAttribute("cart", cartService.getCartByUserId(user.getId()));
         return "clients/orders";
     }
