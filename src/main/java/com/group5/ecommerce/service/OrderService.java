@@ -49,6 +49,10 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    public List<Order> getOrdersByUserId(Long userId){
+        return orderRepository.findAllByUserId(userId);
+    }
+
     public List<User> getCustomersPurchasedFromStore(Long storeId){
         List<Order> orders = orderRepository.findAllByStoreId(storeId);
         return orders.stream()
