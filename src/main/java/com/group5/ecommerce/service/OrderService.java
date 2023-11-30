@@ -92,6 +92,7 @@ public class OrderService {
         order.setDelivered(false);
         order.setAddress(billingAddress.trim());
         order.setPaid(paymentMethod.trim().equals("Online"));
+        order.setRated(false);
 
         List<OrderItem> orderItems = createOrderItems(order, cartItems);
         order.setOrderItems(orderItems);

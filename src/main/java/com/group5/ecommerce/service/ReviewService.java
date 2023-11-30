@@ -8,6 +8,7 @@ import com.group5.ecommerce.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -32,13 +33,13 @@ public class ReviewService {
         return reviewRepository.findAllByProductId(productId);
     }
 
-    public void save(Review review, Long productId, Long userId) {
+    public void save(Integer rating, String comment, Long productId, Long userId) {
         Optional<Product> product = productService.getProductById(productId);
         product.ifPresent(p -> {
             Review view = Review.builder()
-                    .comment(review.getComment())
-                    .rating(review.getRating())
-                    .dateTime(LocalDateTime.now())
+                    .comment(comment.trim())
+                    .rating(rating)
+                    .dateTime(LocalDate.now())
                     .user(userService.getUserById(userId))
                     .product(p).build();
             reviewRepository.save(view);

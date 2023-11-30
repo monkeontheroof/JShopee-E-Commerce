@@ -123,7 +123,7 @@ public class StoreAdminController {
             UserStore userStore = storeService.getStoreById(storeId);
             model.addAttribute("store", userStore);
             model.addAttribute("category", category.get());
-            return "storeAdmin/categoriesAdd";
+            return "store/categories-add";
         }
         return "404";  //redirect to categories page
     }

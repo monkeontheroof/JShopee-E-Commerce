@@ -104,11 +104,12 @@ public class ShopController {
     }
 
     @PostMapping("/submitReview")
-    public String submitReview(@Valid Review review,
+    public String submitReview(@RequestParam("rating") Integer rating,
+                               @RequestParam("comment") String comment,
                                @RequestParam("productId") Long productId,
                                HttpServletRequest request){
         Optional<CustomUserDetail> authentication = SecurityUtil.getPrincipal();
-        authentication.ifPresent(userDetail -> reviewService.save(review, productId, userDetail.getId()));
+        authentication.ifPresent(userDetail -> reviewService.save(rating, comment, productId, userDetail.getId()));
 
         String referer = request.getHeader("Referer");
         if(referer == null || referer.isEmpty())

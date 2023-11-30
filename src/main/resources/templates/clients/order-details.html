@@ -28,13 +28,17 @@
 
 		<!-- Icons/Glyphs -->
 		<link rel="stylesheet" th:href="@{/assets/css/font-awesome.css}">
+		<link rel="stylesheet" th:href="@{/css/bootstrap-rating.css}">
 
         <!-- Fonts --> 
 		<link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-
-
+		<style>
+			.fa-star{
+				color: #F4CE14;
+			}
+		</style>
 	</head>
     <body class="cnt-home">
 		<!-- ============================================== HEADER ============================================== -->
@@ -64,10 +68,10 @@
 			<thead>
 				<tr>
 					<th></th>
-					<th class="">Image</th>
-					<th class="">Product</th>
-					<th class="">Quantity</th>
-					<th class="">Total Price</th>
+					<th class="">Hình ảnh</th>
+					<th class="">Tên sản phẩm</th>
+					<th class="">Số lượng</th>
+					<th class="">Thành tiền</th>
 					<th class="">Voucher</th>
 					<th></th>
 				</tr>
@@ -84,6 +88,38 @@
 					<td th:text="${formatter.format(detail.totalPrice)}"></td>
 					<td th:if="${detail.voucher != null}" th:text="${detail.voucher.code}"></td>
 					<td th:unless="${detail.voucher != null}" th:text="''"></td>
+					<td>
+						<a data-toggle="modal" th:attr="data-target='#exampleModalCenter'+${detail.id}" class="btn btn-warning" title="Đánh giá sản phẩm" th:unless="${detail.order.isRated()}">
+							<i class="fa fa-star-half-full"></i>
+						</a>
+						<div class="modal fade" th:id="${'exampleModalCenter' + detail.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLongTitle">Đánh giá sản phẩm</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form th:action="@{/shop/submitReview}" method="post">
+										<div class="modal-body">
+											<div class="form-group">
+												<input type="hidden" name="productId" id="productId" th:value="${detail.product.id}">
+												<input type="hidden" name="rating" class="rating" data-filled="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" value="0" data-glyphicon="0"/>
+											</div>
+											<div class="form-group">
+												<textarea type="text" name="comment" class="form-control" placeholder="Đánh giá của bạn"></textarea>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+											<button type="submit" class="btn btn-success">Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</tbody><!-- /tbody -->
 		</table><!-- /table -->
@@ -315,6 +351,6 @@
 		<script th:src="@{/assets/js/bootstrap-select.min.js}"></script>
 		<script th:src="@{/assets/js/wow.min.js}"></script>
 		<script th:src="@{/assets/js/scripts.js}"></script>
-
+		<script th:src="@{/js/bootstrap-rating.js}"></script>
 </body>
 </html>

@@ -15,6 +15,7 @@
 
 		<!-- Bootstrap Core CSS -->
 		<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/css/bootstrap-rating.css}">
 
 		<!-- Customizable CSS -->
 		<link rel="stylesheet" th:href="@{/assets/css/main.css}">
@@ -35,7 +36,15 @@
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
+		<style>
+			.fa-star-0{
+				color: #ccc;
+			}
 
+			.fa-star{
+				color: #F4CE14;
+			}
+		</style>
 	</head>
     <body class="cnt-home">
 		<!-- ============================================== HEADER ============================================== -->
@@ -493,7 +502,10 @@
 												<div class="review">
 													<div class="review-title">
 														<span class="summary" th:text="${review.user.lastName} + ' ' + ${review.user.firstName}"></span>
-														<span class="date"><i class="fa fa-calendar"></i><span th:text="${dateTimeFormatter.format(review.dateTime)}">1 days ago</span></span>
+														<span class="date"><i class="fa fa-calendar"></i><span th:text="${review.dateTime}">1 days ago</span></span>
+													</div>
+													<div>
+														<input type="hidden" name="rating" class="rating" th:value="${review.rating}" data-filled="fa fa-star fa-1x" data-empty="fa fa-star-o fa-1x" data-readonly="true">
 													</div>
 													<div class="text" th:text="${review.comment}"></div>
 												</div>
@@ -894,6 +906,7 @@
 		<script th:src="@{/assets/js/bootstrap-select.min.js}"></script>
 		<script th:src="@{/assets/js/wow.min.js}"></script>
 		<script th:src="@{/assets/js/scripts.js}"></script>
+		<script th:src="@{/js/bootstrap-rating.js}"></script>
 		<script>
 			$(document).ready(function () {
 				// Sự kiện click cho biểu tượng "plus"

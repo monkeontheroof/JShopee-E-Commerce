@@ -16,6 +16,7 @@
 
 		<!-- Bootstrap Core CSS -->
 		<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/css/bootstrap-rating.css}">
 
 		<!-- Customizable CSS -->
 		<link rel="stylesheet" th:href="@{/assets/css/main.css}">
@@ -34,7 +35,23 @@
 		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
+		<style>
+			.symbol {
+				display: inline-block;
+				border-radius: 50%;
+				border: 5px double white;
+				width: 30px;
+				height: 30px;
+			}
 
+			.symbol-empty {
+				background-color: #ccc;
+			}
+
+			.symbol-filled {
+				background-color: black;
+			}
+		</style>
 	</head>
     <body class="cnt-home">
 		<!-- ============================================== HEADER ============================================== -->
@@ -80,19 +97,26 @@
 				<tr th:each="order, iStat: ${orders}">
 
 					<td th:text="${iStat.index + 1}"></td>
-					<td th:text="${order.status}"></td>
+					<td th:if="${order.status == 'Đang xác nhận'}"><button class="btn btn-secondary" th:text="${order.status}"></button></td>
+					<td th:if="${order.status == 'Đang xử lý'}"><button class="btn btn-info" th:text="${order.status}"></button></td>
+					<td th:if="${order.status == 'Đang giao hàng'}"><button class="btn btn-success" th:text="${order.status}"></button></td>
+					<td th:if="${order.status == 'Đã giao'}"><button class="btn btn-primary" th:text="${order.status}"></button></td>
 					<td th:text="${order.date}"></td>
 					<td th:text="${order.address}"></td>
 					<td th:if="${order.isPaid()}" th:text="'Đã thanh toán'"></td>
 					<td th:unless="${order.isPaid()}" th:text="'COD'"></td>
 					<td th:text="${formatter.format(order.totalPrice)} + ' đ'"></td>
 					<td>
-						<a th:href="@{/orders/{id}/details(id=${order.id})}" title="Delete" class="btn btn-primary">
+						<a href="#" th:if="${order.status == 'Đã giao'}" class="btn btn-warning" title="Xác nhận đã nhận đơn hàng">
+							<i class="fa fa-check"></i>
+						</a>
+						<a th:href="@{/orders/{id}/details(id=${order.id})}" title="Chi tiết đơn mua" class="btn btn-primary">
 							<i class="fa fa-info-circle"></i>
 						</a>
-						<button type="submit" name="action" value="delete" title="Delete" class="btn btn-danger">
+						<a th:data-confirm-delete="|Bạn có chắc chắn muốn hủy đơn hàng số: ${iStat.index + 1}?|"
+								onclick="return confirm(this.getAttribute('data-confirm-delete'))" th:if="${order.status == 'Đang xác nhận'}" title="Hủy đơn hàng" class="btn btn-danger">
 							<i class="fa fa-trash-o"></i>
-						</button>
+						</a>
 					</td>
 				</tr>
 			</tbody><!-- /tbody -->
@@ -325,5 +349,6 @@
 		<script th:src="@{/assets/js/bootstrap-select.min.js}"></script>
 		<script th:src="@{/assets/js/wow.min.js}"></script>
 		<script th:src="@{/assets/js/scripts.js}"></script>
+		<script th:src="@{/js/bootstrap-rating.js}"></script>
 </body>
 </html>
