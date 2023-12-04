@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/store")
@@ -259,7 +260,7 @@ public class StoreAdminController {
         List<User> customers = orderService.getCustomersPurchasedFromStore(storeId);
         model.addAttribute("store", userStore);
         model.addAttribute("customers", customers);
-        return "storeAdmin/customer";
+        return "storeAdmin/customers";
     }
 
     @GetMapping("/delete-reviews/{id}")
@@ -281,6 +282,10 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("formatter", formatter);
         model.addAttribute("orders", orderPage.getContent());
+        model.addAttribute("waitToPay", orderPage.getContent().stream().filter(order -> !order.isPaid()).collect(Collectors.toList()));
+        model.addAttribute("delivering", orderPage.getContent().stream().filter(order -> order.getStatus().trim().equals("Đang giao hàng")).collect(Collectors.toList()));
+        model.addAttribute("finished", orderPage.getContent().stream().filter(order -> order.getStatus().trim().equals("Đã giao")).collect(Collectors.toList()));
+        model.addAttribute("canceled", orderPage.getContent().stream().filter(order -> order.getStatus().trim().equals("Đã hủy")).collect(Collectors.toList()));
         model.addAttribute("totalPages", orderPage.getTotalPages());
         model.addAttribute("currentPage", orderPage.getNumber() + 1);
         model.addAttribute("pageSize", size);

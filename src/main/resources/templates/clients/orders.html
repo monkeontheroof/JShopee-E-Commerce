@@ -101,6 +101,7 @@
 					<td th:if="${order.status == 'Đang xử lý'}"><button class="btn btn-info" th:text="${order.status}"></button></td>
 					<td th:if="${order.status == 'Đang giao hàng'}"><button class="btn btn-success" th:text="${order.status}"></button></td>
 					<td th:if="${order.status == 'Đã giao'}"><button class="btn btn-primary" th:text="${order.status}"></button></td>
+					<td th:if="${order.status == 'Đã hủy'}"><button class="btn btn-danger" th:text="${order.status}"></button></td>
 					<td th:text="${order.date}"></td>
 					<td th:text="${order.address}"></td>
 					<td th:if="${order.isPaid()}" th:text="'Đã thanh toán'"></td>

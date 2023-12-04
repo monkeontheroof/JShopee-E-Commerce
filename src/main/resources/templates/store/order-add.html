@@ -97,7 +97,7 @@
                                     <form th:action="@{/store/{storeId}/orders/update/{id}(storeId=${storeId},id=${order.id})}" method="post">
                                         <div class="product-tab-list tab-pane fade active in" id="description">
                                             <div class="row">
-                                                <input type="hidden" name="id"  th:field="*{id}">
+                                                <input type="hidden" name="id"  th:value="${order.id}">
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
                                                         <div class="input-group mg-b-pro-edt ">
@@ -126,7 +126,7 @@
                                                     <div class="review-content-section">
                                                         <div class="input-group mg-b-pro-edt ">
                                                             <span class="input-group-addon"><i class="icon fa fa-check-circle" aria-hidden="true"></i></span>
-                                                            <select id="status" name="status" class="form-control">
+                                                            <select id="status" name="status" class="form-control" th:field="*{order.status}">
                                                                 <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
                                                             </select>
                                                         </div>
@@ -144,8 +144,11 @@
                                                     <div class="review-content-section">
                                                         <div class="input-group mg-b-pro-edt ">
                                                             <span class="input-group-addon"><i class="icon fa fa-check-circle" aria-hidden="true"></i></span>
-                                                            <select id="isPaid" name="isPaid" class="form-control">
-                                                                <option th:each="option : ${isPaid}" th:value="${option}" th:text="${option == true} ? 'Đã thanh toán' : 'Chưa thanh toán'"></option>
+                                                            <select id="isPaid" name="isPaid" class="form-control" th:value="${order.isPaid()}">
+                                                                <option th:if="${order.isPaid() == null || order.isPaid()}" value="false" th:text="'Chưa thanh toán'"></option>
+                                                                <option th:if="${order.isPaid() == null || !order.isPaid()}" value="true" th:text="'Đã thanh toán'"></option>
+                                                                <option th:if="${order.isPaid()}" value="true" th:text="'Đã thanh toán'" selected></option>
+                                                                <option th:if="${!order.isPaid()}" value="false" th:text="'Chưa thanh toán'" selected></option>
                                                             </select>
                                                         </div>
                                                     </div>

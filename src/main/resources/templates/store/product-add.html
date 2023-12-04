@@ -270,10 +270,11 @@
                                                             <td th:text="${iStat.index} + 1"></td>
                                                             <td th:text="${review.user.firstName} + ' ' + ${review.user.lastName}"></td>
                                                             <td>
-                                                                <div style="display: flex; align-items: center">
-                                                                    <p th:text="${review.rating}" style="margin: 0; padding-right: 5px"></p>
-                                                                    <a style="text-decoration: none; color: yellow" disabled="disabled"><i class="fa fa-star"></i></a>
-                                                                </div>
+                                                                <input type="hidden" name="rating" class="rating" th:value="${review.rating}" data-filled="fa fa-star fa-1x" data-empty="fa fa-star-o fa-1x" data-readonly="true">
+<!--                                                                <div style="display: flex; align-items: center">-->
+<!--                                                                    <p th:text="${review.rating}" style="margin: 0; padding-right: 5px"></p>-->
+<!--                                                                    <a style="text-decoration: none; color: yellow" disabled="disabled"><i class="fa fa-star"></i></a>-->
+<!--                                                                </div>-->
                                                             </td>
                                                             <td>
                                                                 <textarea th:text="${review.comment}" style="background-color: #152036" class="form-control" rows="2" cols="9" readonly></textarea>
