@@ -29,6 +29,8 @@ public class OrderItem {
 
     private double totalPrice;
 
+    private boolean isRated;
+
     @ManyToOne()
     @JoinColumn(name = "voucher_id", referencedColumnName = "id")
     private Voucher voucher;

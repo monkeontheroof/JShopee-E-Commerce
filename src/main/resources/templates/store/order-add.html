@@ -100,32 +100,32 @@
                                                 <input type="hidden" name="id"  th:value="${order.id}">
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
-                                                        <div class="input-group mg-b-pro-edt ">
-                                                            <span class="input-group-addon"><i class="icon fa fa-calendar" aria-hidden="true"></i></span>
-                                                            <input type="date" class="form-control" th:value="${order.date}" placeholder="Enter date" required>
+                                                        <div class="mg-b-pro-edt ">
+                                                            <label for="date" style="color: white">Ngày tạo đơn:</label>
+                                                            <input type="date" name="date" id="date" class="form-control" th:value="${order.date}" placeholder="Enter date" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
-                                                        <div class="input-group mg-b-pro-edt ">
-                                                            <span class="input-group-addon"><i class="icon fa fa-money" aria-hidden="true"></i></span>
+                                                        <div class="mg-b-pro-edt ">
+                                                            <label for="total" style="color: white">Tổng tiền:</label>
                                                             <input type="number" class="form-control" required th:value="${order.totalPrice}" name="total" id="total"  placeholder="Total price">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
-                                                        <div class="input-group mg-b-pro-edt ">
-                                                            <span class="input-group-addon"><i class="icon fa fa-money" aria-hidden="true"></i></span>
-                                                            <input type="text" class="form-control" required th:value="${order.getUser().firstName} + ' ' + ${order.getUser().lastName}" name="total" id="user"  placeholder="User">
+                                                        <div class="mg-b-pro-edt ">
+                                                            <label for="user" style="color: white">Tên Khách Hàng:</label>
+                                                            <input type="text" class="form-control" required th:value="${order.getUser().firstName} + ' ' + ${order.getUser().lastName}" name="user" id="user"  placeholder="User">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
-                                                        <div class="input-group mg-b-pro-edt ">
-                                                            <span class="input-group-addon"><i class="icon fa fa-check-circle" aria-hidden="true"></i></span>
+                                                        <div class="mg-b-pro-edt ">
+                                                            <label for="status" style="color: white">Tình trạng:</label>
                                                             <select id="status" name="status" class="form-control" th:field="*{order.status}">
                                                                 <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
                                                             </select>
@@ -134,16 +134,16 @@
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
-                                                        <div class="input-group mg-b-pro-edt ">
-                                                            <span class="input-group-addon"><i class="icon fa fa-home" aria-hidden="true"></i></span>
+                                                        <div class="mg-b-pro-edt ">
+                                                            <label for="address" style="color: white">Địa chỉ giao hàng:</label>
                                                             <input type="text" class="form-control" required th:value="${order.address}" name="address" id="address"  placeholder="Địa chỉ giao hàng">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                                     <div class="review-content-section">
-                                                        <div class="input-group mg-b-pro-edt ">
-                                                            <span class="input-group-addon"><i class="icon fa fa-check-circle" aria-hidden="true"></i></span>
+                                                        <div class="mg-b-pro-edt ">
+                                                            <label for="isPaid" style="color: white">Thanh toán:</label>
                                                             <select id="isPaid" name="isPaid" class="form-control" th:value="${order.isPaid()}">
                                                                 <option th:if="${order.isPaid() == null || order.isPaid()}" value="false" th:text="'Chưa thanh toán'"></option>
                                                                 <option th:if="${order.isPaid() == null || !order.isPaid()}" value="true" th:text="'Đã thanh toán'"></option>

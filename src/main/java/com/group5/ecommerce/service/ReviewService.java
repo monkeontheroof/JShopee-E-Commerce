@@ -1,8 +1,10 @@
 package com.group5.ecommerce.service;
 
+import com.group5.ecommerce.model.OrderItem;
 import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.model.ProductDetail;
 import com.group5.ecommerce.model.Review;
+import com.group5.ecommerce.repository.OrderItemRepository;
 import com.group5.ecommerce.repository.ProductRepository;
 import com.group5.ecommerce.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class ReviewService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     public Review getById(Long id) {
         return reviewRepository.findById(id).orElse(null);
     }
@@ -33,7 +38,12 @@ public class ReviewService {
         return reviewRepository.findAllByProductId(productId);
     }
 
-    public void save(Integer rating, String comment, Long productId, Long userId) {
+    public void save(Integer rating, String comment, Long productId, Long userId, Long orderItemId) {
+        OrderItem orderItem = orderItemRepository.findById(orderItemId).orElse(null);
+        if (orderItem != null) {
+            orderItem.setRated(true);
+            orderItemRepository.save(orderItem);
+        }
         Optional<Product> product = productService.getProductById(productId);
         product.ifPresent(p -> {
             Review view = Review.builder()

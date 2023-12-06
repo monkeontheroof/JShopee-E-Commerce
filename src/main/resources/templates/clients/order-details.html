@@ -88,8 +88,8 @@
 					<td th:text="${formatter.format(detail.totalPrice)}"></td>
 					<td th:if="${detail.voucher != null}" th:text="${detail.voucher.code}"></td>
 					<td th:unless="${detail.voucher != null}" th:text="''"></td>
-					<td>
-						<a data-toggle="modal" th:attr="data-target='#exampleModalCenter'+${detail.id}" class="btn btn-warning" title="Đánh giá sản phẩm" th:unless="${detail.order.isRated()}">
+					<td th:unless="${detail.isRated()}">
+						<a data-toggle="modal" th:attr="data-target='#exampleModalCenter'+${detail.id}" class="btn btn-warning" title="Đánh giá sản phẩm">
 							<i class="fa fa-star-half-full"></i>
 						</a>
 						<div class="modal fade" th:id="${'exampleModalCenter' + detail.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -108,12 +108,13 @@
 												<input type="hidden" name="rating" class="rating" data-filled="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" value="0" data-glyphicon="0"/>
 											</div>
 											<div class="form-group">
+												<input type="hidden" th:value="${detail.id}" name="itemId" id="itemId">
 												<textarea type="text" name="comment" class="form-control" placeholder="Đánh giá của bạn"></textarea>
 											</div>
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
-											<button type="submit" class="btn btn-success">Lưu</button>
+											<button type="submit" class="btn btn-success">Đánh giá</button>
 										</div>
 									</form>
 								</div>

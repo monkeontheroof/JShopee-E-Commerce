@@ -31,8 +31,6 @@ public class Order {
 
     private boolean isDelivered;
 
-    private boolean isRated;
-
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

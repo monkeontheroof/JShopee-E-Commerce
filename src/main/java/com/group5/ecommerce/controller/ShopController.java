@@ -107,9 +107,10 @@ public class ShopController {
     public String submitReview(@RequestParam("rating") Integer rating,
                                @RequestParam("comment") String comment,
                                @RequestParam("productId") Long productId,
+                               @RequestParam("itemId") Long orderItemId,
                                HttpServletRequest request){
         Optional<CustomUserDetail> authentication = SecurityUtil.getPrincipal();
-        authentication.ifPresent(userDetail -> reviewService.save(rating, comment, productId, userDetail.getId()));
+        authentication.ifPresent(userDetail -> reviewService.save(rating, comment, productId, userDetail.getId(), orderItemId));
 
         String referer = request.getHeader("Referer");
         if(referer == null || referer.isEmpty())

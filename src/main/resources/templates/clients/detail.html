@@ -395,7 +395,8 @@
 										</div>
 										<div class="col-sm-9">
 											<div class="stock-box">
-												<span class="value" th:text="${product.quantity}">In Stock</span>
+												<span class="value" th:if="${product.quantity > 0}" th:text="${product.quantity}"></span>
+												<span class="value" th:if="${product.quantity < 1}" th:text="'Hết hàng'"></span>
 											</div>
 										</div>
 									</div><!-- /.row -->
@@ -453,7 +454,8 @@
 										</div>
 
 										<div class="col-sm-7">
-											<button href="#" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
+											<button th:if="${product.quantity > 0}" type="submit" class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
+											<button th:if="${product.quantity < 1}" type="button" class="btn btn-primary" disabled><i class="fa fa-shopping-cart inner-right-vs"></i> HẾT HÀNG</button>
 										</div>
 
 
