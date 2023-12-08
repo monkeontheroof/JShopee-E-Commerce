@@ -26,6 +26,10 @@ public class VoucherService {
     @Autowired
     private OrderRepository orderRepository;
 
+    public Voucher findById(Long id){
+        return voucherRepository.findById(id).orElse(null);
+    }
+
     public void createVoucher(Long storeId, Voucher createdVoucher){
         UserStore store = storeService.getStoreById(storeId);
         Voucher voucher = Voucher.builder()

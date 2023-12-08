@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -55,7 +54,7 @@ public class ShopController {
         return "shop"; //shop.html will be rendered here.
     }
     @GetMapping("/products")
-    public String getProductsByCategory(Model model){
+    public String getAllProducts(Model model){
         List<Product> products = productService.getAllProduct();
         DecimalFormat formatter = new DecimalFormat("#,###");
         getUserId(model, cartService);

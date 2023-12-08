@@ -112,7 +112,12 @@ public class StoreAdminController {
     @GetMapping("/{storeId}/categories/delete/{id}")
     public String deleteCat(@PathVariable("id") Long categoryId,
                             @PathVariable("storeId") Long storeId){
-        categoryService.removeCategoryById(categoryId);
+        Optional<Category> category = categoryService.getCategoryById(categoryId);
+        category.ifPresent(c -> {
+            if(!c.getProducts().isEmpty()){
+                categoryService.removeCategoryById(categoryId);
+            }
+        });
         return "redirect:/store/" + storeId + "/categories";
     }
 
@@ -126,7 +131,7 @@ public class StoreAdminController {
             model.addAttribute("category", category.get());
             return "store/categories-add";
         }
-        return "404";  //redirect to categories page
+        return "Redirect:/error";  //redirect to categories page
     }
 
 
@@ -263,13 +268,6 @@ public class StoreAdminController {
         return "storeAdmin/customers";
     }
 
-    @GetMapping("/delete-reviews/{id}")
-    public String deleteReviews(Model model,
-                                @PathVariable("id") Long reviewId,
-                                HttpServletRequest request){
-        reviewService.remove(reviewId);
-        return "redirect:" + request.getHeader("Referer");
-    }
     // ORDER SESSIONS //
     @GetMapping("/{storeId}/orders")
     public String getOrders(Model model,
@@ -408,7 +406,10 @@ public class StoreAdminController {
     @GetMapping("/{storeId}/vouchers/delete/{id}")
     public String deleteVoucher(@PathVariable("storeId") Long storeId,
                                 @PathVariable("id") Long voucherId){
-        voucherService.deleteVoucherById(voucherId);
+        Voucher voucher = voucherService.findById(voucherId);
+        if(voucher != null && voucher.getExpiryDate().isBefore(LocalDate.now())){
+            voucherService.deleteVoucherById(voucherId);
+        }
         return "redirect:/store/" + storeId + "/vouchers";
     }
 
@@ -424,5 +425,13 @@ public class StoreAdminController {
         model.addAttribute("formatter", formatter);
         model.addAttribute("store", storeService.getStoreById(storeId));
         return "storeAdmin/productReviews";
+    }
+
+    @GetMapping("/delete-reviews/{id}")
+    public String deleteReviews(Model model,
+                                @PathVariable("id") Long reviewId,
+                                HttpServletRequest request){
+        reviewService.remove(reviewId);
+        return "redirect:" + request.getHeader("Referer");
     }
 }
