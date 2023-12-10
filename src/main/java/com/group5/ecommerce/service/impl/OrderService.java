@@ -1,11 +1,10 @@
-package com.group5.ecommerce.service;
+package com.group5.ecommerce.service.impl;
 
 import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.CartRepository;
 import com.group5.ecommerce.repository.OrderItemRepository;
 import com.group5.ecommerce.repository.OrderRepository;
 import com.group5.ecommerce.repository.ProductRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +35,7 @@ public class OrderService {
     private ProductRepository productRepository;
 
     @Autowired
-    private VoucherService voucherService;
+    private VoucherServiceImpl voucherServiceImpl;
 
     public Page<Order> getAllOrdersByStoreId(Long storeId, Pageable pageable){
         return orderRepository.findAllByStoreId(storeId, pageable);
@@ -85,13 +84,14 @@ public class OrderService {
     private Order createAndSaveOrder(User user, UserStore store, List<CartItem> cartItems, String billingAddress, String paymentMethod) {
         Order order = new Order();
         orderRepository.save(order);
-        order.setUser(user);
-        order.setStore(store);
-        order.setDate(LocalDate.now());
-        order.setStatus("Đang xác nhận");
-        order.setDelivered(false);
-        order.setAddress(billingAddress.trim());
-        order.setPaid(paymentMethod.trim().equals("Online"));
+        Order.builder()
+                .user(user)
+                .store(store)
+                .date(LocalDate.now())
+                .status("Đang xác nhận")
+                .isDelivered(false)
+                .address(billingAddress.trim())
+                .isPaid(paymentMethod.trim().equals("Online"));
 
         List<OrderItem> orderItems = createOrderItems(order, cartItems);
         order.setOrderItems(orderItems);

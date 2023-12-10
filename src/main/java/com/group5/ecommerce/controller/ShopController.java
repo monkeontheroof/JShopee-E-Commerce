@@ -1,7 +1,7 @@
 package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.model.*;
-import com.group5.ecommerce.service.*;
+import com.group5.ecommerce.service.impl.*;
 import com.group5.ecommerce.utils.CartUtil;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;

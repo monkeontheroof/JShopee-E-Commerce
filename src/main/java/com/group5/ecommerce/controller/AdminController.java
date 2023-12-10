@@ -1,7 +1,7 @@
 package com.group5.ecommerce.controller;
 
-import com.group5.ecommerce.service.CategoryService;
-import com.group5.ecommerce.service.ProductService;
+import com.group5.ecommerce.service.impl.CategoryService;
+import com.group5.ecommerce.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

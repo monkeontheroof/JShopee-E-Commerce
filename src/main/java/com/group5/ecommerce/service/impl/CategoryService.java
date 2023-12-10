@@ -1,7 +1,6 @@
-package com.group5.ecommerce.service;
+package com.group5.ecommerce.service.impl;
 
 import com.group5.ecommerce.model.Category;
-import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

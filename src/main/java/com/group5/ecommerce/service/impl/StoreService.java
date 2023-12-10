@@ -1,4 +1,4 @@
-package com.group5.ecommerce.service;
+package com.group5.ecommerce.service.impl;
 
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;

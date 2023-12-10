@@ -1,17 +1,16 @@
-package com.group5.ecommerce.service;
+package com.group5.ecommerce.service.impl;
 
 import com.group5.ecommerce.model.OrderItem;
 import com.group5.ecommerce.model.Product;
-import com.group5.ecommerce.model.ProductDetail;
 import com.group5.ecommerce.model.Review;
 import com.group5.ecommerce.repository.OrderItemRepository;
-import com.group5.ecommerce.repository.ProductRepository;
 import com.group5.ecommerce.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ public class ReviewService {
     private ProductService productService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private OrderItemRepository orderItemRepository;
@@ -50,7 +49,7 @@ public class ReviewService {
                     .comment(comment.trim())
                     .rating(rating)
                     .dateTime(LocalDate.now())
-                    .user(userService.getUserById(userId))
+                    .user(userServiceImpl.getUserById(userId))
                     .product(p).build();
             reviewRepository.save(view);
         });

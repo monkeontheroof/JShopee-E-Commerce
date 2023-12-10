@@ -1,23 +1,14 @@
-package com.group5.ecommerce.service;
+package com.group5.ecommerce.service.impl;
 
 import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.ProductDetailRepository;
 import com.group5.ecommerce.repository.ProductRepository;
-import com.group5.ecommerce.repository.ReviewRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 

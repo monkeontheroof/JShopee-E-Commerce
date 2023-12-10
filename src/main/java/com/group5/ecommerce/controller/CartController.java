@@ -1,9 +1,9 @@
 package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.model.*;
-import com.group5.ecommerce.service.CartService;
-import com.group5.ecommerce.service.OrderService;
-import com.group5.ecommerce.service.ProductService;
+import com.group5.ecommerce.service.impl.CartService;
+import com.group5.ecommerce.service.impl.OrderService;
+import com.group5.ecommerce.service.impl.ProductService;
 import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -2,6 +2,7 @@ package com.group5.ecommerce.controller;
 
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.service.UserService;
+import com.group5.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +14,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-
 
     // USER SESSIONS
     @GetMapping("/users")
@@ -32,7 +31,7 @@ public class UserController {
     //post method for category
     @PostMapping("/users/add")
     public String postAddUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
+        userService.saveUser(user);
         return "redirect:/users";
     }
 

@@ -1,82 +1,21 @@
 package com.group5.ecommerce.service;
 
-import com.group5.ecommerce.model.*;
-import com.group5.ecommerce.repository.RoleRepository;
-import com.group5.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import com.group5.ecommerce.model.RegistrationForm;
+import com.group5.ecommerce.model.User;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class UserService {
+public interface UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    List<User> getAllUsers();
 
-    @Autowired
-    private RoleRepository roleRepository;
+    User getUserById(Long id);
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    User getUserByEmail(String email);
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
+    void saveUser(User user);
 
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElse(null);
-    }
+    void removeUserById(Long id);
 
-    public User getUserByEmail(String email){
-        if(isValidEmail(email)){
-            Optional<User> user = userRepository.findByEmail(email);
-            if(user.isPresent())
-                return user.get();
-        }
-        return null;
-    }
-
-    private boolean isValidEmail(String email) {
-        //check if the email is valid using regex pattern
-        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") && !email.isEmpty();
-    }
-
-    public void createNewUser(RegistrationForm registerUser){
-        if(registerUser.getPassword().equals(registerUser.getConfirmPassword())){
-            List<Role> roles = new ArrayList<>();
-            roles.add(roleRepository.findByName("ROLE_USER"));
-            User user = User.builder()
-                    .firstName(registerUser.getFirstName())
-                    .lastName(registerUser.getLastName())
-                    .phone(registerUser.getPhone())
-                    .password(bCryptPasswordEncoder.encode(registerUser.getPassword()))
-                    .email(registerUser.getEmail())
-                    .roles(roles)
-                    .cart(new Cart())
-                    .build();
-            userRepository.save(user);
-        }
-    }
-
-    public void save(User user){
-        userRepository.save(user);
-    }
-
-    public void addUser(User user){
-        userRepository.save(user);
-    }
-
-    public void updateUser(User user){
-        userRepository.save(user);
-    }
-
-    public void removeUserById(Long id){
-        userRepository.deleteById(id);
-    }
+    void createNewUser(RegistrationForm registerUser);
 }
