@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,7 @@ public class ProductService {
         return productRepository.findByQuantityLessThan(quantity);
     }
 
+    @Transactional
     public void addProduct(Product product, Long storeId){
         if(product.getQuantity() < 0)
             throw new RuntimeException("Product quantity must be a positive number.");

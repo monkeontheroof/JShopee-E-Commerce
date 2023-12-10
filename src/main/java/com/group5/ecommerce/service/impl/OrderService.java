@@ -84,14 +84,13 @@ public class OrderService {
     private Order createAndSaveOrder(User user, UserStore store, List<CartItem> cartItems, String billingAddress, String paymentMethod) {
         Order order = new Order();
         orderRepository.save(order);
-        Order.builder()
-                .user(user)
-                .store(store)
-                .date(LocalDate.now())
-                .status("Đang xác nhận")
-                .isDelivered(false)
-                .address(billingAddress.trim())
-                .isPaid(paymentMethod.trim().equals("Online"));
+        order.setUser(user);
+        order.setStore(store);
+        order.setDate(LocalDate.now());
+        order.setStatus("Đang xác nhận");
+        order.setDelivered(false);
+        order.setAddress(billingAddress.trim());
+        order.setPaid(paymentMethod.trim().equals("Online"));
 
         List<OrderItem> orderItems = createOrderItems(order, cartItems);
         order.setOrderItems(orderItems);

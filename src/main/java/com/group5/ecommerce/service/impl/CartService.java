@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 //TODO: Facade
-@Service
+@Service // Singleton
 public class CartService {
 
     @Autowired
@@ -64,7 +64,7 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    @Transactional //TODO: Proxy
+     //TODO: Proxy
     public Cart addItemToCart(Product product, int quantity, long userId){
         User user = userServiceImpl.getUserById(userId);
         Cart cart = getCartByUserId(userId);
@@ -117,6 +117,7 @@ public class CartService {
     public Cart findById(long id) {
         return cartRepository.findById(id).get();
     }
+
 
     public void deleteItemFromCart(Product product, Long userId){
         Cart cart = userServiceImpl.getUserById(userId).getCart();

@@ -4,6 +4,7 @@ import com.group5.ecommerce.model.RegistrationForm;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.pattern.command.AddUserCommand;
 import com.group5.ecommerce.pattern.command.Command;
+import com.group5.ecommerce.pattern.command.CommandInvoker;
 import com.group5.ecommerce.service.UserService;
 import com.group5.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-@Controller //TODO: Singleton
+@Controller //Singleton
 public class AuthController {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+
+    @Autowired
+    private CommandInvoker commandInvoker;
 
     @GetMapping("/login")
     public String login(Model model){
@@ -44,7 +48,8 @@ public class AuthController {
         }
 
         Command command = new AddUserCommand(registerUser); //TODO: Command
-        command.execute();
+        commandInvoker.setCommand(command);
+        commandInvoker.execute();
         request.login(registerUser.getEmail(), registerUser.getPassword());
         return "redirect:/home";
     }
