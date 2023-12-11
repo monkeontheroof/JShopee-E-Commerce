@@ -98,7 +98,6 @@ public class OrderService {
 
         double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum() + 30000.0;
         order.setTotalPrice(totalPrice + (totalPrice * 0.04));
-        store.setRevenue(); //TODO
 
         updateProductQuantities(cartItems);
 
@@ -135,10 +134,6 @@ public class OrderService {
             product.setQuantity(newQuantity);
             productRepository.save(product);
         }
-    }
-
-    private void updateProductOrderItems(List<OrderItem> orderItems){
-
     }
 
     public void updateOrderStatus(boolean isPaid, String status, Long orderId){

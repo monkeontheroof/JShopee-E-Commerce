@@ -6,8 +6,10 @@ import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -353,9 +355,29 @@ public class StoreAdminController {
 
     // SALES SESSIONS //
     @GetMapping("/{storeId}/sales")
-    public String getSales(Model model, @PathVariable("storeId") Long storeId){
+    public String getSales(Model model, @PathVariable("storeId") Long storeId,
+                           @RequestParam(defaultValue = "") String productName,
+                           @RequestParam(name = "page", defaultValue = "1") int page,
+                           @RequestParam(name = "size", defaultValue = "10") int size){
         UserStore userStore = storeService.getStoreById(storeId);
+        Page<OrderItem> orderItemsPage;
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        if(StringUtils.hasText(productName.trim())){
+            orderItemsPage = saleService.getOrderItemsByProductName(productName, storeId,pageable);
+        } else {
+            orderItemsPage = saleService.getAllOrderItems(storeId, PageRequest.of(page - 1,size));
+        }
+
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
         model.addAttribute("store", userStore);
+        model.addAttribute("productName", productName);
+        model.addAttribute("decimalFormat", decimalFormat);
+        model.addAttribute("totalRevenue", saleService.calculateTotalRevenue(orderItemsPage.getContent()));
+        model.addAttribute("orderItems", orderItemsPage.getContent());
+        model.addAttribute("totalPages", orderItemsPage.getTotalPages());
+        model.addAttribute("currentPage", orderItemsPage.getNumber() + 1);
+        model.addAttribute("pageSize", size);
         return "store/sales";
     }
 

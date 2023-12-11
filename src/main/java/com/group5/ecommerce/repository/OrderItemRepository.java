@@ -12,4 +12,6 @@ import java.util.List;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     Page<OrderItem> getOrderItemByOrderId(Long orderId, Pageable pageable);
+
+    Page<OrderItem> findAllByProduct_NameContaining(String productName, Pageable pageable);
 }
