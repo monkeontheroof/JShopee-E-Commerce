@@ -34,10 +34,6 @@ public class ReviewService {
         return reviewRepository.findById(id).orElse(null);
     }
 
-    public List<Review> getReviewsByProductId(Long productId) {
-        return reviewRepository.findAllByProductId(productId);
-    }
-
     public void save(Integer rating, String comment, Long productId, Long userId, Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId).orElse(null);
         if (orderItem != null) {

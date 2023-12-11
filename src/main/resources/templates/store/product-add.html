@@ -174,7 +174,7 @@
                                                             <th>Mô tả</th>
                                                             <th>Action</th>
                                                         </tr>
-                                                        <tr th:each="detail, iStat : ${product.details}">
+                                                        <tr th:each="detail, iStat : ${detailPages.getContent()}">
                                                             <td th:text="${iStat.index} + 1"></td>
                                                             <td th:text="${detail.name}"></td>
                                                             <td>
@@ -195,6 +195,25 @@
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                    <div class="custom-pagination" th:if="${detailPages.totalPages > 1}">
+                                                        <ul class="pagination">
+                                                            <li class="page-item" th:class="${(detailPages.number + 1) == 1} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=1&size=' + ${pageSize}}">First</a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(detailPages.number + 1) == 1} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + (${(detailPages.number + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
+                                                            </li>
+                                                            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, detailPages.totalPages)}" th:class="${(detailPages.number + 1) == pageNumber} ? 'active' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(detailPages.number + 1) == detailPages.totalPages} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + (${(detailPages.number + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(detailPages.number + 1) == detailPages.totalPages} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + ${detailPages.totalPages} + '&size=' + ${pageSize}}">Last</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                                 </form>
                                             </div>
@@ -247,6 +266,25 @@
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                    <div class="custom-pagination" th:if="${imagePages.totalPages > 1}">
+                                                        <ul class="pagination">
+                                                            <li class="page-item" th:class="${(imagePages.number + 1) == 1} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=1&size=' + ${pageSize}}">First</a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(imagePages.number + 1) == 1} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + (${(imagePages.number + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
+                                                            </li>
+                                                            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, imagePages.totalPages)}" th:class="${(imagePages.number + 1) == pageNumber} ? 'active' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(imagePages.number + 1) == imagePages.totalPages} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + (${(imagePages.number + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(imagePages.number + 1) == imagePages.totalPages} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + ${imagePages.totalPages} + '&size=' + ${pageSize}}">Last</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -294,6 +332,25 @@
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                    <div class="custom-pagination" th:if="${reviewPages.totalPages > 1}">
+                                                        <ul class="pagination">
+                                                            <li class="page-item" th:class="${(reviewPages.number + 1) == 1} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=1&size=' + ${pageSize}}">First</a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(reviewPages.number + 1) == 1} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + (${(reviewPages.number + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
+                                                            </li>
+                                                            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, reviewPages.totalPages)}" th:class="${(reviewPages.number + 1) == pageNumber} ? 'active' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(reviewPages.number + 1) == reviewPages.totalPages} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + (${(reviewPages.number + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
+                                                            </li>
+                                                            <li class="page-item" th:class="${(reviewPages.number + 1) == reviewPages.totalPages} ? 'disabled' : ''">
+                                                                <a th:href="@{'/store/' + ${store.id} + '/products/update/{id}/' + ${product.id} + '?page=' + ${reviewPages.totalPages} + '&size=' + ${pageSize}}">Last</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

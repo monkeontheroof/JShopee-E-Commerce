@@ -6,16 +6,15 @@ import com.group5.ecommerce.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -233,12 +232,21 @@ public class StoreAdminController {
     @GetMapping("/{storeId}/products/update/{id}")
     public String updateProduct(@PathVariable("id") Long id,
                                 Model model,
-                                @PathVariable("storeId") Long storeId){
+                                @PathVariable("storeId") Long storeId,
+                                @RequestParam(name = "page", defaultValue = "1") int detailPage,
+                                @RequestParam(name = "size", defaultValue = "10") int size){
 
         UserStore userStore = storeService.getStoreById(storeId);
+        Page<ProductDetail> detailPages = productService.getProductDetailsByProductId(id, PageRequest.of(detailPage -1, size));
+        Page<ProductImage> imagePages = productService.getProductImagesByProductId(id, PageRequest.of(detailPage -1, size));
+        Page<Review> reviewPages = productService.getReviewsByProductId(id, PageRequest.of(detailPage -1, size));
         model.addAttribute("store", userStore);
         model.addAttribute("product", productService.getProductById(id).orElse(null));
         model.addAttribute("detail", new ProductDetail());
+        model.addAttribute("detailPages", detailPages);
+        model.addAttribute("imagePages", imagePages);
+        model.addAttribute("reviewPages", imagePages);
+        model.addAttribute("pageSize", size);
         model.addAttribute("categories", categoryService.getAllCategoryByStoreId(storeId, PageRequest.of(0,5)).getContent());
         model.addAttribute("isUpdate", true);
         return "store/product-add";
@@ -357,14 +365,23 @@ public class StoreAdminController {
     @GetMapping("/{storeId}/sales")
     public String getSales(Model model, @PathVariable("storeId") Long storeId,
                            @RequestParam(defaultValue = "") String productName,
+                           @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @Nullable LocalDate startDate,
+                           @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") @Nullable LocalDate endDate,
                            @RequestParam(name = "page", defaultValue = "1") int page,
                            @RequestParam(name = "size", defaultValue = "10") int size){
         UserStore userStore = storeService.getStoreById(storeId);
+        Page<Order> orderPages;
         Page<OrderItem> orderItemsPage;
-        Pageable pageable = PageRequest.of(page - 1, size);
+
+        if(startDate != null && endDate != null){
+            orderPages = saleService.getOrderItemsBetween(startDate, endDate, storeId, PageRequest.of(page - 1, size));
+        }
+        else {
+            orderPages = saleService.getOrderItemsBetween(LocalDate.now(), LocalDate.now(), storeId, PageRequest.of(page - 1, size));
+        }
 
         if(StringUtils.hasText(productName.trim())){
-            orderItemsPage = saleService.getOrderItemsByProductName(productName, storeId,pageable);
+            orderItemsPage = saleService.getOrderItemsByProductName(productName, storeId, PageRequest.of(page - 1, size));
         } else {
             orderItemsPage = saleService.getAllOrderItems(storeId, PageRequest.of(page - 1,size));
         }
@@ -373,10 +390,12 @@ public class StoreAdminController {
         model.addAttribute("store", userStore);
         model.addAttribute("productName", productName);
         model.addAttribute("decimalFormat", decimalFormat);
-        model.addAttribute("totalRevenue", saleService.calculateTotalRevenue(orderItemsPage.getContent()));
-        model.addAttribute("orderItems", orderItemsPage.getContent());
-        model.addAttribute("totalPages", orderItemsPage.getTotalPages());
-        model.addAttribute("currentPage", orderItemsPage.getNumber() + 1);
+        model.addAttribute("totalItemRevenue", saleService.calculateTotalItemRevenue(orderItemsPage.getContent()));
+        model.addAttribute("totalOrderRevenue", saleService.calculateTotalOrderRevenue(orderPages.getContent()));
+        model.addAttribute("orderItemsByProduct", orderItemsPage);
+        model.addAttribute("orderPages", orderPages);
+//        model.addAttribute("totalPages1", orderItemsPage.getTotalPages());
+//        model.addAttribute("currentPage1", orderItemsPage.getNumber() + 1);
         model.addAttribute("pageSize", size);
         return "store/sales";
     }
@@ -436,18 +455,6 @@ public class StoreAdminController {
     }
 
     // REVIEWS SESSIONS //
-    @GetMapping("/{storeId}/products/{id}/reviews")
-    public String getReviewsByProductId(Model model,
-                                        @PathVariable("storeId") Long storeId,
-                                        @PathVariable("id") Long productId){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        List<Review> reviews = reviewService.getReviewsByProductId(productId);
-
-        model.addAttribute("reviews", reviews);
-        model.addAttribute("formatter", formatter);
-        model.addAttribute("store", storeService.getStoreById(storeId));
-        return "storeAdmin/productReviews";
-    }
 
     @GetMapping("/delete-reviews/{id}")
     public String deleteReviews(Model model,

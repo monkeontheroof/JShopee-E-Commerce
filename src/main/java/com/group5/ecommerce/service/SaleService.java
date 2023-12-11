@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,8 +57,12 @@ public class SaleService {
         return new PageImpl<>(orderItems.subList(start, end), pageable, orderItems.size());
     }
 
-    public double calculateTotalRevenue(List<OrderItem> orderItems) {
+    public double calculateTotalItemRevenue(List<OrderItem> orderItems) {
         return orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
+    }
+
+    public double calculateTotalOrderRevenue(List<Order> orders) {
+        return orders.stream().mapToDouble(order -> order.getTotalPrice() / 1.04 - 30000.0).sum();
     }
 
     public Page<OrderItem> getAllOrderItems(Long storeId, Pageable pageable){
@@ -70,6 +75,25 @@ public class SaleService {
         int end = Math.min((start + pageable.getPageSize()), orderItems.size());
 
         return new PageImpl<>(orderItems.subList(start, end), pageable, orderItems.size());
+    }
+
+    public Page<Order> getOrderItemsBetween(LocalDate startDate, LocalDate endDate, Long storeId, Pageable pageable){
+        List<Order> orders = filterByDate(orderService.getAllOrdersByStoreId(storeId), startDate, endDate);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), orders.size());
+
+        return new PageImpl<>(orders.subList(start, end), pageable, orders.size());
+    }
+
+    private List<Order> filterByDate(List<Order> orders, LocalDate startDate, LocalDate endDate) {
+        return orders.stream()
+                .filter(order -> isDateInRange(order.getDate(), startDate, endDate))
+                .collect(Collectors.toList());
+    }
+
+    private boolean isDateInRange(LocalDate orderDate, LocalDate startDate, LocalDate endDate){
+        return !orderDate.isBefore(startDate) && !orderDate.isAfter(endDate);
     }
 
 //    public double getRevenueByStoreId(Long storeId) {

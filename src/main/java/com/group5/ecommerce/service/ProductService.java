@@ -2,6 +2,7 @@ package com.group5.ecommerce.service;
 
 import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.ProductDetailRepository;
+import com.group5.ecommerce.repository.ProductImageRepository;
 import com.group5.ecommerce.repository.ProductRepository;
 import com.group5.ecommerce.repository.ReviewRepository;
 import org.modelmapper.ModelMapper;
@@ -31,6 +32,12 @@ public class ProductService {
     private ProductDetailRepository productDetailRepository;
 
     @Autowired
+    private ProductImageRepository productImageRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
     private StoreService storeService;
 
     @Autowired
@@ -48,6 +55,24 @@ public class ProductService {
         Optional<Product> product = getProductById(productId);
         if(product.isPresent()) {
             return productDetailRepository.getProductDetailsByProductId(productId, pageRequest);
+        }else {
+            throw new RuntimeException("Product not found.");
+        }
+    }
+
+    public Page<ProductImage> getProductImagesByProductId(Long productId, Pageable pageable){
+        Optional<Product> product = getProductById(productId);
+        if(product.isPresent()) {
+            return productImageRepository.findAllByProductId(productId, pageable);
+        }else {
+            throw new RuntimeException("Product not found.");
+        }
+    }
+
+    public Page<Review> getReviewsByProductId(Long productId, Pageable pageable){
+        Optional<Product> product = getProductById(productId);
+        if(product.isPresent()) {
+            return reviewRepository.findAllByProductId(productId, pageable);
         }else {
             throw new RuntimeException("Product not found.");
         }

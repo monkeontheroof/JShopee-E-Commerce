@@ -113,33 +113,24 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div class="custom-pagination" th:if="${totalPages > 0}">
-                                <nav aria-label="Pagination">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                                            <a th:replace="fragments/pagination :: pagination(1, '<<', 'First Page')"></a>
-                                        </li>
-                                        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-                                            <a th:replace="fragments/pagination :: pagination(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
-                                        </li>
-                                        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
-                                            <a class="page-link" href="#">...</a>
-                                        </li>
-                                        <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
-                                            th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
-                                            <a th:replace="fragments/pagination :: pagination(${page}, ${page}, 'Page ' + ${page})"></a>
-                                        </li>
-                                        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
-                                            <a class="page-link" href="#">...</a>
-                                        </li>
-                                        <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                                            <a th:replace="fragments/pagination :: pagination(${currentPage + 1},'Next', 'Next Page')"></a>
-                                        </li>
-                                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                                            <a th:replace="fragments/pagination :: pagination(${totalPages}, '>>', 'Last Page')"></a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                            <div class="custom-pagination" th:if="${totalPages > 1}">
+                                <ul class="pagination">
+                                    <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
+                                        <a th:href="@{'/store/' + ${store.id} + '/vouchers?page=1&size=' + ${pageSize}}">First</a>
+                                    </li>
+                                    <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
+                                        <a th:href="@{'/store/' + ${store.id} + '/vouchers?page=' + (${currentPage - 1}) + '&size=' + ${pageSize}}">Previous</a>
+                                    </li>
+                                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${currentPage == pageNumber} ? 'active' : ''">
+                                        <a th:href="@{'/store/' + ${store.id} + '/vouchers?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
+                                    </li>
+                                    <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
+                                        <a th:href="@{'/store/' + ${store.id} + '/vouchers?page=' + (${currentPage + 1}) + '&size=' + ${pageSize}}">Next</a>
+                                    </li>
+                                    <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
+                                        <a th:href="@{'/store/' + ${store.id} + '/vouchers?page=' + ${totalPages} + '&size=' + ${pageSize}}">Last</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

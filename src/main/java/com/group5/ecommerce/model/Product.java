@@ -48,7 +48,7 @@ public class Product {
     private UserStore store;
 
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    private List<OrderItem> orderItems;
+//    private List<OrderItem> orderItemsByProduct;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> reviews;
