@@ -25,6 +25,8 @@ public class UserStore {
 
     private String status;
 
+    private double revenue;
+
     @OneToOne(mappedBy = "store")
     private User user;
 
