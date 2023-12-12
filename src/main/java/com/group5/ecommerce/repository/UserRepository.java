@@ -1,5 +1,6 @@
 package com.group5.ecommerce.repository;
 
+import com.group5.ecommerce.model.Status;
 import com.group5.ecommerce.model.User;
 import com.group5.ecommerce.model.UserStore;
 import org.springframework.data.domain.Page;
@@ -15,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findAll(Pageable pageable);
     Optional<User> findByEmail(String email);
+
+    List<User> findAllByStatus(Status status);
 }

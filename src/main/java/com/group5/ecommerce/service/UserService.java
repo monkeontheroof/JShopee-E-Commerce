@@ -44,6 +44,18 @@ public class UserService {
         return null;
     }
 
+    public void disconnect(User user){
+        var storedUser = userRepository.findById(user.getId()).orElse(null);
+        if(storedUser != null){
+            storedUser.setStatus(Status.ONLINE);
+            userRepository.save(user);
+        }
+    }
+
+    public List<User> findConnectedUser(){
+        return userRepository.findAllByStatus(Status.ONLINE);
+    }
+
     private boolean isValidEmail(String email) {
         //check if the email is valid using regex pattern
         return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") && !email.isEmpty();
@@ -71,6 +83,7 @@ public class UserService {
     }
 
     public void addUser(User user){
+        user.setStatus(Status.ONLINE);
         userRepository.save(user);
     }
 
