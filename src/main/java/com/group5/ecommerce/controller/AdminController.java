@@ -51,4 +51,28 @@ public class AdminController {
         });
         return "admin/customers";
     }
+
+    @GetMapping("/lockAccount/{email}")
+    public String lockAccount(Model model,
+                              @PathVariable("email") String email){
+        try{
+            userService.lockAccount(email);
+            return "redirect:/admin/customers";
+        } catch (Exception e){
+            model.addAttribute("error", true);
+            return "admin/customers";
+        }
+    }
+
+    @GetMapping("/unlockAccount/{email}")
+    public String unlockAccount(Model model,
+                              @PathVariable("email") String email){
+        try{
+            userService.unlockAccount(email);
+            return "redirect:/admin/customers";
+        } catch (Exception e){
+            model.addAttribute("error", true);
+            return "admin/customers";
+        }
+    }
 }

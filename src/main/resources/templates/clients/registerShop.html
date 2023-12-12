@@ -62,28 +62,28 @@
 <!-- create a new shop -->
 <div class="col-md-6 col-sm-6 create-new-account">
 	<h4 class="checkout-subtitle">Create a new shop</h4>
-	<form class="register-form outer-top-xs" th:action="@{/register-shop}" method="post" th:object="*{store}">
+	<form class="register-form outer-top-xs" th:action="@{/register-shop}" method="post" th:object="${store}">
         <div class="form-group">
-		    <label class="info-title" for="name">Shop Name<span>*</span></label>
+		    <label class="info-title" for="name">Tên cửa hàng<span>*</span></label>
 		    <input type="text" class="form-control unicase-form-control text-input" name="name" id="name" th:field="*{name}" required>
 		</div>
         <div class="form-group">
-		    <label class="info-title" for="phone">Phone Number <span>*</span></label>
+		    <label class="info-title" for="phone">Số điện thoại <span>*</span></label>
 		    <input type="text" class="form-control unicase-form-control text-input" id="phone" th:field="*{phone}" required>
 		</div>
         <div class="form-group">
-		    <label class="info-title" for="address">Address <span>*</span></label>
-		    <input type="text" class="form-control unicase-form-control text-input" id="address" th:field="*{address}" required>
+		    <label class="info-title" for="address">Địa chỉ (nếu có)<span></span></label>
+		    <input type="text" class="form-control unicase-form-control text-input" id="address" th:field="*{address}">
 		</div>
         <div class="form-group">
-		    <label class="info-title" for="type">Types of Products<span>*</span></label>
+		    <label class="info-title" for="type">Danh mục cửa hàng<span>*</span></label>
 		    <input type="text" class="form-control unicase-form-control text-input" id="type" th:field="*{category}" required>
 		</div>
 		<div class="form-group">
-			<input type="checkbox" id="agreeTerms" name="agreeTerms" th:checked="${agreeTerms}" required/>
+			<input type="checkbox" id="agreeTerms" name="agreeTerms" th:checked="${agreeTerms}" required onclick="checkAgreement()">
 			Tôi đồng ý với các điều khoản.
 		</div>
-	  	<button type="submit" class="btn-upper btn btn-primary checkout-page-button">Register</button>
+	  	<button type="submit" id="registerButton" class="btn-upper btn btn-primary checkout-page-button" disabled>Gửi yêu cầu đăng ký</button>
 	</form>
 	
 	
@@ -310,7 +310,15 @@
 <script th:src="@{/assets/js/bootstrap-select.min.js}"></script>
 <script th:src="@{/assets/js/wow.min.js}"></script>
 <script th:src="@{/assets/js/scripts.js}"></script>
+        <script>
+            function checkAgreement() {
+                var agreeCheckbox = document.getElementById('agreeTerms');
+                var registerButton = document.getElementById('registerButton');
 
+                // Nếu checkbox được chọn, kích hoạt nút đăng ký, ngược lại vô hiệu hóa nút đăng ký
+                registerButton.disabled = !agreeCheckbox.checked;
+            }
+        </script>
 	<!-- For demo purposes – can be removed on production -->
 </body>
 </html>

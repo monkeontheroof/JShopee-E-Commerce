@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
@@ -52,6 +53,11 @@ public class HomeController {
         return "clients/registerShop";
     }
 
+    @GetMapping("/register-shop-success")
+    public String getSuccessRegisterShop() {
+        return "clients/registerShopSuccess";
+    }
+
     @GetMapping("/orders")
     public String getOrders(Model model) {
         User user = SecurityUtil.getPrincipal().orElse(null);
@@ -78,10 +84,12 @@ public class HomeController {
     @PostMapping("/register-shop")
     public String postRegisterShop(@ModelAttribute("store") UserStore store,
                                    Model model) {
-        User user = SecurityUtil.getPrincipal().orElse(null);
-        store.setUser(user);
-        storeService.addStore(store);
-        return "redirect:/";
+        Optional<CustomUserDetail> customUserDetail = SecurityUtil.getPrincipal();
+        customUserDetail.ifPresent(userDetail -> {
+            store.setUser(userDetail);
+            storeService.addStore(store);
+        });
+        return "redirect:/products";
     }
 
     static void getUserId(Model model, CartService cartService) {

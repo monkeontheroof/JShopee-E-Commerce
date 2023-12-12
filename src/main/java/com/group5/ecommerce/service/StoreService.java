@@ -27,6 +27,7 @@ public class StoreService {
     }
 
     public void addStore(UserStore store){
+        store.setLocked(false);
         storeRepository.save(store);
     }
 

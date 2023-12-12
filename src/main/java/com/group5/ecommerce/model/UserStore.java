@@ -23,7 +23,7 @@ public class UserStore {
 
     private String phone;
 
-    private String status;
+    private boolean isLocked;
 
     @OneToOne(mappedBy = "store")
     private User user;

@@ -6,6 +6,7 @@ import com.group5.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,18 @@ public class UserService {
     }
 
     public void lockAccount(String email){
+        Optional<User> user = userRepository.findByEmail(email.trim());
+        user.orElseThrow(() -> new UsernameNotFoundException("Cannot find user"));
+        user.get().setLocked(true);
+        user.get().getStore().setLocked(true);
+        userRepository.save(user.get());
+    }
 
+    public void unlockAccount(String email){
+        Optional<User> user = userRepository.findByEmail(email.trim());
+        user.orElseThrow(() -> new UsernameNotFoundException("Cannot find user"));
+        user.get().setLocked(false);
+        userRepository.save(user.get());
     }
 
     public void save(User user){

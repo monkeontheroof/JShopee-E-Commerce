@@ -64,6 +64,12 @@
     <!-- modernizr JS
 		============================================ -->
     <script th:src="@{/nalika/js/vendor/modernizr-2.8.3.min.js}"></script>
+    <style>
+        .main-logo{
+            width:200px;
+            height:50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -74,16 +80,9 @@
     <div th:replace="fragments/adminLeftSidebar :: adminLeftSidebar"></div>
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="logo-pro">
-                        <a th:href="@{/store/home}"><img class="main-logo" th:src="@{/nalika/img/logo/logo.png}" alt="" /></a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div th:replace="fragments/adminHeader :: adminHeader"></div>
+
+
 
 
             <!-- Mobile Menu start -->
