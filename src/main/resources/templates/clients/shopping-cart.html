@@ -160,34 +160,38 @@
 	<div class="container">
 		<h4 class="mt-4"></h4>
 		<div class="row">
-			<div class="col-md-6">
-				<table class="table table-bordered">
-					<tbody>
-					<tr>
-						<td><strong>Thành tiền:</strong></td>
-						<td th:text="${formatter.format(cart.getTotalPrice())} + ' đ'">0.00 đ</td>
-					</tr>
-					<!-- Add more rows for additional summary information -->
-					<tr>
-						<td><strong>Thuế:</strong></td>
-						<td>4 %</td>
-					</tr>
-					<tr>
-						<td><strong>Phí giao hàng:</strong></td>
-						<td>30.000 đ</td>
-					</tr>
-					<tr>
-						<td><strong>Tổng tiền:</strong></td>
-						<td th:if="${cart.totalPrice != 0}" th:text="${formatter.format((cart.totalPrice + 30000) + ((cart.totalPrice + 30000) * 0.04))}">$0.00</td>
-						<td th:unless="${cart.totalPrice != 0}" th:text="'0 đ'">$0.00</td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="col-md-6">
-				<!-- Checkout Button -->
-				<a class="btn btn-primary btn-lg" th:href="@{/check-out}">Tiến hành thanh toán</a>
-			</div>
+				<div class="col-md-12" style="text-align:center">
+					<table class="table table-bordered">
+						<tbody>
+						<tr>
+							<td><strong>Thành tiền:</strong></td>
+							<td th:text="${formatter.format(cart.getTotalPrice())} + ' đ'">0.00 đ</td>
+						</tr>
+						<!-- Add more rows for additional summary information -->
+						<tr>
+							<td><strong>Thuế:</strong></td>
+							<td>4 %</td>
+						</tr>
+						<tr>
+							<td><strong>Phí giao hàng:</strong></td>
+							<td>30.000 đ</td>
+						</tr>
+						<tr>
+							<td><strong>Tổng tiền:</strong></td>
+							<td th:if="${cart.totalPrice != 0}" th:text="${formatter.format((cart.totalPrice + 30000) + ((cart.totalPrice + 30000) * 0.04))}">$0.00</td>
+							<td th:unless="${cart.totalPrice != 0}" th:text="'0 đ'">$0.00</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+		</div>
+		<div class="row">
+			<center>
+				<div class="col-md-12">
+					<!-- Checkout Button -->
+					<a class="btn btn-primary btn-lg" th:href="@{/check-out}">Tiến hành thanh toán</a>
+				</div>
+			</center>
 		</div>
 	</div>
 </div><!-- /.cart-shopping-total -->			</div><!-- /.shopping-cart -->
