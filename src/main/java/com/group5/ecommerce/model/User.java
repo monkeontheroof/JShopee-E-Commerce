@@ -31,8 +31,6 @@ public class User {
 
     private String address;
 
-    private Status status;
-
     @Pattern(regexp = "^(Male|Femaile|Other)$", message = "Invalid gender value")
     private String gender;
 

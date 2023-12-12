@@ -44,17 +44,6 @@ public class UserService {
         return null;
     }
 
-    public void disconnect(User user){
-        var storedUser = userRepository.findById(user.getId()).orElse(null);
-        if(storedUser != null){
-            storedUser.setStatus(Status.ONLINE);
-            userRepository.save(user);
-        }
-    }
-
-    public List<User> findConnectedUser(){
-        return userRepository.findAllByStatus(Status.ONLINE);
-    }
 
     private boolean isValidEmail(String email) {
         //check if the email is valid using regex pattern
@@ -79,11 +68,6 @@ public class UserService {
     }
 
     public void save(User user){
-        userRepository.save(user);
-    }
-
-    public void addUser(User user){
-        user.setStatus(Status.ONLINE);
         userRepository.save(user);
     }
 
