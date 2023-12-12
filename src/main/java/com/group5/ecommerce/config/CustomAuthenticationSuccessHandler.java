@@ -36,6 +36,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                     throw new RuntimeException("Failed to redirect.");
                 }
             }
+            else if(authority.getAuthority().equals("ROLE_ADMIN")) {
+                try {
+                    redirectStrategy.sendRedirect(request, response, "/admin");
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to redirect.");
+                }
+            }
         });
     }
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Left sidebar</title>
+</head>
+<body>
+<div class="left-sidebar-pro" th:fragment="adminLeftSidebar">
+    <nav id="sidebar" class="">
+        <div class="sidebar-header">
+            <a th:href="@{/store/home}"><img class="main-logo" th:src="@{/nalika/img/logo/logo.png}" alt="" /></a>
+            <strong><img th:src="@{/nalika/img/logo/logosn.png}" alt="" /></strong>
+        </div>
+        <div class="nalika-profile">
+            <div class="profile-dtl">
+                <a href="#"><img th:src="@{/nalika/img/notification/4.jpg}" alt="" /></a>
+                <h2 th:text="${user.firstName}"> <span class="min-dtn" th:text="${user.lastName}"></span></h2>
+            </div>
+        </div>
+        <div class="left-custom-menu-adp-wrap comment-scrollbar">
+            <nav class="sidebar-nav left-sidebar-menu-pro">
+                <ul class="metismenu" id="menu1">
+                    <li class="active">
+                        <a class="has-arrow" href="#">
+                            <i class="icon nalika-home icon-wrap"></i>
+                            <span class="mini-click-non">Quản lý</span>
+                        </a>
+                        <ul class="submenu-angle" aria-expanded="true">
+                            <li><a title="Dashboard v.1" th:href="@{/admin}"><span class="mini-sub-pro">Dashboard</span></a></li>
+                            <li><a title="Product List" th:href="@{/admin/customers}"><span class="mini-sub-pro">Khách hàng</span></a></li>
+                            <li><a title="Product Payment" href=""><span class="mini-sub-pro">Quảng cáo</span></a></li>
+                            <li><a title="Product Cart" href=""><span class="mini-sub-pro">Doanh thu</span></a></li>
+                        </ul>
+                    </li>
+                    <!--                    <li>-->
+                    <!--                        <a class="has-arrow" href="/nalika/mailbox.html" aria-expanded="false"><i class="icon nalika-mail icon-wrap"></i> <span class="mini-click-non">Mailbox</span></a>-->
+                    <!--                        <ul class="submenu-angle" aria-expanded="false">-->
+                    <!--                            <li><a title="Inbox" href="/nalika/mailbox.html"><span class="mini-sub-pro">Inbox</span></a></li>-->
+                    <!--                            <li><a title="View Mail" href="/nalika/mailbox-view.html"><span class="mini-sub-pro">View Mail</span></a></li>-->
+                    <!--                            <li><a title="Compose Mail" href="/nalika/mailbox-compose.html"><span class="mini-sub-pro">Compose Mail</span></a></li>-->
+                    <!--                        </ul>-->
+                    <!--                    </li>-->
+                    <!--                    <li id="removable">-->
+                    <!--                        <a class="has-arrow" href="#" aria-expanded="false"><i class="icon nalika-new-file icon-wrap"></i> <span class="mini-click-non">Pages</span></a>-->
+                    <!--                        <ul class="submenu-angle" aria-expanded="false">-->
+                    <!--                            <li><a title="Login" th:href="@{/store/home}"><span class="mini-sub-pro">Login</span></a></li>-->
+                    <!--                            <li><a title="Register" href="/nalika/register.html"><span class="mini-sub-pro">Register</span></a></li>-->
+                    <!--                            <li><a title="Lock" href="/nalika/lock.html"><span class="mini-sub-pro">Lock</span></a></li>-->
+                    <!--                            <li><a title="Password Recovery" href="/nalika/password-recovery.html"><span class="mini-sub-pro">Password Recovery</span></a></li>-->
+                    <!--                        </ul>-->
+                    <!--                    </li>-->
+                </ul>
+            </nav>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

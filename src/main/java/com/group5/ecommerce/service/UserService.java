@@ -4,6 +4,8 @@ import com.group5.ecommerce.model.*;
 import com.group5.ecommerce.repository.RoleRepository;
 import com.group5.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,8 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public Page<User> getAllUsers(Pageable pageable){
+        return userRepository.findAll(pageable);
     }
 
     public User getUserById(Long id){
