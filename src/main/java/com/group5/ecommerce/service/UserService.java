@@ -61,10 +61,15 @@ public class UserService {
                     .password(bCryptPasswordEncoder.encode(registerUser.getPassword()))
                     .email(registerUser.getEmail())
                     .roles(roles)
+                    .isLocked(false)
                     .cart(new Cart())
                     .build();
             userRepository.save(user);
         }
+    }
+
+    public void lockAccount(String email){
+
     }
 
     public void save(User user){

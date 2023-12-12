@@ -34,6 +34,8 @@ public class User {
     @Pattern(regexp = "^(Male|Femaile|Other)$", message = "Invalid gender value")
     private String gender;
 
+    private boolean isLocked;
+
     private String phone;
 
     @NotEmpty(message = "Email is required")
