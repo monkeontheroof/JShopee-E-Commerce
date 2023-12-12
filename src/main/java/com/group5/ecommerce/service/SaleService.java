@@ -5,6 +5,7 @@ import com.group5.ecommerce.model.OrderItem;
 import com.group5.ecommerce.model.Product;
 import com.group5.ecommerce.model.UserStore;
 import com.group5.ecommerce.repository.OrderItemRepository;
+import com.group5.ecommerce.repository.OrderRepository;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,9 @@ public class SaleService {
     private OrderService orderService;
 
     @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
     private StoreService storeService;
 
     @Autowired
@@ -44,6 +48,19 @@ public class SaleService {
 //                .filter(item -> item.getProduct().equals(product))
 //                .mapToDouble(OrderItem::getTotalPrice)
 //                .sum();
+    }
+
+    public Page<Order> getAllOrderPages(Pageable pageable){
+        return orderRepository.findAll(pageable);
+    }
+
+    public Page<Order> getOrdersBetween(LocalDate startDate, LocalDate endDate, Pageable pageable){
+        List<Order> orders = filterByDate(getAllOrderPages(pageable).getContent(), startDate, endDate);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), orders.size());
+
+        return new PageImpl<>(orders.subList(start, end), pageable, orders.size());
     }
 
     public Page<OrderItem> getOrderItemsByProductName(String productName, Long storeId,Pageable pageable){
@@ -91,6 +108,8 @@ public class SaleService {
                 .filter(order -> isDateInRange(order.getDate(), startDate, endDate))
                 .collect(Collectors.toList());
     }
+
+
 
     private boolean isDateInRange(LocalDate orderDate, LocalDate startDate, LocalDate endDate){
         return !orderDate.isBefore(startDate) && !orderDate.isAfter(endDate);

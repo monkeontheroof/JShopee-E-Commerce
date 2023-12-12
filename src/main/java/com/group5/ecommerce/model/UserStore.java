@@ -4,6 +4,7 @@ import lombok.Data;
 import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -24,6 +25,8 @@ public class UserStore {
     private String phone;
 
     private boolean isLocked;
+
+    private LocalDate date;
 
     @OneToOne(mappedBy = "store")
     private User user;

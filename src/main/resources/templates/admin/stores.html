@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Danh mục sản phẩm</title>
+    <title>Cửa hàng</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
@@ -73,71 +73,75 @@
 </head>
 
 <body>
-    <div th:replace="fragments/leftSidebar :: leftSidebar">
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-</div>
+    <div th:replace="fragments/adminLeftSidebar :: adminLeftSidebar"></div>
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="logo-pro">
-                        <a th:href="@{/store/home}"><img class="main-logo" th:src="@{/nalika/img/logo/logo.png}" alt="" /></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div th:replace="fragments/storeAdminHeader :: storeAdminHeader"></div>
+
+        <div th:replace="fragments/adminHeader :: adminHeader"></div>
+
         <div class="product-status mg-b-30">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
-                            <h4 th:text="'Tổng sản phẩm: ' + ${products.size()}"></h4>
-                            <div class="add-product">
-                                <a th:href="@{/store/{storeId}/products/add(storeId=${store.getId()})}" class="btn btn-success">Thêm mới</a>
-                            </div>
+                            <h4>Danh sách khách hàng</h4>
+                            <div th:text="${error} ? 'Lỗi khi khóa tài khoản, hãy thử lại.' : ''"></div>
                             <table>
                                 <tr>
                                     <th></th>
-                                    <th>Tên sản phẩm</th>
+                                    <th>Tên cửa hàng</th>
                                     <th>Danh mục</th>
-                                    <th>Số lượng</th>
-                                    <th>Thao tác</th>
+                                    <th>Khách hàng</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Ngày đăng ký</th>
+                                    <th>Tình trạng</th>
+                                    <th></th>
                                 </tr>
-                                <tr th:each="product, iStat : ${products}">
-                                    <td th:text="${iStat.index} + 1"></td>
-                                    <td th:text="${product.name}"></td>
-                                    <td th:text="${product.category.name}"></td>
-                                    <td th:text="${product.quantity < 1 ? 'Hết hàng' : product.quantity}"></td>
+                                <tr th:each="store, iStat : ${storePages.getContent()}">
+                                    <td th:text="${iStat.index + 1}"></td>
+                                    <td th:text="${store.name}"></td>
+                                    <td th:text="${store.category}"></td>
+                                    <td th:text="${store.user.firstName} + ' ' + ${store.user.lastName}"></td>
+                                    <td th:text="${store.phone}"></td>
+                                    <td><textarea th:text="${store.address}" rows="3" cols="11" type="text" class="form-control"></textarea></td>
+                                    <td th:text="${store.date}"></td>
+                                    <td th:if="${!store.isLocked}">
+                                        <a class="btn btn-success" th:text="'Hoạt động'" readonly></a>
+                                    </td>
+                                    <td th:if="${store.isLocked}">
+                                        <a class="btn btn-danger" th:text="'Đã khóa'" readonly></a>
+                                    </td>
                                     <td>
-                                        <a th:href="@{'/store/' + ${store.getId()} + '/products/update/' + ${product.id}}" class="btn btn-success">
-                                            <i class="fa fa-edit"></i>
+                                        <a th:if="${!store.isLocked}" th:placeholder="'Khóa tài khoản'" th:href="@{/admin/lockStore/{storeId}(storeId=${store.id})}" class="btn btn-danger" aria-hidden="true">
+                                            <i class="fa fa-lock"></i>
                                         </a>
-                                        <a th:data-confirm-delete="|Are you sure you want to delete this category: ${product.name}?|"
-                                           onclick="return confirm(this.getAttribute('data-confirm-delete'))"
-                                           href="" th:href="@{'/store/' + ${store.getId()} + '/products/delete/' + ${product.id}}" class="btn btn-danger">
-                                            <i class="fa fa-trash"></i>
+                                        <a th:if="${store.isLocked}" th:placeholder="'Khóa tài khoản'" th:href="@{/admin/unlockStore/{storeId}(storeId=${store.id})}" class="btn btn-primary" aria-hidden="true">
+                                            <i class="fa fa-unlock"></i>
                                         </a>
                                     </td>
                                 </tr>
                             </table>
-                            <div class="custom-pagination" th:if="${totalPages > 1}">
+                            <div class="custom-pagination" th:if="${storePages.totalPages > 1}">
                                 <ul class="pagination">
-                                    <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
-                                        <a th:href="@{'/store/' + ${store.id} + '/products?page=1&size=' + ${pageSize}}">First</a>
+                                    <li class="page-item" th:class="${(storePages.getNumber() + 1) == 1} ? 'disabled' : ''">
+                                        <a th:href="@{'/admin/customers?page=1&size=' + ${pageSize}}">First</a>
                                     </li>
-                                    <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
-                                        <a th:href="@{'/store/' + ${store.id} + '/products?page=' + (${currentPage - 1}) + '&size=' + ${pageSize}}">Previous</a>
+                                    <li class="page-item" th:class="${(storePages.getNumber() + 1) == 1} ? 'disabled' : ''">
+                                        <a th:href="@{'/admin/customers?page=' + (${(storePages.getNumber() + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
                                     </li>
-                                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${currentPage == pageNumber} ? 'active' : ''">
-                                        <a th:href="@{'/store/' + ${store.id} + '/products?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
+                                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, storePages.totalPages)}" th:class="${(storePages.getNumber() + 1) == pageNumber} ? 'active' : ''">
+                                        <a th:href="@{'/admin/customers?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
                                     </li>
-                                    <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
-                                        <a th:href="@{'/store/' + ${store.id} + '/products?page=' + (${currentPage + 1}) + '&size=' + ${pageSize}}">Next</a>
+                                    <li class="page-item" th:class="${(storePages.getNumber() + 1) == storePages.totalPages} ? 'disabled' : ''">
+                                        <a th:href="@{'/admin/customers?page=' + (${(storePages.getNumber() + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
                                     </li>
-                                    <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
-                                        <a th:href="@{'/store/' + ${store.id} + '/products?page=' + ${totalPages} + '&size=' + ${pageSize}}">Last</a>
+                                    <li class="page-item" th:class="${(storePages.getNumber() + 1) == storePages.totalPages} ? 'disabled' : ''">
+                                        <a th:href="@{'/admin/customers?page=' + ${storePages.totalPages} + '&size=' + ${pageSize}}">Last</a>
                                     </li>
                                 </ul>
                             </div>
@@ -151,7 +155,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="footer-copy-right">
-                            <p>Copyright © 2023 <a href="">Group 5</a> All rights reserved.</p>
+                            <p>Copyright © 2018 <a href="https://colorlib.com/wp/templates/">Colorlib</a> All rights reserved.</p>
                         </div>
                     </div>
                 </div>

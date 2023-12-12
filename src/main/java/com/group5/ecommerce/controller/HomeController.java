@@ -53,11 +53,6 @@ public class HomeController {
         return "clients/registerShop";
     }
 
-    @GetMapping("/register-shop-success")
-    public String getSuccessRegisterShop() {
-        return "clients/registerShopSuccess";
-    }
-
     @GetMapping("/orders")
     public String getOrders(Model model) {
         User user = SecurityUtil.getPrincipal().orElse(null);
@@ -86,10 +81,10 @@ public class HomeController {
                                    Model model) {
         Optional<CustomUserDetail> customUserDetail = SecurityUtil.getPrincipal();
         customUserDetail.ifPresent(userDetail -> {
-            store.setUser(userDetail);
-            storeService.addStore(store);
+            storeService.addStore(store, userDetail.getId());
+            model.addAttribute("cart", cartService.getCartByUserId(userDetail.getId()));
         });
-        return "redirect:/products";
+        return "clients/registerShopSuccess";
     }
 
     static void getUserId(Model model, CartService cartService) {

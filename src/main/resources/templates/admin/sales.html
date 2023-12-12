@@ -73,7 +73,7 @@
 </head>
 
 <body>
-    <div th:replace="fragments/leftSidebar :: leftSidebar">
+    <div th:replace="fragments/adminLeftSidebar :: adminLeftSidebar">
 
 </div>
     <!-- Start Welcome area -->
@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div th:replace="fragments/storeAdminHeader :: storeAdminHeader"></div>
+        <div th:replace="fragments/adminHeader :: adminHeader"></div>
         <div class="product-status mg-b-30">
             <div class="single-pro-review-area">
                 <div class="container-fluid">
@@ -95,83 +95,18 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="review-tab-pro-inner">
                                 <ul id="myTab3" class="tab-review-design">
-                                    <li class="active"><a href="#byProducts"><i class="icon nalika-edit" aria-hidden="true" ></i>Theo sản phẩm</a></li>
-                                    <li><a href="#byDate"><i class="icon nalika-edit" aria-hidden="true" ></i>Theo ngày</a></li>
+
+                                    <li class="active"><a href="#byDate"><i class="icon nalika-edit" aria-hidden="true" ></i>Theo ngày</a></li>
 <!--                                    <li th:if="${product.id != null}"><a href="#details"><i class="fa fa-info-circle" aria-hidden="true" ></i>Theo ngày</a></li>-->
 <!--                                    <li th:if="${product.id != null}"><a href="#reviews"><i class="icon nalika-picture" aria-hidden="true"></i></a></li>-->
 <!--                                    <li th:if="${product.id != null}"><a href="#INFORMATION"><i class="icon nalika-chat" aria-hidden="true"></i>Đánh giá</a></li>-->
                                 </ul>
                                 <div id="myTabContent" class="tab-content custom-product-edit">
-                                    <div class="product-tab-list tab-pane fade active in" id="byProducts">
-                                        <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="product-status-wrap">
-                                                        <form th:action="@{/store/{storeId}/sales(storeId=${store.id})}" method="get">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label style="color: white" for="productName">Tên sản phẩm:</label>
-                                                                    <input type="text" id="productName" name="productName" class="form-control" th:value="${productName}" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <button type="submit" class="btn btn-primary">Search</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                        <div class="col-md-6">
-                                                            <h4 style="color:white;" th:text="'Tổng doanh thu: ' + ${decimalFormat.format(totalItemRevenue)}"></h4>
-                                                        </div>
-                                                        <table>
-                                                            <tr>
-                                                                <th>Mã đơn hàng</th>
-                                                                <th>Hình sản phẩm</th>
-                                                                <th>Tên sản phẩm</th>
-                                                                <th>Ngày bán</th>
-                                                                <th>Số lượng</th>
-                                                                <th>Giá bán</th>
-                                                                <th>Thành tiền</th>
-                                                                <th>Voucher</th>
-                                                                <th></th>
-                                                            </tr>
-                                                            <tr th:each="item, iStat : ${orderItemsByProduct.getContent()}">
-                                                                <td th:text="${item.order.id}"></td>
-                                                                <td><img th:src="'/productImages/' + ${item.product.images.get(0).imageName}"></td>
-                                                                <td th:text="${item.product.name}"></td>
-                                                                <td th:text="${item.order.date}"></td>
-                                                                <td th:text="${item.quantity}"></td>
-                                                                <td th:text="${decimalFormat.format(item.product.price) + ' đ'}"></td>
-                                                                <td th:text="${decimalFormat.format(item.totalPrice) + ' đ'}"></td>
-                                                                <td th:if="${item.voucher != null}" th:text="${item.voucher.code}"></td>
-                                                                <td th:unless="${item.voucher != null}" th:text="'Không có Voucher'"></td>
-                                                            </tr>
-                                                        </table>
-                                                        <div class="custom-pagination" th:if="${orderItemsByProduct.totalPages > 1}">
-                                                            <ul class="pagination">
-                                                                <li class="page-item" th:class="${(orderItemsByProduct.getNumber() + 1) == 1} ? 'disabled' : ''">
-                                                                    <a th:href="@{'/store/' + ${store.id} + '/sales?page=1&size=' + ${pageSize}}">First</a>
-                                                                </li>
-                                                                <li class="page-item" th:class="${(orderItemsByProduct.getNumber() + 1) == 1} ? 'disabled' : ''">
-                                                                    <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + (${(orderItemsByProduct.getNumber() + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
-                                                                </li>
-                                                                <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, orderItemsByProduct.totalPages)}" th:class="${(orderItemsByProduct.getNumber() + 1) == pageNumber} ? 'active' : ''">
-                                                                    <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
-                                                                </li>
-                                                                <li class="page-item" th:class="${(orderItemsByProduct.getNumber() + 1) == orderItemsByProduct.totalPages} ? 'disabled' : ''">
-                                                                    <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + (${(orderItemsByProduct.getNumber() + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
-                                                                </li>
-                                                                <li class="page-item" th:class="${(orderItemsByProduct.getNumber() + 1) == orderItemsByProduct.totalPages} ? 'disabled' : ''">
-                                                                    <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + ${orderItemsByProduct.totalPages} + '&size=' + ${pageSize}}">Last</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-tab-list tab-pane fade" id="byDate">
+                                    <div class="product-tab-list tab-pane fade active in" id="byDate">
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="product-status-wrap">
-                                                    <form th:action="@{/store/{storeId}/sales(storeId=${storeId})}" method="get">
+                                                    <form th:action="@{/admin/sales}" method="get">
                                                         <div class="col-md-6">
                                                             <div class="form-group col-md-6">
                                                                 <label style="color: white" for="startDate">Start Date:</label>
@@ -209,19 +144,19 @@
                                                     <div class="custom-pagination" th:if="${orderPages.totalPages > 1}">
                                                         <ul class="pagination">
                                                             <li class="page-item" th:class="${(orderPages.number + 1) == 1} ? 'disabled' : ''">
-                                                                <a th:href="@{'/store/' + ${store.id} + '/sales?page=1&size=' + ${pageSize}}">First</a>
+                                                                <a th:href="@{'/admin/sales?page=1&size=' + ${pageSize}}">First</a>
                                                             </li>
                                                             <li class="page-item" th:class="${(orderPages.number + 1) == 1} ? 'disabled' : ''">
-                                                                <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + (${(orderPages.number + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
+                                                                <a th:href="@{'/admin/sales?page=' + (${(orderPages.number + 1) - 1}) + '&size=' + ${pageSize}}">Previous</a>
                                                             </li>
                                                             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, orderPages.totalPages)}" th:class="${(orderPages.number + 1) == pageNumber} ? 'active' : ''">
-                                                                <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
+                                                                <a th:href="@{'/admin/sales?page=' + ${pageNumber} + '&size=' + ${pageSize}}" th:text="${pageNumber}"></a>
                                                             </li>
                                                             <li class="page-item" th:class="${(orderPages.number + 1) == orderPages.totalPages} ? 'disabled' : ''">
-                                                                <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + (${(orderPages.number + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
+                                                                <a th:href="@{'/admin/sales?page=' + (${(orderPages.number + 1) + 1}) + '&size=' + ${pageSize}}">Next</a>
                                                             </li>
                                                             <li class="page-item" th:class="${(orderPages.number + 1) == orderPages.totalPages} ? 'disabled' : ''">
-                                                                <a th:href="@{'/store/' + ${store.id} + '/sales?page=' + ${orderPages.totalPages} + '&size=' + ${pageSize}}">Last</a>
+                                                                <a th:href="@{'/admin/sales?page=' + ${orderPages.totalPages} + '&size=' + ${pageSize}}">Last</a>
                                                             </li>
                                                         </ul>
                                                     </div>
