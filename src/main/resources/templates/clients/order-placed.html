@@ -85,49 +85,12 @@ xmlns:layout="http://www.w3.org/1999/xhtml">
     </div>
 </div>
     <div class="row" style="margin-left: 400px;margin-bottom:10px">
-        <div class="col-sm-8">
-<div id="review" class="tab-pane">
-    <div class="product-tab">
-        <div class="product-add-review">
-            <form method="post" th:action="@{/submit-review}" th:object="${review}">
-                <h4 class="title">Write your own review</h4>
-                <div class="stars stars-example-css detail-stars">
-                    <div class="review-rating">
-                        <fieldset class="rating">
-                            <span th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:onclick="'document.getElementById(\'rating\').value = ' + ${i}"></span>
-                        </fieldset>
-                        <input type="hidden" id="rating" name="rating" th:field="*{rating}">
-                    </div>
-                    <div class="clear"></div>
-                </div><!-- /.review-table -->
-
-                <div class="review-form">
-                    <div class="form-container">
-                        <form role="form" class="cnt-form">
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputReview">Review <span class="astk">*</span></label>
-                                        <textarea class="form-control txt txt-review" id="exampleInputReview" rows="4" th:field="*{comment}" placeholder=""></textarea>
-                                    </div><!-- /.form-group -->
-                                </div>
-                            </div><!-- /.row -->
-
-                            <div class="action text-right">
-                                <button type="submit" class="btn btn-primary btn-upper">SUBMIT REVIEW</button>
-                            </div><!-- /.action -->
-
-                        </form><!-- /.cnt-form -->
-                    </div><!-- /.form-container -->
-                </div>
-            </form><!-- /.review-form -->
-
-        </div><!-- /.product-add-review -->										
-        
-    </div><!-- /.product-tab -->
+        <div class="col-sm-8" style="margin: 20px">
+            <button class="btn btn-primary btn-upper">Return Homepage</button>
 </div>
-</div>
+        <div class="col-sm-8" style="margin: 20px">
+            <button class="btn btn-primary btn-upper">Continue Shopping</button>
+        </div>
 </div>
 <footer id="footer" class="footer color-bg">
 

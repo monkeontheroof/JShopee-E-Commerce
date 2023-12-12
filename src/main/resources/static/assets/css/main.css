@@ -678,9 +678,7 @@ a {
 .main-header .top-search-holder .contact-row .icon {
   color: #12cca7;
 }
-.top-cart-row .dropdown-cart .lnk-cart .items-cart-inner .total-price-basket .total-price {
-  color: #12cca7;
-}
+
 .top-cart-row .dropdown-cart .dropdown-menu .cart-item.product-summary .name a:hover,
 .top-cart-row .dropdown-cart .dropdown-menu .cart-item.product-summary .name a:focus {
   color: #12cca7;
@@ -1313,18 +1311,11 @@ header{background:#64CCC5}
 .top-cart-row .dropdown-cart .lnk-cart .items-cart-inner {
   position: relative;
 }
-.top-cart-row .dropdown-cart .lnk-cart .items-cart-inner .total-price-basket {
-    padding: 12px 12px 13px 15px;
-    font-family: 'Open Sans', sans-serif;
-    text-transform: uppercase;
-    float: left;
-    letter-spacing: 0.5px;
-}
+
 .top-cart-row .dropdown-cart .lnk-cart .items-cart-inner .basket {
   float: left;
-  padding: 12px;
   border-right: 1px solid rgba(255,255,255,0.2);
-  padding: 12px 18px 13px 12px;
+  padding: 12px 40px 13px 12px;
 }
 .top-cart-row .dropdown-cart .lnk-cart .items-cart-inner .basket-item-count {
   -webkit-border-radius: 100px;
@@ -1332,7 +1323,7 @@ header{background:#64CCC5}
   border-radius: 100px;
     height: 18px;
     position: absolute;
-    left: 34px;
+    left: 40px;
     top: 13px;
     width: 18px;
     background: #fdd922;
