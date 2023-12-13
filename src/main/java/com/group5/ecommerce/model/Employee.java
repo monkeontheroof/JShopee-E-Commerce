@@ -34,7 +34,7 @@ public class Employee {
     private String address;
 
     @Email(message = "{errors.invalid_email}")
-    @Column(unique = true, length = 200)
+    @Column(unique = true, length = 50)
     private String email;
 
     @NotEmpty(message = "Password must be set")

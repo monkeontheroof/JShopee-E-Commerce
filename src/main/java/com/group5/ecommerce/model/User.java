@@ -39,7 +39,7 @@ public class User {
     private String phone;
 
     @NotEmpty(message = "Email is required")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     @Email(message = "{errors.invalid_email}")
     private String email;
 

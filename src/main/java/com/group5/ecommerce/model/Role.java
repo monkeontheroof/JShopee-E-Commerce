@@ -20,7 +20,7 @@ public class Role {
     private Long id;
 
     @NotEmpty
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 30)
     private String name;
 
     @ManyToMany(mappedBy = "roles")
