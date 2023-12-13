@@ -21,6 +21,6 @@ public class Category {
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private UserStore store;
 
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
