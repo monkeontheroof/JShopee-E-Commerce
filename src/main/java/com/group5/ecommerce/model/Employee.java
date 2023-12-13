@@ -29,31 +29,15 @@ public class Employee {
 
     private LocalDate birthDate;
 
-    @Column(unique = true)
-    private String cardId;
-
     private String phone;
 
     private String address;
 
     @Email(message = "{errors.invalid_email}")
-    @Column(unique = true)
+    @Column(unique = true, length = 200)
     private String email;
 
     @NotEmpty(message = "Password must be set")
     @NotNull(message = "Password must not be null")
     private String password;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(cardId, employee.cardId) && Objects.equals(email, employee.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, cardId, email);
-    }
 }
